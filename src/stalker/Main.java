@@ -1,6 +1,5 @@
 package stalker;
 
-import assignement2.GUI;
 
 public class Main {
 
