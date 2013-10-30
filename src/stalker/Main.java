@@ -11,7 +11,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		GUI guiObject = new GUI();
+		new GUI();
 		Login loginObject = new Login();
 		View viewObject = new View();
 		Create createObject = new Create();
