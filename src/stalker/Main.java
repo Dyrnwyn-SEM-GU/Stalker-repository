@@ -6,7 +6,7 @@ public class Main {
 	public Main() {
 		
 	}
-
+//why?
 	public static void main(String[] args) {
 		
 		GUI guiObject = new GUI();
