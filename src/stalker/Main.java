@@ -14,6 +14,7 @@ public class Main {
 		Create createObject = new Create();
 		Account accountObject = new Account();
 		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
+		databaseConnectionsObject.StartDatabaseConnection();
 
 		// TODO Auto-generated method stub
 
