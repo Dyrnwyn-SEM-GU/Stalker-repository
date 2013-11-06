@@ -7,7 +7,7 @@ public class DatabaseConnections {
 
 	private Statement statement;
 
-	public void DatabaseConnections() {
+	public void StartDatabaseConnection() {
 		// Initialize database connection and create a Statement object
 		initializeDB();
 
