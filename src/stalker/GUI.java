@@ -1,7 +1,6 @@
 package stalker;
 
-import java.awt.Color;
-import java.awt.Window;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,7 +17,7 @@ public class GUI {
 	public class WindowFirst{
 		public WindowFirst(){
 		
-		new panel()
+			new Panel();
 		new FirstPageFrame();
 		new AddColor();
 		
