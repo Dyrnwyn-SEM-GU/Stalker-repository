@@ -5,14 +5,10 @@ import java.sql.*;
 
 public class DatabaseConnections {
 
-	private Statement statement;
-
-	public void StartDatabaseConnection() {
-		// Initialize database connection and create a Statement object
-		initializeDB();
-
+	public DatabaseConnections() {
+		// TODO Auto-generated constructor stub
 	}
-
+// test
 	private void initializeDB() {
 		try {
 		// Load JDBC driver
@@ -51,8 +47,3 @@ public class DatabaseConnections {
 	}
 	
 }
-
-
-
-
-
