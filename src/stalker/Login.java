@@ -120,8 +120,6 @@ public class Login extends JFrame {
 		cont.setLayout(new GridLayout(9,1));
 		buttons.setLayout(new GridLayout(1,2));
 		
-		
-		
 		cont.add(empt1);
 		cont.add(signIn);
 		cont.add(empt2);
