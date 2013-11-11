@@ -16,13 +16,13 @@ public class Login extends JFrame {
 	
 	DTextPane signIn = new DTextPane(GUI.white, GUI.textH1, GUI.gray);
 	
-	JTextField inpEmail = new JTextField();
+	DTextField inpEmail = new DTextField(GUI.gray, GUI.textH2);
 	DTextPane email = new DTextPane(GUI.white, GUI.textH2, GUI.gray);
 	JPasswordField inpPassword = new JPasswordField();
 	DTextPane password = new DTextPane(GUI.white, GUI.textH2, GUI.gray);
 	
-	JButton login = new JButton("Login");
-	JButton cAccount = new JButton("Create account");
+	DButton login = new DButton("Login", GUI.white, GUI.textH2, GUI.darkGray);
+	DButton cAccount = new DButton("Create account", GUI.white, GUI.textH2, GUI.darkGray);
 
 	public Login() {
 		
@@ -43,26 +43,8 @@ public class Login extends JFrame {
 		email.setText("Email");
 		password.setText("Password");
 		
-		/* this part could be solved in a separated
-		 * class for DTextField and DPasswordField
-		 */
-		
-		inpEmail.setFont(GUI.textH2);
-		inpEmail.setForeground(GUI.gray);
-		inpPassword.setFont(GUI.textH2);
 		inpPassword.setForeground(GUI.gray);
-		
-		/* this part could be solved in a separated
-		 * class for DButtons
-		 */
-		
-		login.setFont(GUI.textH2);
-		login.setForeground(GUI.white);
-		login.setBackground(GUI.darkGray);
-		
-		cAccount.setFont(GUI.textH2);
-		cAccount.setForeground(GUI.white);
-		cAccount.setBackground(GUI.darkGray);
+		inpPassword.setFont(GUI.textH2);
 		
 	}
 	

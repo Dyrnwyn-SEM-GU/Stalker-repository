@@ -18,16 +18,16 @@ public class Create extends JFrame {
 	DPanel empty = new DPanel(GUI.gray);
 	DPanel empty2 = new DPanel(GUI.gray);
 	
-	DTextPane crtAccount = new DTextPane(GUI.white,GUI.textH2,GUI.gray);
-	JTextField inpEmail = new JTextField();
+	DTextPane crtAccount = new DTextPane(GUI.white,GUI.textH1,GUI.gray);
+	DTextField inpEmail = new DTextField(GUI.gray,GUI.textH2);
 	DTextPane email = new DTextPane(GUI.white,GUI.textH2,GUI.gray);
 	JPasswordField inpPassword = new JPasswordField();
 	DTextPane password = new DTextPane(GUI.white,GUI.textH2,GUI.gray);
 	JPasswordField repeatPassword = new JPasswordField();
 	DTextPane password2 = new DTextPane(GUI.white,GUI.textH2,GUI.gray);
 
-	JButton submit = new JButton("Submit");
-	JButton cancel = new JButton("Cancel");
+	DButton submit = new DButton("Submit", GUI.white, GUI.textH2, GUI.darkGray);
+	DButton cancel = new DButton("Cancel", GUI.white, GUI.textH2, GUI.darkGray);
 
 	public Create() {
 		
@@ -48,28 +48,11 @@ public class Create extends JFrame {
 		password.setText("Password");
 		password2.setText("Repeat password");
 		
-		/* this part could be solved in a separated
-		 * class for DTextField and DPasswordField
-		 */
-		
-		inpEmail.setFont(GUI.textH2);
-		inpEmail.setForeground(GUI.gray);
 		inpPassword.setFont(GUI.textH2);
 		inpPassword.setForeground(GUI.gray);
 		repeatPassword.setFont(GUI.textH2);
 		repeatPassword.setForeground(GUI.gray);
 		
-		/* this part could be solved in a separated
-		 * class for DButtons
-		 */
-		
-		submit.setFont(GUI.textH2);
-		submit.setForeground(GUI.white);
-		submit.setBackground(GUI.darkGray);
-		
-		cancel.setFont(GUI.textH2);
-		cancel.setForeground(GUI.white);
-		cancel.setBackground(GUI.darkGray);
 	}
 	
 	void content(){
