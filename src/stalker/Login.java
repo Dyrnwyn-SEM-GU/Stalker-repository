@@ -5,33 +5,21 @@ import javax.swing.*;
 
 public class Login extends JFrame {
 	
-	public static Color white = new Color(255,255,255);
-	public static Color gray = new Color(78,78,78);
-	public static Color darkGray = new Color(49,49,49);
+	DPanel back = new DPanel(GUI.gray);
+	DPanel cont = new DPanel(GUI.gray);
 	
-	public static Font textH1 = new Font("Arial",0,36);
-	public static Font textH2 = new Font("Arial",0,24);
-	public static Font textH3 = new Font("Arial",0,20);
-	public static Font textH4 = new Font("Arial",0,12);
+	DPanel empt1 = new DPanel(GUI.gray);
+	DPanel empt2 = new DPanel(GUI.gray);
+	DPanel buttons = new DPanel(GUI.gray);
+	DPanel lgPanel = new DPanel(GUI.gray);
+	DPanel crAccPanel = new DPanel(GUI.gray);
 	
-	public static GridLayout twobyOne = new GridLayout(2,1);
-	public static GridLayout fourbyOne = new GridLayout(4,1);
-	
-	JPanel back = new JPanel();
-	JPanel cont = new JPanel();
-	
-	JPanel empt1 = new JPanel();
-	JPanel empt2 = new JPanel();
-	JPanel buttons = new JPanel();
-	JPanel lgPanel = new JPanel();
-	JPanel crAccPanel = new JPanel();
-	
-	DTextPane signIn = new DTextPane(white, textH1, gray);
+	DTextPane signIn = new DTextPane(GUI.white, GUI.textH1, GUI.gray);
 	
 	JTextField inpEmail = new JTextField();
-	DTextPane email = new DTextPane(white, textH2, gray);
+	DTextPane email = new DTextPane(GUI.white, GUI.textH2, GUI.gray);
 	JPasswordField inpPassword = new JPasswordField();
-	DTextPane password = new DTextPane(white, textH2, gray);
+	DTextPane password = new DTextPane(GUI.white, GUI.textH2, GUI.gray);
 	
 	JButton login = new JButton("Login");
 	JButton cAccount = new JButton("Create account");
@@ -59,43 +47,28 @@ public class Login extends JFrame {
 		 * class for DTextField and DPasswordField
 		 */
 		
-		inpEmail.setFont(textH2);
-		inpEmail.setForeground(gray);
-		inpPassword.setFont(textH2);
-		inpPassword.setForeground(gray);
+		inpEmail.setFont(GUI.textH2);
+		inpEmail.setForeground(GUI.gray);
+		inpPassword.setFont(GUI.textH2);
+		inpPassword.setForeground(GUI.gray);
 		
 		/* this part could be solved in a separated
 		 * class for DButtons
 		 */
 		
-		login.setFont(textH2);
-		login.setForeground(white);
-		login.setBackground(darkGray);
+		login.setFont(GUI.textH2);
+		login.setForeground(GUI.white);
+		login.setBackground(GUI.darkGray);
 		
-		cAccount.setFont(textH2);
-		cAccount.setForeground(white);
-		cAccount.setBackground(darkGray);
+		cAccount.setFont(GUI.textH2);
+		cAccount.setForeground(GUI.white);
+		cAccount.setBackground(GUI.darkGray);
 		
 	}
 	
 	void content(){
 		
 		setText();
-		
-		/* this part could be solved in a separated
-		 * class for DPanels
-		 */
-		back.setBackground(gray);
-		
-		cont.setBackground(gray);
-		empt1.setBackground(gray);
-		empt2.setBackground(gray);
-		
-		buttons.setBackground(gray);
-		lgPanel.setBackground(gray);
-		crAccPanel.setBackground(gray);
-		
-		/*  */
 		
 		cont.setPreferredSize(new Dimension(500, 420));
 		

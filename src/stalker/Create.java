@@ -5,26 +5,26 @@ import javax.swing.*;
 
 public class Create extends JFrame {
 	
-	DPanel back = new DPanel(Login.darkGray);
-	DPanel cont = new DPanel(Login.gray);
-	DPanel cont2 = new DPanel(Login.gray);
+	DPanel back = new DPanel(GUI.darkGray);
+	DPanel cont = new DPanel(GUI.gray);
+	DPanel cont2 = new DPanel(GUI.gray);
 	
-	DPanel top = new DPanel(Login.gray);
-	DPanel center = new DPanel(Login.gray);
-	DPanel center2 = new DPanel(Login.gray);
-	DPanel bottom = new DPanel(Login.gray);
+	DPanel top = new DPanel(GUI.gray);
+	DPanel center = new DPanel(GUI.gray);
+	DPanel center2 = new DPanel(GUI.gray);
+	DPanel bottom = new DPanel(GUI.gray);
 	
-	DPanel buttons = new DPanel(Login.gray);
-	DPanel empty = new DPanel(Login.gray);
-	DPanel empty2 = new DPanel(Login.gray);
+	DPanel buttons = new DPanel(GUI.gray);
+	DPanel empty = new DPanel(GUI.gray);
+	DPanel empty2 = new DPanel(GUI.gray);
 	
-	JTextPane crtAccount = new JTextPane();
+	DTextPane crtAccount = new DTextPane(GUI.white,GUI.textH2,GUI.gray);
 	JTextField inpEmail = new JTextField();
-	JTextPane email = new JTextPane();
+	DTextPane email = new DTextPane(GUI.white,GUI.textH2,GUI.gray);
 	JPasswordField inpPassword = new JPasswordField();
-	JTextPane password = new JTextPane();
+	DTextPane password = new DTextPane(GUI.white,GUI.textH2,GUI.gray);
 	JPasswordField repeatPassword = new JPasswordField();
-	JTextPane password2 = new JTextPane();
+	DTextPane password2 = new DTextPane(GUI.white,GUI.textH2,GUI.gray);
 
 	JButton submit = new JButton("Submit");
 	JButton cancel = new JButton("Cancel");
@@ -52,48 +52,24 @@ public class Create extends JFrame {
 		 * class for DTextField and DPasswordField
 		 */
 		
-		inpEmail.setFont(Login.textH2);
-		inpEmail.setForeground(Login.gray);
-		inpPassword.setFont(Login.textH2);
-		inpPassword.setForeground(Login.gray);
-		repeatPassword.setFont(Login.textH2);
-		repeatPassword.setForeground(Login.gray);
-		
-		/* this part could be solved in a separated
-		 * class for JTextPane
-		 */
-		
-		crtAccount.setEnabled(false);
-		crtAccount.setDisabledTextColor(Login.white);
-		crtAccount.setFont(Login.textH1);
-		crtAccount.setBackground(Login.gray);
-		
-		email.setEnabled(false);
-		email.setDisabledTextColor(Login.white);
-		email.setFont(Login.textH2);
-		email.setBackground(Login.gray);
-		
-		password.setEnabled(false);
-		password.setDisabledTextColor(Login.white);
-		password.setFont(Login.textH2);
-		password.setBackground(Login.gray);
-		
-		password2.setEnabled(false);
-		password2.setDisabledTextColor(Login.white);
-		password2.setFont(Login.textH2);
-		password2.setBackground(Login.gray);
+		inpEmail.setFont(GUI.textH2);
+		inpEmail.setForeground(GUI.gray);
+		inpPassword.setFont(GUI.textH2);
+		inpPassword.setForeground(GUI.gray);
+		repeatPassword.setFont(GUI.textH2);
+		repeatPassword.setForeground(GUI.gray);
 		
 		/* this part could be solved in a separated
 		 * class for DButtons
 		 */
 		
-		submit.setFont(Login.textH2);
-		submit.setForeground(Login.white);
-		submit.setBackground(Login.darkGray);
+		submit.setFont(GUI.textH2);
+		submit.setForeground(GUI.white);
+		submit.setBackground(GUI.darkGray);
 		
-		cancel.setFont(Login.textH2);
-		cancel.setForeground(Login.white);
-		cancel.setBackground(Login.darkGray);
+		cancel.setFont(GUI.textH2);
+		cancel.setForeground(GUI.white);
+		cancel.setBackground(GUI.darkGray);
 	}
 	
 	void content(){
@@ -103,11 +79,11 @@ public class Create extends JFrame {
 		cont.setPreferredSize(new Dimension(600,560));
 		cont2.setPreferredSize(new Dimension(500,560));
 		
-		top.setLayout(Login.twobyOne);
-		center.setLayout(Login.fourbyOne);
-		center2.setLayout(Login.fourbyOne);
-		bottom.setLayout(Login.twobyOne);
-		cont2.setLayout(Login.fourbyOne);
+		top.setLayout(GUI.twobyOne);
+		center.setLayout(GUI.fourbyOne);
+		center2.setLayout(GUI.fourbyOne);
+		bottom.setLayout(GUI.twobyOne);
+		cont2.setLayout(GUI.fourbyOne);
 		
 		center.add(inpEmail);
 		center.add(email);
