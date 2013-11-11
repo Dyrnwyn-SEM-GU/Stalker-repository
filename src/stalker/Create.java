@@ -5,18 +5,18 @@ import javax.swing.*;
 
 public class Create extends JFrame {
 	
-	JPanel back = new JPanel();
-	JPanel cont = new JPanel();
-	JPanel cont2 = new JPanel();
+	DPanel back = new DPanel(Login.darkGray);
+	DPanel cont = new DPanel(Login.gray);
+	DPanel cont2 = new DPanel(Login.gray);
 	
-	JPanel top = new JPanel();
-	JPanel center = new JPanel();
-	JPanel center2 = new JPanel();
-	JPanel bottom = new JPanel();
+	DPanel top = new DPanel(Login.gray);
+	DPanel center = new DPanel(Login.gray);
+	DPanel center2 = new DPanel(Login.gray);
+	DPanel bottom = new DPanel(Login.gray);
 	
-	JPanel buttons = new JPanel();
-	JPanel empty = new JPanel();
-	JPanel empty2 = new JPanel();
+	DPanel buttons = new DPanel(Login.gray);
+	DPanel empty = new DPanel(Login.gray);
+	DPanel empty2 = new DPanel(Login.gray);
 	
 	JTextPane crtAccount = new JTextPane();
 	JTextField inpEmail = new JTextField();
@@ -102,22 +102,6 @@ public class Create extends JFrame {
 		
 		cont.setPreferredSize(new Dimension(600,560));
 		cont2.setPreferredSize(new Dimension(500,560));
-		
-		/* this part could be solved in a separated
-		 * class for DPanels
-		 */
-		
-		back.setBackground(Login.darkGray);
-		cont.setBackground(Login.gray);
-		top.setBackground(Login.gray);
-		center.setBackground(Login.gray);
-		center2.setBackground(Login.gray);
-		bottom.setBackground(Login.gray);
-		empty.setBackground(Login.gray);
-		empty2.setBackground(Login.gray);
-		buttons.setBackground(Login.gray);
-		
-		/* */
 		
 		top.setLayout(Login.twobyOne);
 		center.setLayout(Login.fourbyOne);

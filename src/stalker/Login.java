@@ -26,12 +26,12 @@ public class Login extends JFrame {
 	JPanel lgPanel = new JPanel();
 	JPanel crAccPanel = new JPanel();
 	
-	JTextPane signIn = new JTextPane();
+	DTextPane signIn = new DTextPane(white, textH1, gray);
 	
 	JTextField inpEmail = new JTextField();
-	JTextPane email = new JTextPane();
+	DTextPane email = new DTextPane(white, textH2, gray);
 	JPasswordField inpPassword = new JPasswordField();
-	JTextPane password = new JTextPane();
+	DTextPane password = new DTextPane(white, textH2, gray);
 	
 	JButton login = new JButton("Login");
 	JButton cAccount = new JButton("Create account");
@@ -76,24 +76,6 @@ public class Login extends JFrame {
 		cAccount.setForeground(white);
 		cAccount.setBackground(darkGray);
 		
-		/* this part could be solved in a separated
-		 * class for DTextPane
-		 */
-		
-		signIn.setEnabled(false);
-		signIn.setDisabledTextColor(white);
-		signIn.setFont(textH1);
-		signIn.setBackground(gray);
-		
-		email.setEnabled(false);
-		email.setDisabledTextColor(white);
-		email.setFont(textH2);
-		email.setBackground(gray);
-		
-		password.setEnabled(false);
-		password.setDisabledTextColor(white);
-		password.setFont(textH2);
-		password.setBackground(gray);
 	}
 	
 	void content(){
