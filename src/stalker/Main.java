@@ -10,7 +10,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-<<<<<<< HEAD
+
 		new GUI();
 		Login loginObject = new Login();
 		View viewObject = new View();
@@ -20,7 +20,7 @@ public class Main {
 		databaseConnectionsObject.StartDatabaseConnection();
 
 		// TODO Auto-generated method stub
-=======
+
 		
 //		new GUI();
 //		Login loginObject = new Login();
@@ -32,7 +32,7 @@ public class Main {
 		new CreateAccount();
 		new Login();
 		
->>>>>>> refs/heads/aurelien
+
 
 	}
 
