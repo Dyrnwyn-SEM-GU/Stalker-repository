@@ -5,17 +5,20 @@ import javax.swing.*;
 
 public class Login extends JFrame {
 	
-	public Color white = new Color(255,255,255);
-	public Color gray = new Color(78,78,78);
-	public Color darkGray = new Color(49,49,49);
+	public static Color white = new Color(255,255,255);
+	public static Color gray = new Color(78,78,78);
+	public static Color darkGray = new Color(49,49,49);
 	
-	public Font textH1 = new Font("Arial",0,36);
-	public Font textH2 = new Font("Arial",0,24);
-	public Font textH3 = new Font("Arial",0,20);
-	public Font textH4 = new Font("Arial",0,12);
+	public static Font textH1 = new Font("Arial",0,36);
+	public static Font textH2 = new Font("Arial",0,24);
+	public static Font textH3 = new Font("Arial",0,20);
+	public static Font textH4 = new Font("Arial",0,12);
+	
+	public static GridLayout twobyOne = new GridLayout(2,1);
+	public static GridLayout fourbyOne = new GridLayout(4,1);
 	
 	JPanel back = new JPanel();
-	JPanel content = new JPanel();
+	JPanel cont = new JPanel();
 	
 	JPanel empt1 = new JPanel();
 	JPanel empt2 = new JPanel();
@@ -102,7 +105,7 @@ public class Login extends JFrame {
 		 */
 		back.setBackground(gray);
 		
-		content.setBackground(gray);
+		cont.setBackground(gray);
 		empt1.setBackground(gray);
 		empt2.setBackground(gray);
 		
@@ -112,22 +115,22 @@ public class Login extends JFrame {
 		
 		/*  */
 		
-		content.setPreferredSize(new Dimension(500, 420));
+		cont.setPreferredSize(new Dimension(500, 420));
 		
-		content.setLayout(new GridLayout(9,1));
+		cont.setLayout(new GridLayout(9,1));
 		buttons.setLayout(new GridLayout(1,2));
 		
 		
 		
-		content.add(empt1);
-		content.add(signIn);
-		content.add(empt2);
+		cont.add(empt1);
+		cont.add(signIn);
+		cont.add(empt2);
 		
-		content.add(inpEmail);
-		content.add(email);
+		cont.add(inpEmail);
+		cont.add(email);
 		
-		content.add(inpPassword);
-		content.add(password);
+		cont.add(inpPassword);
+		cont.add(password);
 		
 		lgPanel.add(login);
 		crAccPanel.add(cAccount);
@@ -135,9 +138,9 @@ public class Login extends JFrame {
 		buttons.add(lgPanel);
 		buttons.add(crAccPanel);
 		
-		content.add(buttons);
+		cont.add(buttons);
 		
-		back.add(content, BorderLayout.CENTER);
+		back.add(cont, BorderLayout.CENTER);
 		add(back, BorderLayout.CENTER);
 		
 	}

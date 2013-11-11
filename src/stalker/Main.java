@@ -18,7 +18,9 @@ public class Main {
 //		Account accountObject = new Account();
 //		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
 		
+		new Create();
 		new Login();
+		
 
 	}
 
