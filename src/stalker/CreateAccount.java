@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
-public class Create extends JFrame implements ActionListener {
+public class CreateAccount extends JFrame implements ActionListener {
 
 	DPanel back = new DPanel(GUI.darkGray);
 	DPanel cont = new DPanel(GUI.gray);
@@ -33,7 +33,7 @@ public class Create extends JFrame implements ActionListener {
 	DButton submit = new DButton("Submit", GUI.white, GUI.textH2, GUI.darkGray);
 	DButton cancel = new DButton("Cancel", GUI.white, GUI.textH2, GUI.darkGray);
 
-	public Create() {
+	public CreateAccount() {
 
 		content();
 		pack();
