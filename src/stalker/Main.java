@@ -11,12 +11,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		new GUI();
-		Login loginObject = new Login();
-		View viewObject = new View();
-		Create createObject = new Create();
-		Account accountObject = new Account();
-		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
+//		new GUI();
+//		Login loginObject = new Login();
+//		View viewObject = new View();
+//		Create createObject = new Create();
+//		Account accountObject = new Account();
+//		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
+		
+		new Login();
 
 	}
 
