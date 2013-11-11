@@ -6,6 +6,7 @@ public class Main {
 	public Main() {
 		/*some code*/
 		
+
 		/*more code*/
 	}
 
