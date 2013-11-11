@@ -1,9 +1,13 @@
 package stalker;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+
 import javax.swing.*;
 
-public class Create extends JFrame {
+public class Create extends JFrame implements ActionListener {
 
 	DPanel back = new DPanel(GUI.darkGray);
 	DPanel cont = new DPanel(GUI.gray);
@@ -41,7 +45,7 @@ public class Create extends JFrame {
 		setResizable(false);
 	}
 
-	void setText() {
+	void setUp() {
 
 		crtAccount.setText("Create new account");
 		email.setText("Email");
@@ -52,12 +56,15 @@ public class Create extends JFrame {
 		inpPassword.setForeground(GUI.gray);
 		repeatPassword.setFont(GUI.textH2);
 		repeatPassword.setForeground(GUI.gray);
+		
+		submit.addActionListener(this);
+		cancel.addActionListener(this);
 
 	}
 
 	void content() {
 
-		setText();
+		setUp();
 
 		cont.setPreferredSize(new Dimension(600, 560));
 		cont2.setPreferredSize(new Dimension(500, 560));
@@ -95,4 +102,14 @@ public class Create extends JFrame {
 		add(back);
 
 	}
+
+    public void actionPerformed(ActionEvent e) {
+//            numClicks++;
+//            text.setText("Button Clicked " + numClicks + " times");
+    }
+    
+    public void closeWindow(WindowEvent e) {
+        dispose();
+        System.exit(0);
+}
 }

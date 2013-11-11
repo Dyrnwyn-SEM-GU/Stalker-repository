@@ -38,7 +38,7 @@ public class Login extends JFrame {
 
 	}
 
-	void setText() {
+	void setUp() {
 
 		signIn.setText("Sign in");
 		email.setText("Email");
@@ -51,7 +51,7 @@ public class Login extends JFrame {
 
 	void content() {
 
-		setText();
+		setUp();
 
 		cont.setPreferredSize(new Dimension(500, 420));
 
@@ -80,5 +80,7 @@ public class Login extends JFrame {
 		add(back, BorderLayout.CENTER);
 
 	}
+	
+	
 
 }
