@@ -1,33 +1,13 @@
 package stalker;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import java.awt.BorderLayout;
-import javax.swing.JSplitPane;
-import javax.swing.JLayeredPane;
-import javax.swing.JTextField;
-import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-
+import java.awt.*;
+import javax.swing.*;
 
 public class ProGUI {
 
 	private JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
-
-	/**
-	 * Launch the application.
-	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -41,69 +21,74 @@ public class ProGUI {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public ProGUI() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBackground(Color.WHITE);
-		frame.setBounds(100, 100, 650, 500);
+		frame.setBounds(100, 100, 570, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JLayeredPane overalPane = new JLayeredPane();
-		overalPane.setBackground(Color.WHITE);
-		frame.getContentPane().add(overalPane, BorderLayout.CENTER);
+		JLayeredPane layeredPane = new JLayeredPane();
+		frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
 		
 		textField = new JTextField("dd/mm/yy");
-		textField.setBounds(249, 44, 116, 22);
-		overalPane.add(textField);
+		textField.setBounds(221, 27, 114, 28);
+		layeredPane.add(textField);
 		textField.setColumns(10);
 		
-		JLabel lblFrom = new JLabel("From date:");
-		lblFrom.setBounds(183, 47, 70, 16);
-		overalPane.add(lblFrom);
+		JLabel lblFromDate = new JLabel("From date:");
+		lblFromDate.setBounds(145, 30, 94, 22);
+		layeredPane.add(lblFromDate);
 		
 		textField_1 = new JTextField("dd/mm/yy");
-		textField_1.setBounds(436, 44, 116, 22);
-		overalPane.add(textField_1);
+		textField_1.setBounds(430, 30, 114, 22);
+		layeredPane.add(textField_1);
 		textField_1.setColumns(10);
 		
-		JLabel lblTo = new JLabel("To date:");
-		lblTo.setBounds(385, 47, 56, 16);
-		overalPane.add(lblTo);
+		JLabel lblToDate = new JLabel("To date:");
+		lblToDate.setBounds(369, 33, 61, 16);
+		layeredPane.add(lblToDate);
 		
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(249, 106, 119, 26);
-		overalPane.add(menuBar);
+		String[] userOrAdmin = {"User", "Admin"};
+		JComboBox userAdmin = new JComboBox(userOrAdmin);
+		userAdmin.setBounds(6, 28, 122, 28);
+		layeredPane.add(userAdmin);
 		
-		JMenuBar menuBar_1 = new JMenuBar();
-		menuBar_1.setBounds(261, 187, 119, 26);
-		overalPane.add(menuBar_1);
+		String [] comboBoxS = {"From"};
+		JComboBox comboBox = new JComboBox(comboBoxS);
+		comboBox.setBounds(221, 82, 122, 28);
+		layeredPane.add(comboBox);
+		
+		String [] comboBox_1S = {"Km", "Mil",};
+		JComboBox comboBox_1 = new JComboBox(comboBox_1S);
+		comboBox_1.setBounds(369, 82, 77, 28);
+		layeredPane.add(comboBox_1);
+		
+		String [] comboBox_2S = {"To"};
+		JComboBox comboBox_2 = new JComboBox(comboBox_2S);
+		comboBox_2.setBounds(221, 122, 122, 28);
+		layeredPane.add(comboBox_2);
+		
+		String [] comboBox_3S = {"Car"};
+		JComboBox comboBox_3 = new JComboBox(comboBox_3S);
+		comboBox_3.setBounds(369, 122, 77, 28);
+		layeredPane.add(comboBox_3);
+		
+		String [] comboBox_4S = {"Purpose of the trip"};
+		JComboBox comboBox_4 = new JComboBox(comboBox_4S);
+		comboBox_4.setBounds(221, 180, 225, 28);
+		layeredPane.add(comboBox_4);
+		
+		String [] comboBox_5S = {"Extra costs"};
+		JComboBox comboBox_5 = new JComboBox(comboBox_5S);
+		comboBox_5.setBounds(221, 230, 225, 28);
+		layeredPane.add(comboBox_5);
 		
 		
-	}
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
+	
+		
 	}
 }
+
