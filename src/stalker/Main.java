@@ -1,32 +1,38 @@
 package stalker;
 
-import java.sql.SQLException;
-
 
 public class Main {
 
 	public Main() {
-		// TODO Auto-generated constructor stub
+		/*some code*/
+		
+		/*more code*/
 	}
 
 	public static void main(String[] args) {
 
-		new GUI(); // Mahsas new window?
-		new TestUiFrame(); // Mahsas test windows with input fields
-		new PageCreate();
+		new GUI();
 		Login loginObject = new Login();
 		View viewObject = new View();
 		Create createObject = new Create();
 		Account accountObject = new Account();
 		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
-		try {
-			databaseConnectionsObject.selectTripDataFromDBForReport();
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		databaseConnectionsObject.StartDatabaseConnection();
 
 		// TODO Auto-generated method stub
+
+		
+//		new GUI();
+//		Login loginObject = new Login();
+//		View viewObject = new View();
+//		Create createObject = new Create();
+//		Account accountObject = new Account();
+//		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
+		
+		new CreateAccount();
+		new Login();
+		
+
 
 	}
 
