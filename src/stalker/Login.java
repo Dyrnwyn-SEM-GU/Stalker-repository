@@ -77,7 +77,7 @@ public class Login extends JFrame {
 		cAccount.setBackground(darkGray);
 		
 		/* this part could be solved in a separated
-		 * class for DJTextPane
+		 * class for DTextPane
 		 */
 		
 		signIn.setEnabled(false);
