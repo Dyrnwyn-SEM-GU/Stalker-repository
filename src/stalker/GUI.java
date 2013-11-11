@@ -1,9 +1,19 @@
 package stalker;
 
+<<<<<<< HEAD
+import java.awt.*;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+=======
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.*;
+>>>>>>> refs/heads/master
 
 public class GUI {
 
@@ -27,7 +37,7 @@ public class GUI {
 	public class WindowFirst{
 		public WindowFirst(){
 		
-		new panel()
+			new Panel();
 		new FirstPageFrame();
 		new AddColor();
 		
