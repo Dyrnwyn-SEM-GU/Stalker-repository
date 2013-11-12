@@ -4,7 +4,8 @@ import java.sql.*;
 
 
 public class DatabaseConnections {
-
+	PageCreate pagecreateObject = new PageCreate();
+	
 	public DatabaseConnections() {
 	}
 	
@@ -185,11 +186,15 @@ public class DatabaseConnections {
 				
 				// TODO Repalce the values below with of each textfield name and the date 
 				// with the name of the dropdowncalendar for date selection. // Jani
-		ResultSet resultSet = statement
-				.executeQuery("INSERT INTO TripData"
-						+ "(`StartingKm`, `EndingKm`, `From`, `To`, `ReasonOfTrip`, `Username`, `Name`, `RegistryNumber`, `Date`)"
-						+ "VALUES ('123500', '123888', 'Göteborg', 'Stockholm', 'Conference', 'janip', 'Jani Pasanen', 'URB123', '2023-11-01')");
-
+				// The variable names come frome PageCreate.java (Mahsas code).  // Jani
+				
+				
+		ResultSet resultSet = statement.executeQuery("INSERT INTO TripData"
+						+ "(StartingKm, EndingKm`, `From`, `To`, `ReasonOfTrip`, `Username`, `Name`, `RegistryNumber`, `Date`)"
+						+ "VALUES" + "('" startKilometerText + "','" + endKilometerText + "','" + frame + "','" + to + "','" 
+						+ ReasonForTrip + "','" + UsernameVariable + "','" + name + "','" + car + "','" + date + "')" + ");
+																																//MissingMahsasCode
+						// TODO Mahsa needs to add a dropsown menu for Reason of trip and also variable for logged in user.
 				// Iterate through the result and print the student names
 				while (resultSet.next())
 					System.out.println(resultSet.getString(1) + "\t"

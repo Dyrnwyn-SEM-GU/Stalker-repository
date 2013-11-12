@@ -46,18 +46,18 @@ public class GUI {
 
 	}
 
-	class FirstPageFrame extends JFrame {
-		public FirstPageFrame() {
-
-			setLayout(new GridLayout(2, 1));
-			setSize(800, 650);
-			setDefaultCloseOperation(EXIT_ON_CLOSE);
-			getContentPane().setBackground(Color.DARK_GRAY);
-			setVisible(true);
-
-		}
-
-	}
+//	class FirstPageFrame extends JFrame {
+//		public FirstPageFrame() {
+//
+//			setLayout(new GridLayout(2, 1));
+//			setSize(800, 650);
+//			setDefaultCloseOperation(EXIT_ON_CLOSE);
+//			getContentPane().setBackground(Color.DARK_GRAY);
+//			setVisible(true);
+//
+//		}
+//
+//	}
 
 	class SallyPanel extends JPanel {
 		public SallyPanel() {

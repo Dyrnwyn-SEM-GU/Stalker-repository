@@ -30,18 +30,18 @@ public class PageCreate extends JFrame {
 //	crate jlable
 	JLabel create = new JLabel("Create a new travel:");
 //	create combo boxes
-	JComboBox frame= new JComboBox(new String[]{"From"});
+	public JComboBox frame= new JComboBox(new String[]{"From"});
 //	JComboBox date = new JComboBox(new String[]{"Date"});
 	
-	JComboBox to= new JComboBox(new String[]{"To         "});
-	JComboBox car= new JComboBox(new String[]{"car        "});
+	public JComboBox to= new JComboBox(new String[]{"To         "});
+	public JComboBox car= new JComboBox(new String[]{"car        "});
 	JCalendarButton date = new JCalendarButton("yyyy/mm/dd", new Date(113, 11, 4));
 	JLabel dateLable = new JLabel();
 	//	create Jlabales and text filds of each jlables
 	JLabel startKilometerLable = new JLabel("Start kilometer:");
-	JTextField startKilometerText = new JTextField(20);
+	public JTextField startKilometerText = new JTextField(20);
 	JLabel endKilometerLable = new JLabel("End kilometer:");
-	JTextField endKilometerText = new JTextField(20);
+	public JTextField endKilometerText = new JTextField(20);
 //	create submit buttons
 	JButton submitButton =new JButton("  submit    ");
 

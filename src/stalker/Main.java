@@ -12,11 +12,13 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		new GUI();
-		Login loginObject = new Login();
-		View viewObject = new View();
-		Account accountObject = new Account();
-		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
+		new PageCreate();
+	//	new TestUiFrame();
+	//	new GUI();
+	//	Login loginObject = new Login();
+	//	View viewObject = new View();
+		//Account accountObject = new Account();
+//		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
 //		databaseConnectionsObject.StartDatabaseConnection();
 
 		// TODO Auto-generated method stub
@@ -29,8 +31,8 @@ public class Main {
 //		Account accountObject = new Account();
 //		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
 		
-		new CreateAccount();
-		new Login();
+//		new CreateAccount();
+	//	new Login();
 		
 
 
