@@ -17,7 +17,7 @@ public class Main {
 		View viewObject = new View();
 		Account accountObject = new Account();
 		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
-		databaseConnectionsObject.StartDatabaseConnection();
+//		databaseConnectionsObject.StartDatabaseConnection();
 
 		// TODO Auto-generated method stub
 
