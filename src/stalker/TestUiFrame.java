@@ -52,7 +52,7 @@ import java.sql.SQLException;
 
 import javax.sql.RowSet;
 
-import SQL.RowSetTableModel;
+// import java.sql.RowSetTableModel;
 
 import com.mysql.jdbc.Statement;
 import com.sun.rowset.CachedRowSetImpl;

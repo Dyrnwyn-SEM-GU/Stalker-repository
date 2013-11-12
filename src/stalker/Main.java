@@ -15,7 +15,6 @@ public class Main {
 		new GUI();
 		Login loginObject = new Login();
 		View viewObject = new View();
-		Create createObject = new Create();
 		Account accountObject = new Account();
 		DatabaseConnections databaseConnectionsObject = new DatabaseConnections();
 		databaseConnectionsObject.StartDatabaseConnection();
