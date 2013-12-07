@@ -41,7 +41,7 @@ CREATE TABLE `Car` (
 
 LOCK TABLES `Car` WRITE;
 /*!40000 ALTER TABLE `Car` DISABLE KEYS */;
-INSERT INTO `Car` VALUES (1,'Volvo','KRB034','95',0.7,'janip'),(2,'VW','UNE371','95',0.7,'janip');
+INSERT INTO `Car` VALUES (1,'Volvo','KRE024','95',0.7,'janip'),(2,'VW','UQE355','95',0.7,'janip');
 /*!40000 ALTER TABLE `Car` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,7 +159,7 @@ CREATE TABLE `TripData` (
   `From` varchar(20) NOT NULL,
   `To` varchar(20) NOT NULL,
   `ReasonOfTrip` varchar(45) NOT NULL,
-  `Username` varchar(8) NOT NULL,
+  `Username` varchar(30) NOT NULL,
   `Name` varchar(47) DEFAULT NULL,
   `RegistryNumber` varchar(10) DEFAULT NULL,
   `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -174,7 +174,7 @@ CREATE TABLE `TripData` (
 
 LOCK TABLES `TripData` WRITE;
 /*!40000 ALTER TABLE `TripData` DISABLE KEYS */;
-INSERT INTO `TripData` VALUES (1,100000,101000,'Göteborg','Stockholm','Conference','janip','Jani Pasanen','KRB034','2013-10-31 14:34:00','2012-03-12');
+INSERT INTO `TripData` VALUES (1,100000,101000,'Göteborg','Stockholm','Conference','janip','Jani Pasanen','KRT022','2013-10-31 14:34:00','2012-03-12');
 /*!40000 ALTER TABLE `TripData` ENABLE KEYS */;
 UNLOCK TABLES;
 
