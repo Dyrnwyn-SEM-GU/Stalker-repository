@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.sourceforge.jcalendarbutton.JCalendarButton;
 
-import delements.*;
+import gui.elements.*;
 
 public class GUI extends JFrame implements ActionListener {
 	
@@ -233,7 +233,7 @@ public class GUI extends JFrame implements ActionListener {
 	}
 	
 	/* this methods generates the TABLE for the REPORT window 
-	 * by AUR�LIEN */
+	 * by AURELIEN */
 
 	void addReportGrid() throws SQLException {
 
@@ -274,7 +274,7 @@ public class GUI extends JFrame implements ActionListener {
 	}
 	
 	/* this methods generates the LOGIN window 
-	 * by AUR�LIEN */
+	 * by AURELIEN */
 
 	void addLoginScreen() {
 

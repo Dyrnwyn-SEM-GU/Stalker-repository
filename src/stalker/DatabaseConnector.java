@@ -44,48 +44,35 @@ public class DatabaseConnector {
 		String SQL = "Select * from TripData;";
 
 		rs = stmt.executeQuery(SQL);
-		ResultSetMetaData rsm = (ResultSetMetaData) rs.getMetaData();
-		int nrCols = rsm.getColumnCount();
-		ArrayList<Object[]> t = new ArrayList<Object[]>();
-		while (rs.next()) {
-			Object[] temp = new Object[11];
-			temp[0] = rs.getString("idTripData");
-			temp[1] = rs.getString("StartingKm");
-			temp[2] = rs.getString("EndingKm");
-			temp[3] = rs.getString("From");
-			temp[4] = rs.getString("To");
-			temp[5] = rs.getString("ReasonOfTrip");
-			temp[6] = rs.getString("Username");
-			temp[7] = rs.getString("Name");
-			temp[8] = rs.getString("RegistryNumber");
-			temp[9] = rs.getString("Timestamp");
-			temp[10] = rs.getString("Date");
-			t.add(temp);
-			
-			
-			
-			
-//			Object[] temp = new Object[4];
-//			temp[0] = rs.getString("Username");
-//			temp[1] = rs.getString("FirstName");
-//			temp[2] = rs.getString("LastName");
-//			temp[3] = rs.getString("Password");
-//			t.add(temp);
+        ResultSetMetaData rsm = (ResultSetMetaData) rs.getMetaData();
+        int nrCols = rsm.getColumnCount();
+        ArrayList<Object[]> t = new ArrayList<Object[]>();
+        while (rs.next()) {
+                Object[] temp = new Object[11];
+                temp[0] = rs.getString("idTripData");
+                temp[1] = rs.getString("StartingKm");
+                temp[2] = rs.getString("EndingKm");
+                temp[3] = rs.getString("From");
+                temp[4] = rs.getString("To");
+                temp[5] = rs.getString("ReasonOfTrip");
+                temp[6] = rs.getString("Username");
+                temp[7] = rs.getString("Name");
+                temp[8] = rs.getString("RegistryNumber");
+                temp[9] = rs.getString("Timestamp");
+                temp[10] = rs.getString("Date");
+                t.add(temp);
 		}
 		
 		Object[][] data = new Object[t.size()][nrCols];
 		for (int i = 0; i < t.size(); i++) {
-			for (int j = 0; j < 10; j++) {
+			for (int j = 0; j < 11; j++) {
 				data[i][j] = t.get(i)[j];
 			}
 		}
 
-		
-		Object[] columnNames = { "idTripData", "StartingKm", "EndingKm",
-		"From", "To", "ReasonOfTrip", "Username",
-		"Name", "RegistryNumber", "Timestamp", "Date" };
-//		Object[] columnNames = { "Username", "FirstName", "LastName",
-//				"Password" };
+		   Object[] columnNames = { "idTripData", "StartingKm", "EndingKm",
+	                "From", "To", "ReasonOfTrip", "Username",
+	                "Name", "RegistryNumber", "Timestamp", "Date" };
 
 		model.setDataVector(data, columnNames);
 
@@ -94,7 +81,7 @@ public class DatabaseConnector {
 
 	/*
 	 * Methods to access data from the database
-	 * by JANI, AUR�LIEN */
+	 * by JANI, AURELIEN */
 
 	public void querieAll(String table) throws SQLException {
 

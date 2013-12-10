@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 /* main Class used for testing purposes
- * by AUR�LIEN */
+ * by AURELIEN */
 
 public class Test {
 
@@ -24,7 +24,7 @@ public class Test {
 	}
 	
 	/* methods that might be helpful when testing the code
-	 * by AUR�LIEN */
+	 * by AURELIEN */
 	
 	// this method transforms an ArrayList to a string
 	public static String stringify(ArrayList<String> ar) {
