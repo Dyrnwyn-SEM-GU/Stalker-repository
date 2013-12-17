@@ -18,9 +18,8 @@ public class Test {
 	public static void main(String[] args) throws SQLException {
 		new GUI();
 		DatabaseConnector dc = new DatabaseConnector();
-
-		dc.querieAll(table);
-		// dc.querieSpecific(table, username, date1, date2);
+		//dc.querieAll(table);
+		//dc.querieSpecific(table, username, date1, date2);
 	}
 	
 	/* methods that might be helpful when testing the code
@@ -30,11 +29,15 @@ public class Test {
 	public static String stringify(ArrayList<String> ar) {
 		String listString = "";
 		for (String s : ar) {
-			listString += s + ", ";
+			if (s != "\n") {
+				listString += s + ", ";
+			} else {
+				listString += s;
+			}
 		}
 		return listString;
 	}
-	
+
 	// this method gives back user input from the console
 	public static String inputTest() {
 

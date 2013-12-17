@@ -3,22 +3,30 @@ package stalker;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.table.DefaultTableModel;
 
-import org.sourceforge.jcalendarbutton.JCalendarButton;
+import java.util.ArrayList;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
+import org.jbundle.thin.base.screen.jcalendarbutton.JCalendarButton;
 
 import gui.elements.*;
 
 public class GUI extends JFrame implements ActionListener {
-	
-	/* the looks for Fonts and the Colors used throughout the project
-	 * are defined here*/
 
+	/*
+	 * the looks for Fonts and the Colors used throughout the project are
+	 * defined here
+	 */
 	public static Color white = new Color(255, 255, 255);
 	public static Color gray = new Color(78, 78, 78);
 	public static Color darkGray = new Color(49, 49, 49);
@@ -34,46 +42,48 @@ public class GUI extends JFrame implements ActionListener {
 
 	DLabel dateLabel = new DLabel("", white, txtH3);
 
-	JCalendarButton date = new JCalendarButton("yyyy/mm/dd", new Date(113, 11,
-			4));
+	DButton exportButton, editButton, saveChangesButton, submit, logIn,
+	filterButton, searchButton;
 
-	DButton submit;
-	DButton logIn;
-	DButton gridButton;
-	DButton filter;
-	DPanel home;
-	DPanel create;
-	DPanel report;
-	DPanel grid;
-	DPanel loginScreen;
-	DPanel homePanel;
-	DPanel filterPane;
+	DTextField textKm, emailTxt, passwordTxt, startKmTxt, endKmTxt, reasonTripTxt;
+
+	DPanel home, create, report, grid, loginScreen, homePanel, filterPane;
+	DComboBox from, to, car;
+
 	JTabbedPane tabPane;
+	JTable reportTable;
 
-	public GUI() {
-		
+	// for testing only
+	JLabel testPanel = new JLabel();
+
+	/* Updated calendar code by Kashayars */
+	JCalendarButton date = new JCalendarButton(); // "YYYY-MM-DD", new Date(113,
+	// 11, 4));
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	public GUI() throws SQLException {
 		// creates a calenderDropdown
 		date.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
 			public void propertyChange(java.beans.PropertyChangeEvent evt) {
 				if (evt.getNewValue() instanceof Date)
-					dateLabel.setText((((Date) evt.getNewValue()).toString()));
+					dateLabel.setText(dateFormat.format(((Date) (evt
+							.getNewValue()))));
 			}
 		});
-
-		addStuff();
+		addElements();
 		setTitle("STALKER");
 		setSize(900, 650);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
-	
-	/* this methods adds the ELEMENTS and the TABS to the JFrame
-	 * by MAHSA */
 
-	void addStuff() {
+	/*
+	 * this methods adds the ELEMENTS and the TABS to the JFrame by MAHSA
+	 */
 
-		DPanel mainPanel = new DPanel(gray);
+	void addElements() throws SQLException {
+
 		home = new DPanel(gray);
 		report = new DPanel(gray);
 		create = new DPanel(gray);
@@ -86,10 +96,11 @@ public class GUI extends JFrame implements ActionListener {
 		addHome();
 		addCreate();
 		addReportFilter();
+
 		try {
 			addReportGrid();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("some sql problem, sorry");
 		}
 
 		tabPane = new JTabbedPane();
@@ -100,26 +111,37 @@ public class GUI extends JFrame implements ActionListener {
 		tabPane.setEnabled(false);
 		add(tabPane);
 	}
-	
-	/* this methods generates the CREATE window 
-	 * by MAHSA */
 
-	void addCreate() {
+	/*
+	 * this methods generates the CREATE window by MAHSA
+	 */
 
+	void addCreate() throws SQLException {
+		
+		DatabaseConnector dc = new DatabaseConnector();
+		
 		DLabel createLog = new DLabel("Create a new travel log", white, txtH1);
 
-		DComboBox from = new DComboBox(new String[] { "From" }, darkGray,
+		DLabel fromLabel = new DLabel("From:", white, txtH3);
+		from =  new DComboBox(dc.getColumn("City", "Locations"), darkGray,
 				txtH3, white);
-		DComboBox to = new DComboBox(new String[] { "To" }, darkGray, txtH3,
+		
+		DLabel toLabel = new DLabel("To:", white, txtH3);
+		to =  new DComboBox(dc.getColumn("City", "Locations"), darkGray, txtH3,
 				white);
-		DComboBox car = new DComboBox(new String[] { "Car" }, darkGray, txtH3,
+		
+		DLabel carLabel = new DLabel("Car:", white, txtH3);
+		car = new DComboBox(dc.getColumn("RegistryNumber", "Car"), darkGray, txtH3,
 				white);
 
+		DLabel reasonOfTrip = new DLabel("Reason of trip:", white, txtH3);
+		reasonTripTxt = new DTextField("", 20, darkGray, txtH3);
+		
 		DLabel startKm = new DLabel("Start kilometer:", white, txtH3);
-		DTextField startKmTxt = new DTextField("", 20, darkGray, txtH3);
+		startKmTxt = new DTextField("", 20, darkGray, txtH3);
 
 		DLabel endKm = new DLabel("End kilometer:", white, txtH3);
-		DTextField endKmTxt = new DTextField("", 20, darkGray, txtH3);
+		endKmTxt = new DTextField("", 20, darkGray, txtH3);
 
 		submit = new DButton("Submit", white, txtH2, darkerGray);
 		submit.addActionListener(this);
@@ -128,13 +150,18 @@ public class GUI extends JFrame implements ActionListener {
 
 		createPanel.setBounds(100, 0, 680, 600);
 		createPanel.setLayout(null);
-
+		
 		createLog.setBounds(50, 40, 600, 40);
+		fromLabel.setBounds(50, 80, 100, 40);
 		from.setBounds(50, 120, 100, 40);
+		toLabel.setBounds(210, 80, 100, 40);
 		to.setBounds(210, 120, 100, 40);
 		dateLabel.setBounds(380, 160, 300, 40);
 		date.setBounds(600, 120, 40, 40);
+		carLabel.setBounds(50, 160, 260, 40);
 		car.setBounds(50, 200, 260, 40);
+		reasonOfTrip.setBounds(380, 160, 260, 40);
+		reasonTripTxt.setBounds(380, 200, 260, 40);
 		startKm.setBounds(50, 280, 260, 40);
 		endKm.setBounds(380, 280, 260, 40);
 		startKmTxt.setBounds(50, 320, 260, 40);
@@ -142,11 +169,16 @@ public class GUI extends JFrame implements ActionListener {
 		submit.setBounds(280, 420, 120, 40);
 
 		createPanel.add(createLog);
+		createPanel.add(fromLabel);
 		createPanel.add(from);
+		createPanel.add(toLabel);
 		createPanel.add(to);
 		createPanel.add(dateLabel);
 		createPanel.add(date);
+		createPanel.add(carLabel);
 		createPanel.add(car);
+		createPanel.add(reasonOfTrip);
+		createPanel.add(reasonTripTxt);
 		createPanel.add(startKm);
 		createPanel.add(startKmTxt);
 		createPanel.add(endKm);
@@ -155,11 +187,14 @@ public class GUI extends JFrame implements ActionListener {
 
 		create.add(createPanel);
 	}
-	
-	/* this methods generates the FILTERS for the REPORT window 
-	 * by MINA */
 
-	void addReportFilter() {
+	/*
+	 * this methods generates the FILTERS for the REPORT window by MINA
+	 */
+
+	void addReportFilter() throws SQLException {
+
+		DatabaseConnector dc = new DatabaseConnector();
 
 		filterPane = new DPanel(darkGray);
 		filterPane.setLayout(null);
@@ -193,47 +228,46 @@ public class GUI extends JFrame implements ActionListener {
 		comboBox.setBounds(221, 82, 122, 28);
 		filterPane.add(comboBox);
 
-		String[] comboBox_1S = { "Km", "Mil", };
-		DComboBox comboBox_1 = new DComboBox(comboBox_1S, darkGray, txtH3,
-				white);
-		comboBox_1.setBounds(369, 82, 77, 28);
-		filterPane.add(comboBox_1);
+		/*
+		 * This part changed by mahsa combobox to textfield
+		 */
 
-		String[] comboBox_2S = { "To" };
-		DComboBox comboBox_2 = new DComboBox(comboBox_2S, darkGray, txtH3,
-				white);
-		comboBox_2.setBounds(221, 122, 122, 28);
-		filterPane.add(comboBox_2);
+		DTextField textKm = new DTextField("KM", 20, darkerGray, txtH3);
+		textKm.setBounds(369, 82, 77, 28);
+		filterPane.add(textKm);
 
-		String[] comboBox_3S = { "Car" };
-		DComboBox comboBox_3 = new DComboBox(comboBox_3S, darkGray, txtH3,
+		DComboBox city = new DComboBox(/*dc.getColumn("City", "Locations")*/new String[]{}, darkGray, txtH3,
 				white);
-		comboBox_3.setBounds(369, 122, 77, 28);
-		filterPane.add(comboBox_3);
+		city.setBounds(221, 122, 122, 28);
+		filterPane.add(city);
 
-		String[] comboBox_4S = { "Purpose of the trip" };
-		DComboBox comboBox_4 = new DComboBox(comboBox_4S, darkGray, txtH3,
+		DComboBox car = new DComboBox(/*dc.getColumn("City", "Locations")*/new String[]{}, darkGray, txtH3,
 				white);
-		comboBox_4.setBounds(221, 180, 225, 28);
-		filterPane.add(comboBox_4);
+		car.setBounds(369, 122, 77, 28);
+		filterPane.add(car);
 
-		String[] comboBox_5S = { "Extra costs" };
-		DComboBox comboBox_5 = new DComboBox(comboBox_5S, darkGray, txtH3,
+		DComboBox purpose = new DComboBox(/*dc.getColumn("City", "Locations")*/new String[]{}, darkGray, txtH3,
 				white);
-		comboBox_5.setBounds(221, 230, 225, 28);
-		filterPane.add(comboBox_5);
+		purpose.setBounds(221, 180, 225, 28);
+		filterPane.add(purpose);
 
-		filter = new DButton("Log in", white, txtH2, darkerGray);
-		filter.addActionListener(this);
-		filter.setBounds(221, 270, 225, 28);
-		filterPane.add(filter);
+		DComboBox extraCosts = new DComboBox(/*dc.getColumn("City", "Locations")*/new String[]{}, darkGray, txtH3,
+				white);
+		extraCosts.setBounds(221, 230, 225, 28);
+		filterPane.add(extraCosts);
+
+		searchButton = new DButton("Search", white, txtH2, darkerGray);
+		searchButton.addActionListener(this);
+		searchButton.setBounds(221, 270, 225, 28);
+		filterPane.add(searchButton);
 
 		report.add(filterPane);
 
 	}
-	
-	/* this methods generates the TABLE for the REPORT window 
-	 * by AURELIEN */
+
+	/*
+	 * this methods generates the TABLE for the REPORT window by AURELIEN
+	 */
 
 	void addReportGrid() throws SQLException {
 
@@ -244,10 +278,29 @@ public class GUI extends JFrame implements ActionListener {
 		grid.setBounds(100, 0, 680, 600);
 		grid.setVisible(false);
 
-		gridButton = new DButton("Filter", white, txtH2, darkerGray);
-		gridButton.addActionListener(this);
-		gridButton.setBounds(221, 500, 225, 28);
-		grid.add(gridButton);
+		/*
+		 * Add export button, save button, edit button (by mahsa)
+		 */
+
+		exportButton = new DButton("Export csv", white, txtH3, darkerGray);
+		exportButton.addActionListener(this);
+		exportButton.setBounds(500, 500, 140, 28);
+		grid.add(exportButton);
+
+		saveChangesButton = new DButton("save change", white, txtH3, darkerGray);
+		saveChangesButton.addActionListener(this);
+		saveChangesButton.setBounds(115, 500, 110, 28);
+		grid.add(saveChangesButton);
+
+		editButton = new DButton("Edit", white, txtH3, darkerGray);
+		editButton.addActionListener(this);
+		editButton.setBounds(40, 500, 70, 28);
+		grid.add(editButton);
+
+		filterButton = new DButton("Filter", white, txtH2, darkerGray);
+		filterButton.addActionListener(this);
+		filterButton.setBounds(221, 500, 225, 28);
+		grid.add(filterButton);
 
 		DPanel tablePanel = new DPanel(gray);
 
@@ -255,7 +308,7 @@ public class GUI extends JFrame implements ActionListener {
 		JTable reportTable = new JTable();
 		reportTable.setFont(txtH4);
 		reportTable.setForeground(darkGray);
-		
+
 		// the model is generated with the reportTable method
 		model = dc.reportTable(model);
 		// and added to the JTable: reportTable
@@ -272,19 +325,20 @@ public class GUI extends JFrame implements ActionListener {
 		grid.add(tablePanel);
 		report.add(grid);
 	}
-	
-	/* this methods generates the LOGIN window 
-	 * by AURELIEN */
+
+	/*
+	 * this methods generates the LOGIN window by AURELIEN
+	 */
 
 	void addLoginScreen() {
 
 		DLabel login = new DLabel("Log in", white, txtH1);
 
 		DLabel email = new DLabel("Email", white, txtH3);
-		DTextField emailTxt = new DTextField(40, darkGray, txtH3);
+		emailTxt = new DTextField(40, darkGray, txtH3);
 
 		DLabel password = new DLabel("Password", white, txtH3);
-		DTextField passwordTxt = new DTextField(40, darkGray, txtH3);
+		passwordTxt = new DTextField(40, darkGray, txtH3);
 
 		logIn = new DButton("Log in", white, txtH2, darkerGray);
 		logIn.addActionListener(this);
@@ -314,10 +368,35 @@ public class GUI extends JFrame implements ActionListener {
 		loginScreen.add(logIn);
 
 		home.add(loginScreen);
+		testPanel.setBounds(150, 340, 500, 400);
+		home.add(testPanel);
+
+		/*------------------------------*/
+		/*
+		 * code for testing the picture Uploader
+		 */
+		// try {
+		// testPanel.setIcon(pic(DatabaseConnector.uploadPic()));
+		// } catch (IOException e) {
+		// //if file not found
+		// System.out.println("File not found " + e);
+		// }
 	}
-	
-	/* this methods generates the ACCOUNT MANAGEMENT window 
-	 * by SALLY (not merged yet) */
+
+	/*
+	 * this methods creates the picture by DANIELLE, redesigned by AURELIEN
+	 */
+
+	public ImageIcon pic(File file) throws IOException {
+		BufferedImage bufferedImage = ImageIO.read(file);
+		ImageIcon imageIcon = new ImageIcon(bufferedImage);
+		return imageIcon;
+	}
+
+	/*
+	 * this methods generates the ACCOUNT MANAGEMENT window by SALLY (not merged
+	 * yet)
+	 */
 
 	void addHome() {
 
@@ -328,26 +407,72 @@ public class GUI extends JFrame implements ActionListener {
 
 		home.add(homePanel);
 	}
-	
-	/* actionListeners
-	 * by ALL */
+
+	/*
+	 * actionListeners by ALL
+	 */
 
 	public void actionPerformed(ActionEvent ae) {
+		// from the create report window
 		if (ae.getSource() == submit) {
-			System.out.println("ok");
+			try {
+			DatabaseConnector dc = new DatabaseConnector();
+			
+			String f = from.getSelectedItem().toString();
+			String t = to.getSelectedItem().toString();
+			String ks = startKmTxt.getText();
+			String ke = endKmTxt.getText();
+			String reason = reasonTripTxt.getText();
+			String username = "000";
+			String name = "000";
+			String c = car.getSelectedItem().toString();
+			String d = dateLabel.getText();
+			
+			if(f == null || t == null || ks == null || ke == null || reason == null || username == null || name == null || c == null|| d == null ){
+				new JOptionPane("missing value");
+			}else{
+				dc.insertTripData(ks, ke, f, t, reason, username, name, c, d);
+			}
+			} catch (SQLException e) {
+				System.out.println(e);
+			}
 		}
+
+		// from the login screen
 		if (ae.getSource() == logIn) {
 			loginScreen.setVisible(false);
 			tabPane.setEnabled(true);
 			homePanel.setVisible(true);
+			System.out.println(emailTxt.getText());
+		
 		}
-		if (ae.getSource() == filter) {
+
+		// from the filter screen
+		if (ae.getSource() == filterButton) {
+			grid.setVisible(false);
+			filterPane.setVisible(true);
+		}
+
+		// from the grid view screen
+		if (ae.getSource() == searchButton) {
 			grid.setVisible(true);
 			filterPane.setVisible(false);
 		}
-		if (ae.getSource() == gridButton) {
-			grid.setVisible(false);
-			filterPane.setVisible(true);
+		if (ae.getSource() == editButton) {
+			reportTable.setEnabled(true);
+		}
+		if (ae.getSource() == saveChangesButton) {
+			int[] rowChanged = reportTable.getSelectedRows();
+			int[] columnChanged = reportTable.getSelectedColumns();
+
+			for (int i = 0; i < rowChanged.length; i++) {
+				for (int j = 0; j < columnChanged.length; j++) {
+					System.out.println(rowChanged[i]);
+					System.out.println(columnChanged[j]);
+					System.out.println(reportTable.getValueAt(rowChanged[i],
+							columnChanged[j]));
+				}
+			}
 		}
 	}
 }
