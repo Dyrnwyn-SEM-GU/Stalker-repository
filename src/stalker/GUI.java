@@ -56,7 +56,7 @@ public class GUI extends JFrame implements ActionListener {
 	// for testing only
 	JLabel testPanel = new JLabel();
 
-	/* Updated calendar code by Kashayars */
+	/* Updated calendar code by Kashayar */
 	JCalendarButton date = new JCalendarButton(); // "YYYY-MM-DD", new Date(113,
 	// 11, 4));
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -114,6 +114,10 @@ public class GUI extends JFrame implements ActionListener {
 
 	/*
 	 * this methods generates the CREATE window by MAHSA
+	 * Added text labels and databaseconnection to fetch 
+	 * information for For, To and Car dropdowns AURE, Jani
+	 * 
+	 * 
 	 */
 
 	void addCreate() throws SQLException {
