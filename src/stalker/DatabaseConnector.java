@@ -285,7 +285,7 @@ public class DatabaseConnector {
 			column = "ExtraCostTypes";
 		}
 
-		rs = stmt.executeQuery("SELECT " + column + " FROM " + table + ";");
+		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table + ";");
 
 		while (rs.next())
 			System.out.println(rs.getString(1));
@@ -336,7 +336,7 @@ public class DatabaseConnector {
 	
 	public String[] getColumn(String column, String table) throws SQLException{
 		ArrayList<String> al = new ArrayList();
-		rs = stmt.executeQuery("SELECT " + column + " FROM " + table + ";");
+		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table + ";");
 		
 		while(rs.next()){
 			al.add(rs.getString(1));

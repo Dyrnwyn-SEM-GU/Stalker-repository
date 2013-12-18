@@ -40,8 +40,10 @@ public class GUI extends JFrame implements ActionListener {
 	public static GridLayout twobyOne = new GridLayout(2, 1);
 	public static GridLayout fourbyOne = new GridLayout(4, 1);
 
-	DLabel dateLabel = new DLabel("", white, txtH3);
-
+	DLabel dateLabel1 = new DLabel("", white, txtH3);
+	DLabel dateLabel2 = new DLabel("", white, txtH3);
+	DLabel dateLabel3 = new DLabel("", white, txtH3);
+	
 	DButton exportButton, editButton, saveChangesButton, submit, logIn,
 	filterButton, searchButton;
 
@@ -57,19 +59,41 @@ public class GUI extends JFrame implements ActionListener {
 	JLabel testPanel = new JLabel();
 
 	/* Updated calendar code by Kashayar */
-	JCalendarButton date = new JCalendarButton(); // "YYYY-MM-DD", new Date(113,
+	JCalendarButton date1 = new JCalendarButton(); // "YYYY-MM-DD", new Date(113,
 	// 11, 4));
+	JCalendarButton date2 = new JCalendarButton(); // "YYYY-MM-DD", new Date(113,
+	// 11, 4));
+	JCalendarButton date3 = new JCalendarButton(); // "YYYY-MM-DD", new Date(113,
+	// 11, 4));
+
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	public GUI() throws SQLException {
+		
 		// creates a calenderDropdown
-		date.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+		date1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
 			public void propertyChange(java.beans.PropertyChangeEvent evt) {
 				if (evt.getNewValue() instanceof Date)
-					dateLabel.setText(dateFormat.format(((Date) (evt
+					dateLabel1.setText(dateFormat.format(((Date) (evt
 							.getNewValue()))));
 			}
 		});
+		date2.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+			public void propertyChange(java.beans.PropertyChangeEvent evt) {
+				if (evt.getNewValue() instanceof Date)
+					dateLabel2.setText(dateFormat.format(((Date) (evt
+							.getNewValue()))));
+			}
+		});
+		date3.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+			public void propertyChange(java.beans.PropertyChangeEvent evt) {
+				if (evt.getNewValue() instanceof Date)
+					dateLabel3.setText(dateFormat.format(((Date) (evt
+							.getNewValue()))));
+			}
+		});
+		
+		
 		addElements();
 		setTitle("STALKER");
 		setSize(900, 650);
@@ -112,12 +136,9 @@ public class GUI extends JFrame implements ActionListener {
 		add(tabPane);
 	}
 
-	/*
-	 * this methods generates the CREATE window by MAHSA
+	/* this methods generates the CREATE window by MAHSA
 	 * Added text labels and databaseconnection to fetch 
 	 * information for For, To and Car dropdowns AURE, Jani
-	 * 
-	 * 
 	 */
 
 	void addCreate() throws SQLException {
@@ -160,8 +181,8 @@ public class GUI extends JFrame implements ActionListener {
 		from.setBounds(50, 120, 100, 40);
 		toLabel.setBounds(210, 80, 100, 40);
 		to.setBounds(210, 120, 100, 40);
-		dateLabel.setBounds(380, 160, 300, 40);
-		date.setBounds(600, 120, 40, 40);
+		dateLabel1.setBounds(380, 120, 300, 40);
+		date1.setBounds(600, 120, 40, 40);
 		carLabel.setBounds(50, 160, 260, 40);
 		car.setBounds(50, 200, 260, 40);
 		reasonOfTrip.setBounds(380, 160, 260, 40);
@@ -177,8 +198,8 @@ public class GUI extends JFrame implements ActionListener {
 		createPanel.add(from);
 		createPanel.add(toLabel);
 		createPanel.add(to);
-		createPanel.add(dateLabel);
-		createPanel.add(date);
+		createPanel.add(dateLabel1);
+		createPanel.add(date1);
 		createPanel.add(carLabel);
 		createPanel.add(car);
 		createPanel.add(reasonOfTrip);
@@ -192,9 +213,8 @@ public class GUI extends JFrame implements ActionListener {
 		create.add(createPanel);
 	}
 
-	/*
-	 * this methods generates the FILTERS for the REPORT window by MINA
-	 */
+	/*this methods generates the FILTERS for the REPORT window by MINA
+	 *added calenders and actionlisteners AURE*/
 
 	void addReportFilter() throws SQLException {
 
@@ -203,66 +223,75 @@ public class GUI extends JFrame implements ActionListener {
 		filterPane = new DPanel(darkGray);
 		filterPane.setLayout(null);
 		filterPane.setBounds(100, 0, 680, 600);
-
-		DTextField startDate = new DTextField("dd/mm/yy", 0, darkGray, txtH3);
-		startDate.setBounds(221, 27, 114, 28);
-		filterPane.add(startDate);
-		startDate.setColumns(10);
+		
+		
+		filterPane.add(date2);
+		date2.setBounds(260, 127, 40, 40);
 
 		DLabel lblFromDate = new DLabel("From date:", white, txtH3);
-		lblFromDate.setBounds(145, 27, 94, 22);
+		lblFromDate.setBounds(110, 90, 160, 22);
 		filterPane.add(lblFromDate);
-
-		DTextField endDate = new DTextField("dd/mm/yy", 0, darkGray, txtH3);
-		endDate.setBounds(430, 30, 114, 22);
-		filterPane.add(endDate);
-		endDate.setColumns(10);
+		
+		filterPane.add(date3);
+		date3.setBounds(490, 127, 40, 40);
 
 		DLabel lblToDate = new DLabel("To date:", white, txtH3);
-		lblToDate.setBounds(369, 33, 61, 16);
+		lblToDate.setBounds(369, 90, 94, 22);
 		filterPane.add(lblToDate);
 
-		String[] userOrAdmin = { "User", "Admin" };
-		DComboBox userAdmin = new DComboBox(userOrAdmin, darkGray, txtH3, white);
-		userAdmin.setBounds(6, 28, 122, 28);
-		filterPane.add(userAdmin);
+		
+		DLabel userLabel = new DLabel("User:", white, txtH3);
+		userLabel.setBounds(6, 10, 122, 28);
+		filterPane.add(userLabel);
 
-		String[] comboBoxS = { "From" };
-		DComboBox comboBox = new DComboBox(comboBoxS, darkGray, txtH3, white);
-		comboBox.setBounds(221, 82, 122, 28);
-		filterPane.add(comboBox);
+		DComboBox user =new DComboBox(dc.getColumn("Username", "User"), darkGray, txtH3,
+				white);
+		user.setBounds(6, 40, 122, 28);
+		filterPane.add(user);
 
-		/*
-		 * This part changed by mahsa combobox to textfield
-		 */
+		DComboBox fromCity = new DComboBox(dc.getColumn("City", "Locations"), darkGray, txtH3,
+				white);
+		fromCity.setBounds(221, 182, 122, 28);
+		filterPane.add(fromCity);
+		
+		DComboBox toCity = new DComboBox(dc.getColumn("City", "Locations"), darkGray, txtH3,
+				white);
+		toCity.setBounds(221, 222, 122, 28);
+		filterPane.add(toCity);
+		
+		dateLabel2.setBounds(380, 220, 300, 40);
+		dateLabel3.setBounds(380, 220, 300, 40);
+
+		/* This part changed by mahsa combobox to textfield 
+		 * 
+		 * Connection to database by Aurelien
+		 * 	
+		 * 
+		 * 
+		 * */
 
 		DTextField textKm = new DTextField("KM", 20, darkerGray, txtH3);
-		textKm.setBounds(369, 82, 77, 28);
+		textKm.setBounds(369, 182, 77, 28);
 		filterPane.add(textKm);
 
-		DComboBox city = new DComboBox(/*dc.getColumn("City", "Locations")*/new String[]{}, darkGray, txtH3,
+		DComboBox car = new DComboBox(dc.getColumn("RegistryNumber", "Car"), darkGray, txtH3,
 				white);
-		city.setBounds(221, 122, 122, 28);
-		filterPane.add(city);
-
-		DComboBox car = new DComboBox(/*dc.getColumn("City", "Locations")*/new String[]{}, darkGray, txtH3,
-				white);
-		car.setBounds(369, 122, 77, 28);
+		car.setBounds(369, 222, 77, 28);
 		filterPane.add(car);
 
-		DComboBox purpose = new DComboBox(/*dc.getColumn("City", "Locations")*/new String[]{}, darkGray, txtH3,
+		DComboBox purpose = new DComboBox(dc.getColumn("ReasonOfTrip", "TripData"), darkGray, txtH3,
 				white);
-		purpose.setBounds(221, 180, 225, 28);
+		purpose.setBounds(221, 280, 225, 28);
 		filterPane.add(purpose);
 
-		DComboBox extraCosts = new DComboBox(/*dc.getColumn("City", "Locations")*/new String[]{}, darkGray, txtH3,
+		DComboBox extraCosts = new DComboBox(dc.getColumn("TypeOfCost", "ExtraCosts"), darkGray, txtH3,
 				white);
-		extraCosts.setBounds(221, 230, 225, 28);
+		extraCosts.setBounds(221, 330, 225, 28);
 		filterPane.add(extraCosts);
 
 		searchButton = new DButton("Search", white, txtH2, darkerGray);
 		searchButton.addActionListener(this);
-		searchButton.setBounds(221, 270, 225, 28);
+		searchButton.setBounds(221, 370, 225, 28);
 		filterPane.add(searchButton);
 
 		report.add(filterPane);
@@ -430,9 +459,9 @@ public class GUI extends JFrame implements ActionListener {
 			String username = "000";
 			String name = "000";
 			String c = car.getSelectedItem().toString();
-			String d = dateLabel.getText();
+			String d = dateLabel1.getText();
 			
-			if(f == null || t == null || ks == null || ke == null || reason == null || username == null || name == null || c == null|| d == null ){
+			if(f == "" || t == "" || ks == "" || ke == "" || reason == "" || username == "" || name == "" || c == "" || d == "" ){
 				new JOptionPane("missing value");
 			}else{
 				dc.insertTripData(ks, ke, f, t, reason, username, name, c, d);
