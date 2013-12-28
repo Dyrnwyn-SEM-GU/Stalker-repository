@@ -236,7 +236,31 @@ public class DatabaseConnector {
 		}
 		con.close();
 	}
-
+	/*
+	 * Used to populate car dropdown menus and
+	 * only display the cars registered for the
+	 * logged in user.
+	 * 
+	 */
+	
+	public String[] querieCar(String column, String table, String username) throws SQLException {
+			ArrayList<String> al = new ArrayList();
+			rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " 
+			+ table + " WHERE Username = '" + username + "' ORDER BY " + column + " ASC;");
+			
+		//	"SELECT DISTINCT RegistryNumber FROM Car WHERE Username = '" + username + "' ORDER BY RegistryNumber ASC;");
+			
+			while(rs.next()){
+				al.add(rs.getString(1));
+			}
+			
+			String [] result = al.toArray(new String[al.size()]);
+			return result;
+		}
+		
+	
+	
+	
 	public void querieSpecific(String table, String username, String date1,
 			String date2) throws SQLException {
 		String and = "";
@@ -311,15 +335,6 @@ public class DatabaseConnector {
 	 * Methods to insert Userdata to the database
 	 * by JANI	 */
 
-	public void insertExtraCost(String typeOfCost, String cost, String file,
-			String date) throws SQLException {
-
-		stmt.executeUpdate("INSERT INTO ExtraCosts"
-				+ "(`TypeOfCost`, `Cost`, `File`, `Date`)" + " VALUES " + "('"
-				+ typeOfCost + "','" + cost + "','" + file + "','" + date
-				+ "')");
-	}
-
 	public void insertTripData(String startKm, String endKm, String from,
 			String to, String tripReason, String username, String name,
 			String car, String date) throws SQLException {
@@ -331,19 +346,61 @@ public class DatabaseConnector {
 				+ name + "','" + car + "','" + date + "')");
 	}
 	
+	public void insertExtraCost(String typeOfCost, String cost, String file,
+			String date, String idTripData) throws SQLException {
+
+		stmt.executeUpdate("INSERT INTO ExtraCosts"
+				+ "(`TypeOfCost`, `Cost`, `File`, `Date`)" + " VALUES " + "('"
+				+ typeOfCost + "','" + cost + "','" + file + "','" + date
+				+ "','" + idTripData + "')");
+	}
+	/*
+	 * Method created by Jani. 
+	 * Used to enter new user data
+	 * 
+	 */
+	
+	public void insertNewUser(String username, String password) throws SQLException {
+		
+		stmt.executeUpdate("INSERT INTO User"
+				+ "(`Username`, `Password`)" + " VALUES " + "('"
+				+ username + "','" + password + "')");
+	}
+	
+	
+	/*
+	 * Method created by Jani. 
+	 * Used to enter new car registry number for specific  data
+	 * 
+	 */
+	
+	public void insertNewCar(String registryNumber, String username) throws SQLException {
+		stmt.executeUpdate("INSERT INTO Car"
+				+ "(`RegistryNumber`, `Username`)" + " VALUES " 
+				+ "('" + registryNumber + "','" + username + "')");
+	}
+//	public void insertNewCar(String brand, String registryNumber, String type, String consumption, String username) throws SQLException {
+//		stmt.executeUpdate("INSERT INTO Car"
+//				+ "(`Brand`, `RegistryNumber`, `Type`, `Consumption`, `Username`)" + " VALUES " + "('"
+//				+ brand + "','" + registryNumber + "','" + type + "','" + consumption + "','" + username
+//				+ "')");
+//	}
+	
 	 /* Method to fetch the information for the dropdown menu
 	 * 	by AURELIEN */
 	
 	public String[] getColumn(String column, String table) throws SQLException{
 		ArrayList<String> al = new ArrayList();
-		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table + ";");
 		
+		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table + " ORDER BY " + column + " ASC;");
+	
 		while(rs.next()){
 			al.add(rs.getString(1));
 		}
 		
 		String [] result = al.toArray(new String[al.size()]);
 		return result;
+		
 	}
 	
 	/* Methods to insert Pictures and files to the database
@@ -359,7 +416,7 @@ public class DatabaseConnector {
 	}
 	
 	public void insertImage(File file) throws SQLException, IOException {
-		String INSERT_PICTURE = "INSERT INTO extracosts(File) VALUES (?)";
+		String INSERT_PICTURE = "INSERT INTO ExtraCosts(File) VALUES (?)";
 		con.setAutoCommit(false);
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);

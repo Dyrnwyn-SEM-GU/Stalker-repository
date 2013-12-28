@@ -54,11 +54,13 @@ public class GUI extends JFrame implements ActionListener {
 
 	JTabbedPane tabPane;
 	JTable reportTable;
+	
+	String username = "dyrnwyn@dyrnwyn.com";
 
 	// for testing only
 	JLabel testPanel = new JLabel();
 
-	/* Updated calendar code by Kashayar */
+	/* Updated calendar code by Khashayar */
 	JCalendarButton date1 = new JCalendarButton(); // "YYYY-MM-DD", new Date(113,
 	// 11, 4));
 	JCalendarButton date2 = new JCalendarButton(); // "YYYY-MM-DD", new Date(113,
@@ -156,7 +158,7 @@ public class GUI extends JFrame implements ActionListener {
 				white);
 		
 		DLabel carLabel = new DLabel("Car:", white, txtH3);
-		car = new DComboBox(dc.getColumn("RegistryNumber", "Car"), darkGray, txtH3,
+		car = new DComboBox(dc.querieCar("RegistryNumber", "Car", username), darkGray, txtH3,
 				white);
 
 		DLabel reasonOfTrip = new DLabel("Reason of trip:", white, txtH3);
@@ -441,6 +443,10 @@ public class GUI extends JFrame implements ActionListener {
 		home.add(homePanel);
 	}
 
+	
+	
+	
+	
 	/*
 	 * actionListeners by ALL
 	 */
@@ -456,7 +462,6 @@ public class GUI extends JFrame implements ActionListener {
 			String ks = startKmTxt.getText();
 			String ke = endKmTxt.getText();
 			String reason = reasonTripTxt.getText();
-			String username = "000";
 			String name = "000";
 			String c = car.getSelectedItem().toString();
 			String d = dateLabel1.getText();

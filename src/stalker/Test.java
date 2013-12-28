@@ -9,7 +9,7 @@ import java.util.*;
 public class Test {
 
 	String column = "";
-	static String username = "janip";
+	static String username = "dyrnwyn@dyrnwyn.com";
 	static String table = "User";
 
 	static String date1 = "";// "2012-03-10";
