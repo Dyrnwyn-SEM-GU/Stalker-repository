@@ -10,40 +10,22 @@ import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.JFileChooser;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.table.DefaultTableModel;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
 import org.jbundle.thin.base.screen.jcalendarbutton.JCalendarButton;
 
 import java.util.Properties;
-import java.io.FileNotFoundException;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.security.Security;
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.Scanner;
-
 import javax.mail.Session;
-import javax.mail.*;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
-import javax.net.ssl.SSLSession;
-
-import com.mysql.jdbc.PreparedStatement;
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
-import com.sun.corba.se.spi.ior.iiop.IIOPAddress;
-import com.sun.mail.smtp.SMTPTransport;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
 import gui.elements.*;
 
@@ -81,8 +63,8 @@ public class GUI extends JFrame implements ActionListener {
 	JTabbedPane tabPane;
 	JTable reportTable;
 	
-	String username = "dyrnwyn@dyrnwyn.com";
-
+	String username;
+	
 	// for testing only
 	JLabel testPanel = new JLabel();
 
@@ -537,6 +519,7 @@ public class GUI extends JFrame implements ActionListener {
             loginScreen.setVisible(false);
 			tabPane.setEnabled(true);
 			homePanel.setVisible(true);
+			
         } 
         else {      
         	JOptionPane.showMessageDialog(home, "E-mail or password you inserted was incorrect.","Error",
@@ -580,9 +563,19 @@ public class GUI extends JFrame implements ActionListener {
 		}
 		
 		if (ae.getSource() == exportButton) {
+			
+			JFileChooser chooser = new JFileChooser();
+			chooser.setSelectedFile(new File("export.csv"));
+			chooser.setFileSelectionMode(JFileChooser.SAVE_DIALOG);
+	//		chooser.showSaveDialog(null);
+			
+			
+			String path = chooser.getSelectedFile().getAbsolutePath();
+			String filename = chooser.getSelectedFile().getName();
+			
 			DatabasePopulator dp = new DatabasePopulator();
 			try {
-				dp.exportCSV();
+				dp.exportCSV(path, filename);
 			} catch (SQLException | IOException e) {
 				e.printStackTrace();
 			}
@@ -595,10 +588,8 @@ public class GUI extends JFrame implements ActionListener {
 			try {
 				sendPassword(emailTxt.getText());
 			} catch (AddressException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (javax.mail.MessagingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			}
@@ -608,11 +599,14 @@ public class GUI extends JFrame implements ActionListener {
 		if (ae.getSource() == logIn) {
 			try {
 				logInM(emailTxt.getText(), passwordTxt.getText());
+				username = emailTxt.getText();
+				addCreate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			}
-	 
+		System.out.println(username);
+ 
 //			loginScreen.setVisible(false);
 //			tabPane.setEnabled(true);
 //			homePanel.setVisible(true);

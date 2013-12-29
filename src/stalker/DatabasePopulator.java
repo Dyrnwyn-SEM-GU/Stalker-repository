@@ -110,7 +110,7 @@ public class DatabasePopulator {
 					+ "')");
 
 		} catch (SQLException | ClassNotFoundException se) {
-			System.out.print("Couldnt connect. NO ONE KNOWS WHY");
+			System.out.print("Could not connect to the database.");
 			se.printStackTrace();
 			System.exit(1);
 		} catch (FileNotFoundException e) {
@@ -118,12 +118,11 @@ public class DatabasePopulator {
 		}
 	}
 	
-	public void exportCSV() throws SQLException, IOException {
+	public void exportCSV(String filepath, String filename) throws SQLException, IOException {
 		DatabaseConnector dc = new DatabaseConnector();	
-
-		
-//		BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/home/Jani/Skrivbord/NEWFILE.text")));
-//		bw.write(dc.querieAll("TripData"));
-//		bw.close();
+				
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(filepath + filename	)));
+		bw.write(dc.querieExportCSV("TripData"));
+		bw.close();
 	}
 }

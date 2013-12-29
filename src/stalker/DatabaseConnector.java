@@ -225,10 +225,48 @@ public class DatabaseConnector {
 		return model;
 	}
 
+	 /* Methods to access data from the database
+	 * by JANI, AURELIEN
+	 * 
+	 * This method is used by the export to CSV button
+	 * and actionlistener.
+	 * 
+	 */
+	
+	
+	
+	public String querieExportCSV(String table) throws SQLException {
+
+		DefaultTableModel model = new DefaultTableModel();
+		JTable jt = new JTable(model);
+
+		ArrayList<String> row;
+
+		rs = stmt.executeQuery("SELECT * from " + table + ";");
+		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
+
+		int columnsNumber = rsmd.getColumnCount();
+		row = new ArrayList();
+		while (rs.next()) {
+			
+			for (int i = 1; i <= columnsNumber; i++) {
+				String columnValue = rs.getString(i);
+				row.add(columnValue);
+				
+			}
+			row.add("\n");
+	}
+		con.close();
+		return Test.stringify(row);
+		
+	}
+	
+	
 	/*
 	 * Methods to access data from the database
 	 * by JANI, AURELIEN */
 
+	
 	public void querieAll(String table) throws SQLException {
 
 		DefaultTableModel model = new DefaultTableModel();
