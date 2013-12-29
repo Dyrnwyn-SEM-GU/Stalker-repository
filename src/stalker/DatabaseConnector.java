@@ -10,6 +10,8 @@ import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.ResultSetMetaData;
 
+import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
+
 public class DatabaseConnector {
 
 	Connection con = null;
@@ -24,6 +26,20 @@ public class DatabaseConnector {
 
 		stmt = con.createStatement();
 
+	}
+	
+	public String querieCredentials(String row1, String row2, String value) throws SQLException{
+		
+		rs = stmt.executeQuery("SELECT " + row1 + " FROM User WHERE " + row2 + " = '" + value + "';");
+		String result = "";
+		
+		if (rs.next()) {
+			 result = rs.getString(1);
+		}else{
+			System.out.println("result set is empty");
+		}
+		con.close();
+		return result;
 	}
 	
 	/* this method creates a table-model (as used by JTable) for a specific table 
@@ -241,6 +257,7 @@ public class DatabaseConnector {
 	 * only display the cars registered for the
 	 * logged in user.
 	 * 
+	 * By Jani
 	 */
 	
 	public String[] querieCar(String column, String table, String username) throws SQLException {
@@ -388,6 +405,10 @@ public class DatabaseConnector {
 	
 	 /* Method to fetch the information for the dropdown menu
 	 * 	by AURELIEN */
+	
+	/*
+	 * Modified by Jani to sort the result in ascending order
+	 */
 	
 	public String[] getColumn(String column, String table) throws SQLException{
 		ArrayList<String> al = new ArrayList();

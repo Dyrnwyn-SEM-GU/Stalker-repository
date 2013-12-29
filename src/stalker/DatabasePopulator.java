@@ -3,6 +3,8 @@ package stalker;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
+import au.com.bytecode.opencsv.CSVWriter;
+
 
 public class DatabasePopulator {
 
@@ -114,5 +116,14 @@ public class DatabasePopulator {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void exportCSV() throws SQLException, IOException {
+		DatabaseConnector dc = new DatabaseConnector();	
+
+		
+//		BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/home/Jani/Skrivbord/NEWFILE.text")));
+//		bw.write(dc.querieAll("TripData"));
+//		bw.close();
 	}
 }

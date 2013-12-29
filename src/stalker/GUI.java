@@ -19,6 +19,32 @@ import java.text.SimpleDateFormat;
 
 import org.jbundle.thin.base.screen.jcalendarbutton.JCalendarButton;
 
+import java.util.Properties;
+import java.io.FileNotFoundException;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.security.Security;
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+import javax.mail.Session;
+import javax.mail.*;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
+import javax.net.ssl.SSLSession;
+
+import com.mysql.jdbc.PreparedStatement;
+import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
+import com.sun.corba.se.spi.ior.iiop.IIOPAddress;
+import com.sun.mail.smtp.SMTPTransport;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+
 import gui.elements.*;
 
 public class GUI extends JFrame implements ActionListener {
@@ -45,7 +71,7 @@ public class GUI extends JFrame implements ActionListener {
 	DLabel dateLabel3 = new DLabel("", white, txtH3);
 	
 	DButton exportButton, editButton, saveChangesButton, submit, logIn,
-	filterButton, searchButton;
+	filterButton, searchButton, forgotPassword;
 
 	DTextField textKm, emailTxt, passwordTxt, startKmTxt, endKmTxt, reasonTripTxt;
 
@@ -378,6 +404,9 @@ public class GUI extends JFrame implements ActionListener {
 		logIn = new DButton("Log in", white, txtH2, darkerGray);
 		logIn.addActionListener(this);
 
+		forgotPassword = new DButton("Forgot password?", white, txtH4, darkerGray);
+		forgotPassword.addActionListener(this);
+		
 		loginScreen = new DPanel(darkGray);
 		loginScreen.setBorder(BasicBorders.getButtonBorder());
 
@@ -402,7 +431,12 @@ public class GUI extends JFrame implements ActionListener {
 		logIn.setBounds(150, 340, 250, 40);
 		loginScreen.add(logIn);
 
+		forgotPassword.setBounds(150, 300, 250, 40);
+		loginScreen.add(forgotPassword);
+		
 		home.add(loginScreen);
+		
+		
 		testPanel.setBounds(150, 340, 500, 400);
 		home.add(testPanel);
 
@@ -443,7 +477,75 @@ public class GUI extends JFrame implements ActionListener {
 		home.add(homePanel);
 	}
 
+	/* method for checking if password and username matches the ones in DB
+	 * by Gabriele, Aure and help of Thor Salehi
+	 */
+	 public void sendPassword(String username) throws AddressException, javax.mail.MessagingException  {
+		  // Recipient's email ID needs to be mentioned.
+	      String to = ""+username+"";
+	      String from = "dyrnwynSEM@gmail.com";
+	      String host = "localhost";
+	      String password = "stalker123";
+	      
+	      Properties properties = System.getProperties();
+	      properties.setProperty("mail.smtps.host", "smtp.gmail.com");
+	        properties.setProperty("mail.smtp.socketFactory.fallback", "false");
+	        properties.setProperty("mail.smtp.port", "465");
+	        properties.setProperty("mail.smtp.socketFactory.port", "465");
+	        properties.setProperty("mail.smtps.auth", "true");
+	        
+	      // Setup mail server
+	      properties.setProperty("mail.smtp.host", host);
+
+	      // Get the default Session object.
+	      Session session = Session.getDefaultInstance(properties);
+
+	         // Create a default MimeMessage object.
+	         MimeMessage message = new MimeMessage(session);
+
+	         // Set From: header field of the header.
+	         message.setFrom(new InternetAddress(from));
+
+	         // Set To: header field of the header.
+	         message.addRecipient(RecipientType.TO,
+	                                  new InternetAddress(to));
+
+	         // Set Subject: header field
+	         message.setSubject("This is the Subject Line!");
+
+	         // Now set the actual message
+	         message.setText("This is actual message");
+
+	         // Send message
+	         Transport.send(message);
+	         System.out.println("Sent message successfully....");
+	      }
+	        
 	
+	
+	/*
+	 * logIn method written by Gabriele and Thor, merged by Jani
+	 * 
+	 */
+	
+
+	public void logInM (String username, String pass) throws SQLException {
+		DatabaseConnector dc = new DatabaseConnector();
+	try {
+		if (username.equals("") || pass.equals("") ) {	
+		} else if (dc.querieCredentials("Password", "Username", username).equals(pass)) {
+            loginScreen.setVisible(false);
+			tabPane.setEnabled(true);
+			homePanel.setVisible(true);
+        } 
+        else {      
+        	JOptionPane.showMessageDialog(home, "E-mail or password you inserted was incorrect.","Error",
+				    JOptionPane.ERROR_MESSAGE);
+        	}	 
+	} catch (SQLException e) {
+		e.printStackTrace();
+		}  
+	}
 	
 	
 	
@@ -451,6 +553,7 @@ public class GUI extends JFrame implements ActionListener {
 	 * actionListeners by ALL
 	 */
 
+	
 	public void actionPerformed(ActionEvent ae) {
 		// from the create report window
 		if (ae.getSource() == submit) {
@@ -475,15 +578,46 @@ public class GUI extends JFrame implements ActionListener {
 				System.out.println(e);
 			}
 		}
+		
+		if (ae.getSource() == exportButton) {
+			DatabasePopulator dp = new DatabasePopulator();
+			try {
+				dp.exportCSV();
+			} catch (SQLException | IOException e) {
+				e.printStackTrace();
+			}
+		 
+		}
 
 		// from the login screen
-		if (ae.getSource() == logIn) {
-			loginScreen.setVisible(false);
-			tabPane.setEnabled(true);
-			homePanel.setVisible(true);
-			System.out.println(emailTxt.getText());
+		if (ae.getSource() == forgotPassword) {
+			if(!emailTxt.getText().equals("")) {
+			try {
+				sendPassword(emailTxt.getText());
+			} catch (AddressException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (javax.mail.MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+				}
 		
-		}
+		
+		if (ae.getSource() == logIn) {
+			try {
+				logInM(emailTxt.getText(), passwordTxt.getText());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			}
+	 
+//			loginScreen.setVisible(false);
+//			tabPane.setEnabled(true);
+//			homePanel.setVisible(true);
+//			System.out.println(emailTxt.getText());
+// }
 
 		// from the filter screen
 		if (ae.getSource() == filterButton) {
