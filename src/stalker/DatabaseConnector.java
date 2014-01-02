@@ -9,7 +9,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.ResultSetMetaData;
-
 import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 
 public class DatabaseConnector {
@@ -22,7 +21,7 @@ public class DatabaseConnector {
 
 		con = DriverManager.getConnection("jdbc:mysql://localhost/StalkerDB",
 				"Dyrnwyn", "Dyrnwyn!");
-		System.out.println("Database connected");
+		// System.out.println("Database connected");
 
 		stmt = con.createStatement();
 
@@ -225,41 +224,6 @@ public class DatabaseConnector {
 		return model;
 	}
 
-	 /* Methods to access data from the database
-	 * by JANI, AURELIEN
-	 * 
-	 * This method is used by the export to CSV button
-	 * and actionlistener.
-	 * 
-	 */
-	
-	
-	
-	public String querieExportCSV(String table) throws SQLException {
-
-		DefaultTableModel model = new DefaultTableModel();
-		JTable jt = new JTable(model);
-
-		ArrayList<String> row;
-
-		rs = stmt.executeQuery("SELECT * from " + table + ";");
-		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
-
-		int columnsNumber = rsmd.getColumnCount();
-		row = new ArrayList();
-		while (rs.next()) {
-			
-			for (int i = 1; i <= columnsNumber; i++) {
-				String columnValue = rs.getString(i);
-				row.add(columnValue);
-				
-			}
-			row.add("\n");
-	}
-		con.close();
-		return Test.stringify(row);
-		
-	}
 	
 	
 	/*
@@ -367,7 +331,7 @@ public class DatabaseConnector {
 		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table + ";");
 
 		while (rs.next())
-			System.out.println(rs.getString(1));
+			// System.out.println(rs.getString(1));
 
 		con.close();
 	}
@@ -515,10 +479,18 @@ public class DatabaseConnector {
 		return Test.stringify(row);
 	}
 	
-	public void exportCSV() throws SQLException, IOException {
+	/*
+	 * This method is used by the export to CSV
+	 */
+
+	public void exportCSV(String filepathAndName)
+	//, String filename)
+			throws SQLException, IOException {
 		
-		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(
-				"export.text")));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(
+new File(
+				filepathAndName)));
+				//+ filename)));
 		bw.write(buildCSV("TripData"));
 		bw.close();
 	}

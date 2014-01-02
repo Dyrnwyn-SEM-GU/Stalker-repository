@@ -57,11 +57,14 @@ public class GUI extends JFrame implements ActionListener {
 
 	DTextField textKm, emailTxt, passwordTxt, startKmTxt, endKmTxt, reasonTripTxt;
 
-	DPanel home, create, report, grid, loginScreen, homePanel, filterPane;
-	DComboBox from, to, car;
+	DPanel home, create, report, grid, loginScreen, homePanel, filterPane,
+			tablePanel;
+	DComboBox from, to, car, fromCity, toCity, extraCosts, purpose, user, car2;
+	JScrollPane jsp;
 
 	JTabbedPane tabPane;
 	JTable reportTable;
+	DefaultTableModel model;
 	
 	String username;
 	
@@ -132,9 +135,9 @@ public class GUI extends JFrame implements ActionListener {
 		addReportFilter();
 
 		try {
-			addReportGrid();
+			addReportTable();
 		} catch (SQLException e) {
-			System.out.println("some sql problem, sorry");
+			System.out.println("problem with database connection or query, sorry");
 		}
 
 		tabPane = new JTabbedPane();
@@ -254,17 +257,19 @@ public class GUI extends JFrame implements ActionListener {
 		userLabel.setBounds(6, 10, 122, 28);
 		filterPane.add(userLabel);
 
-		DComboBox user =new DComboBox(dc.getColumn("Username", "User"), darkGray, txtH3,
+		user = new DComboBox(dc.getColumn("Username", "User"), darkGray, txtH3,
 				white);
 		user.setBounds(6, 40, 122, 28);
 		filterPane.add(user);
 
-		DComboBox fromCity = new DComboBox(dc.getColumn("City", "Locations"), darkGray, txtH3,
+		fromCity = new DComboBox(dc.getColumn("City", "Locations"), darkGray,
+				txtH3,
 				white);
 		fromCity.setBounds(221, 182, 122, 28);
 		filterPane.add(fromCity);
 		
-		DComboBox toCity = new DComboBox(dc.getColumn("City", "Locations"), darkGray, txtH3,
+		toCity = new DComboBox(dc.getColumn("City", "Locations"), darkGray,
+				txtH3,
 				white);
 		toCity.setBounds(221, 222, 122, 28);
 		filterPane.add(toCity);
@@ -284,17 +289,20 @@ public class GUI extends JFrame implements ActionListener {
 		textKm.setBounds(369, 182, 77, 28);
 		filterPane.add(textKm);
 
-		DComboBox car = new DComboBox(dc.getColumn("RegistryNumber", "Car"), darkGray, txtH3,
+		car2 = new DComboBox(dc.getColumn("RegistryNumber", "Car"), darkGray,
+				txtH3,
 				white);
-		car.setBounds(369, 222, 77, 28);
-		filterPane.add(car);
+		car2.setBounds(369, 222, 77, 28);
+		filterPane.add(car2);
 
-		DComboBox purpose = new DComboBox(dc.getColumn("ReasonOfTrip", "TripData"), darkGray, txtH3,
+		purpose = new DComboBox(dc.getColumn("ReasonOfTrip", "TripData"),
+				darkGray, txtH3,
 				white);
 		purpose.setBounds(221, 280, 225, 28);
 		filterPane.add(purpose);
 
-		DComboBox extraCosts = new DComboBox(dc.getColumn("TypeOfCost", "ExtraCosts"), darkGray, txtH3,
+		extraCosts = new DComboBox(dc.getColumn("TypeOfCost", "ExtraCosts"),
+				darkGray, txtH3,
 				white);
 		extraCosts.setBounds(221, 330, 225, 28);
 		filterPane.add(extraCosts);
@@ -312,7 +320,7 @@ public class GUI extends JFrame implements ActionListener {
 	 * this methods generates the TABLE for the REPORT window by AURELIEN
 	 */
 
-	void addReportGrid() throws SQLException {
+	void addReportTable() throws SQLException {
 
 		DatabaseConnector dc = new DatabaseConnector();
 
@@ -345,9 +353,9 @@ public class GUI extends JFrame implements ActionListener {
 		filterButton.setBounds(221, 500, 225, 28);
 		grid.add(filterButton);
 
-		DPanel tablePanel = new DPanel(gray);
+		tablePanel = new DPanel(gray);
 
-		DefaultTableModel model = new DefaultTableModel();
+		model = new DefaultTableModel();
 		JTable reportTable = new JTable();
 		reportTable.setFont(txtH4);
 		reportTable.setForeground(darkGray);
@@ -566,16 +574,17 @@ public class GUI extends JFrame implements ActionListener {
 			
 			JFileChooser chooser = new JFileChooser();
 			chooser.setSelectedFile(new File("export.csv"));
-			chooser.setFileSelectionMode(JFileChooser.SAVE_DIALOG);
-	//		chooser.showSaveDialog(null);
+			chooser.showSaveDialog(null);
+			// chooser.setFileSelectionMode(JFileChooser.SAVE_DIALOG);
 			
+			String pathAndName = chooser.getSelectedFile().getAbsolutePath();
+			// String filename = chooser.getSelectedFile().getName();
 			
-			String path = chooser.getSelectedFile().getAbsolutePath();
-			String filename = chooser.getSelectedFile().getName();
-			
-			DatabasePopulator dp = new DatabasePopulator();
+
 			try {
-				dp.exportCSV(path, filename);
+				DatabaseConnector dc = new DatabaseConnector();
+				dc.exportCSV(pathAndName);
+				// , filename);
 			} catch (SQLException | IOException e) {
 				e.printStackTrace();
 			}
@@ -605,7 +614,7 @@ public class GUI extends JFrame implements ActionListener {
 				e.printStackTrace();
 			}
 			}
-		System.out.println(username);
+		// System.out.println(username);
  
 //			loginScreen.setVisible(false);
 //			tabPane.setEnabled(true);
@@ -617,7 +626,43 @@ public class GUI extends JFrame implements ActionListener {
 		if (ae.getSource() == filterButton) {
 			grid.setVisible(false);
 			filterPane.setVisible(true);
-		}
+
+			/*
+			 * This code added by Auré to update the report page after new data
+			 * has been added without having to restart the program.
+			 * 
+			 * Merged by Jani
+			 */
+			//------------------------------------------------------------------
+			// I think this is the code you want Jani, it updates the table		
+				try {
+					DatabaseConnector dc = new DatabaseConnector();
+				// the model is generated with the reportTable method
+				model = dc.reportTable(model);
+				
+				
+					String f = fromCity.getSelectedItem().toString();
+					String t = toCity.getSelectedItem().toString();
+					String reason = purpose.getSelectedItem().toString();
+					String username = user.getSelectedItem().toString();
+					String name = "000";
+					String c = car.getSelectedItem().toString();
+					String d1 = dateLabel2.getText();
+					String d2 = dateLabel3.getText();
+
+				// TODO merge filter method from Auré to the DatabaseConnector
+				// class
+				// dc.filter(f, t, reason, username, name, c, d1, d2);
+					
+					model.fireTableDataChanged();
+				} catch (SQLException e) {
+					System.out.println(e);
+				}
+			//------------------------------------------------------------------
+			}
+			
+			
+
 
 		// from the grid view screen
 		if (ae.getSource() == searchButton) {

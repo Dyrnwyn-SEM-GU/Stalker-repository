@@ -118,11 +118,4 @@ public class DatabasePopulator {
 		}
 	}
 	
-	public void exportCSV(String filepath, String filename) throws SQLException, IOException {
-		DatabaseConnector dc = new DatabaseConnector();	
-				
-		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(filepath + filename	)));
-		bw.write(dc.querieExportCSV("TripData"));
-		bw.close();
-	}
 }
