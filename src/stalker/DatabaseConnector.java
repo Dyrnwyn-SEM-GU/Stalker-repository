@@ -415,7 +415,8 @@ public class DatabaseConnector {
 	public String[] getColumn(String column, String table) throws SQLException{
 		ArrayList<String> al = new ArrayList();
 		
-		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table + " ORDER BY " + column + " ASC;");
+		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table
+				+ " ORDER BY " + column + " ASC;");
 	
 		while(rs.next()){
 			al.add(rs.getString(1));

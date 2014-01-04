@@ -289,7 +289,8 @@ public class GUI extends JFrame implements ActionListener {
 		textKm.setBounds(369, 182, 77, 28);
 		filterPane.add(textKm);
 
-		car2 = new DComboBox(dc.getColumn("RegistryNumber", "Car"), darkGray,
+		car2 = new DComboBox(dc.querieCar("RegistryNumber", "Car", username),
+				darkGray,
 				txtH3,
 				white);
 		car2.setBounds(369, 222, 77, 28);
