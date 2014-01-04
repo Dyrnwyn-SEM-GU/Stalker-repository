@@ -653,7 +653,7 @@ public class GUI extends JFrame implements ActionListener {
 
 				// TODO merge filter method from Auré to the DatabaseConnector
 				// class
-				// dc.filter(f, t, reason, username, name, c, d1, d2);
+				dc.filter(f, t, reason, username, name, c, d1, d2);
 					
 					model.fireTableDataChanged();
 				} catch (SQLException e) {
