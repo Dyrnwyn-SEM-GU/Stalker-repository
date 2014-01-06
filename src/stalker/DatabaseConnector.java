@@ -495,4 +495,14 @@ new File(
 		bw.write(buildCSV("TripData"));
 		bw.close();
 	}
+
+	// Method for updating user password written by Sally and Jani
+
+	public void insertPassword(String password, String username)
+			throws SQLException {
+		stmt.executeUpdate("UPDATE User SET Password = '" + password
+				+ "' WHERE Username = '" + username + "';");
+
+	}
 }
+
