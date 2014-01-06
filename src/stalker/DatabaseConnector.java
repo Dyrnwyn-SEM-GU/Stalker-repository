@@ -179,14 +179,16 @@ public class DatabaseConnector {
 //		return model;
 //	}
 
-	public DefaultTableModel reportTable(DefaultTableModel model)
+	public DefaultTableModel reportTable(DefaultTableModel model,
+			String username)
 			throws SQLException {
 		
 		/* could be combined with the specificQuerie method to generate a
 		 * specific SQL string  
 		 * 
 		 */
-		String SQL = "Select * from TripData;";
+		String SQL = "Select * from TripData WHERE Username ='" + username
+				+ "';";
 
 		rs = stmt.executeQuery(SQL);
 		ResultSetMetaData rsm = (ResultSetMetaData) rs.getMetaData();

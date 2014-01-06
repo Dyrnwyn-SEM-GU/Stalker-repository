@@ -307,26 +307,33 @@ public class GUI extends JFrame implements ActionListener {
 		filterPane.add(lblToDate);
 
 		
-		DLabel userLabel = new DLabel("User:", white, txtH3);
-		userLabel.setBounds(6, 10, 122, 28);
-		filterPane.add(userLabel);
-
-		user = new DComboBox(dc.getColumn("Username", "User"), darkGray, txtH3,
-				white);
-		user.setBounds(6, 40, 122, 28);
-		filterPane.add(user);
-
-		fromCity = new DComboBox(dc.getColumn("City", "Locations"), darkGray,
-				txtH3,
-				white);
-		fromCity.setBounds(221, 182, 122, 28);
-		filterPane.add(fromCity);
-		
-		toCity = new DComboBox(dc.getColumn("City", "Locations"), darkGray,
-				txtH3,
-				white);
-		toCity.setBounds(221, 222, 122, 28);
-		filterPane.add(toCity);
+		/*
+		 * 
+		 * This code will be included in future updates when additional reports
+		 * and filtering options are developed. // Jani
+		 */
+		//
+		// DLabel userLabel = new DLabel("User:", white, txtH3);
+		// userLabel.setBounds(6, 10, 122, 28);
+		// filterPane.add(userLabel);
+		//
+		// user = new DComboBox(dc.getColumn("Username", "User"), darkGray,
+		// txtH3,
+		// white);
+		// user.setBounds(6, 40, 122, 28);
+		// filterPane.add(user);
+		//
+		// fromCity = new DComboBox(dc.getColumn("City", "Locations"), darkGray,
+		// txtH3,
+		// white);
+		// fromCity.setBounds(221, 182, 122, 28);
+		// filterPane.add(fromCity);
+		//
+		// toCity = new DComboBox(dc.getColumn("City", "Locations"), darkGray,
+		// txtH3,
+		// white);
+		// toCity.setBounds(221, 222, 122, 28);
+		// filterPane.add(toCity);
 		
 		dateLabel2.setBounds(380, 220, 300, 40);
 		dateLabel3.setBounds(380, 220, 300, 40);
@@ -339,28 +346,33 @@ public class GUI extends JFrame implements ActionListener {
 		 * 
 		 * */
 
-		DTextField textKm = new DTextField("KM", 20, darkerGray, txtH3);
-		textKm.setBounds(369, 182, 77, 28);
-		filterPane.add(textKm);
+		/*
+		 * This code will be included in future updates when additional reports
+		 * and filtering options are developed. // Jani
+		 */
 
-		car2 = new DComboBox(dc.querieCar("RegistryNumber", "Car", username),
-				darkGray,
-				txtH3,
-				white);
-		car2.setBounds(369, 222, 77, 28);
-		filterPane.add(car2);
-
-		purpose = new DComboBox(dc.getColumn("ReasonOfTrip", "TripData"),
-				darkGray, txtH3,
-				white);
-		purpose.setBounds(221, 280, 225, 28);
-		filterPane.add(purpose);
-
-		extraCosts = new DComboBox(dc.getColumn("TypeOfCost", "ExtraCosts"),
-				darkGray, txtH3,
-				white);
-		extraCosts.setBounds(221, 330, 225, 28);
-		filterPane.add(extraCosts);
+		// DTextField textKm = new DTextField("KM", 20, darkerGray, txtH3);
+		// textKm.setBounds(369, 182, 77, 28);
+		// filterPane.add(textKm);
+		//
+		// car2 = new DComboBox(dc.querieCar("RegistryNumber", "Car", username),
+		// darkGray,
+		// txtH3,
+		// white);
+		// car2.setBounds(369, 222, 77, 28);
+		// filterPane.add(car2);
+		//
+		// purpose = new DComboBox(dc.getColumn("ReasonOfTrip", "TripData"),
+		// darkGray, txtH3,
+		// white);
+		// purpose.setBounds(221, 280, 225, 28);
+		// filterPane.add(purpose);
+		//
+		// extraCosts = new DComboBox(dc.getColumn("TypeOfCost", "ExtraCosts"),
+		// darkGray, txtH3,
+		// white);
+		// extraCosts.setBounds(221, 330, 225, 28);
+		// filterPane.add(extraCosts);
 
 		searchButton = new DButton("Search", white, txtH2, darkerGray);
 		searchButton.addActionListener(this);
@@ -416,7 +428,7 @@ public class GUI extends JFrame implements ActionListener {
 		reportTable.setForeground(darkGray);
 
 		// the model is generated with the reportTable method
-		model = dc.reportTable(model);
+		model = dc.reportTable(model, username);
 		// and added to the JTable: reportTable
 		reportTable.setModel(model);
 		model.fireTableDataChanged();
@@ -480,7 +492,7 @@ public class GUI extends JFrame implements ActionListener {
 		passwordTxt.setBounds(50, 260, 400, 40);
 		loginScreen.add(passwordTxt);
 		
-		// /mahsa add sign up bottun
+		// /mahsa add sign up button
 		creatNewAccount.setBounds(50, 340, 130, 40);
 		loginScreen.add(creatNewAccount);
 				
@@ -675,15 +687,26 @@ public class GUI extends JFrame implements ActionListener {
 		
 		if (ae.getSource() == logIn) {
 			try {
+				DatabaseConnector dc = new DatabaseConnector();
 				logInM(emailTxt.getText(), passwordTxt.getText());
 				username = emailTxt.getText();
+				/*------------------------------------------------------------------*/
+				/*
+				 * code addition to update car dropdown depending on user By
+				 * Auré
+				 */
+				car.removeAllItems();
+				for (String s : dc.querieCar("RegistryNumber", "Car", username)) {
+					car.addItem(s);
+				}
+				/*------------------------------------------------------------------*/
 				addCreate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			}
 	
-		// mahsa sign up bottun 2013.12.30
+		// mahsa sign up button 2013.12.30
 
 		if (ae.getSource() == creatNewAccount) {
 			JFrame signUpFrame = new JFrame();
@@ -710,22 +733,20 @@ public class GUI extends JFrame implements ActionListener {
 				try {
 					DatabaseConnector dc = new DatabaseConnector();
 				// the model is generated with the reportTable method
-				model = dc.reportTable(model);
+				// String username = user.getSelectedItem().toString();
+				System.out.println(username);
+
+				model = dc.reportTable(model, username);
 				
 				
-					String f = fromCity.getSelectedItem().toString();
-					String t = toCity.getSelectedItem().toString();
-					String reason = purpose.getSelectedItem().toString();
-					String username = user.getSelectedItem().toString();
-					String name = "000";
-					String c = car.getSelectedItem().toString();
+				// String f = fromCity.getSelectedItem().toString();
+				// String t = toCity.getSelectedItem().toString();
+				// String reason = purpose.getSelectedItem().toString();
+				String name = "000";
+				// String c = car.getSelectedItem().toString();
 					String d1 = dateLabel2.getText();
 					String d2 = dateLabel3.getText();
 
-				// TODO merge filter method from Auré to the DatabaseConnector
-				// class
-				dc.filter(f, t, reason, username, name, c, d1, d2);
-					
 					model.fireTableDataChanged();
 				} catch (SQLException e) {
 					System.out.println(e);
