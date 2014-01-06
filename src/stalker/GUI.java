@@ -53,12 +53,14 @@ public class GUI extends JFrame implements ActionListener {
 	DLabel dateLabel3 = new DLabel("", white, txtH3);
 	
 	DButton exportButton, editButton, saveChangesButton, submit, logIn,
-	filterButton, searchButton, forgotPassword;
+	filterButton, searchButton, forgotPassword,
+	signUp,creatNewAccount,typeOfCar,SaveCar,cancelCar;
 
-	DTextField textKm, emailTxt, passwordTxt, startKmTxt, endKmTxt, reasonTripTxt;
+	DTextField textKm, emailTxt, passwordTxt, startKmTxt, endKmTxt, reasonTripTxt,
+	firstName, yourEmail, reEnterPassword, Password,carBrandTxt,carTypeTxt,ConsumptionTxt,registeryNumber;
 
 	DPanel home, create, report, grid, loginScreen, homePanel, filterPane,
-			tablePanel;
+			tablePanel, signUpPanel;
 	DComboBox from, to, car, fromCity, toCity, extraCosts, purpose, user, car2;
 	JScrollPane jsp;
 
@@ -146,9 +148,61 @@ public class GUI extends JFrame implements ActionListener {
 		tabPane.addTab("Report", report);
 		tabPane.addTab("Create", create);
 		tabPane.setEnabled(false);
+		
+//		added by mahsa *
+		homePanel.setVisible(false);
+		
 		add(tabPane);
 	}
 
+	// add new codes for sign up by mahsa 2013.12.29*
+
+	void addSignaUp(JFrame frame) {
+		DLabel createLogSignUp = new DLabel("Create your new account", white,
+				txtH1);
+		
+		// end of new codes by Mahsa
+
+		firstName = new DTextField("Name", 20, darkerGray, txtH3);
+		yourEmail = new DTextField("Your Email", 20, darkerGray, txtH3);
+		reEnterPassword = new DTextField("Re-Enter your Password", 20, darkerGray, txtH3);
+		Password = new DTextField("Password", 20, darkerGray, txtH3);
+		DLabel termsCondition=new DLabel("<html>By clicking Sign Up, you agree to our Terms and condition.Please read terms and condition page carefully by click on term and condition</html>"
+				, white, txtH4);
+		DLabel TermsAndCondition=new DLabel("Terms and Condition",white,txtH4);
+		signUp = new DButton("sign Up", white, txtH2, darkerGray);
+		signUp.addActionListener(this);
+
+
+		signUpPanel = new DPanel(darkerGray);
+
+		signUpPanel.setBounds(100, 0, 680, 600);
+		signUpPanel.setLayout(null);
+
+		firstName.setBounds(10, 40, 300,40);
+		yourEmail.setBounds(10, 100, 300, 40);
+		reEnterPassword.setBounds(10, 160, 300, 40);
+		Password.setBounds(10, 220, 300, 40);
+		termsCondition.setBounds(10,280 , 500, 40);
+		TermsAndCondition.setBounds(10, 340, 500, 40);
+		signUp.setBounds(10, 420, 150, 40);
+
+
+		signUpPanel.add(firstName);
+		signUpPanel.add(yourEmail);
+		signUpPanel.add(reEnterPassword);
+		signUpPanel.add(Password);
+		signUpPanel.add(termsCondition);
+		signUpPanel.add(TermsAndCondition);
+		signUpPanel.add(signUp);
+
+		
+		frame.add(signUpPanel);
+		frame.setLayout(null);
+		frame.setVisible(true);
+		frame.setBounds(350, 108, 670, 570);
+	}
+	
 	/* this methods generates the CREATE window by MAHSA
 	 * Added text labels and databaseconnection to fetch 
 	 * information for For, To and Car dropdowns AURE, Jani
@@ -279,7 +333,7 @@ public class GUI extends JFrame implements ActionListener {
 
 		/* This part changed by mahsa combobox to textfield 
 		 * 
-		 * Connection to database by Aurelien
+		 * Connection to database class and methods by Aurelien
 		 * 	
 		 * 
 		 * 
@@ -393,6 +447,13 @@ public class GUI extends JFrame implements ActionListener {
 
 		logIn = new DButton("Log in", white, txtH2, darkerGray);
 		logIn.addActionListener(this);
+		
+		// new code add by mahsa create account which i called it sign up button
+
+		creatNewAccount = new DButton("Sign Up", white, txtH2, darkGray);
+		creatNewAccount.addActionListener(this);
+				
+		// End of new code by Mahsa, merged by Jani
 
 		forgotPassword = new DButton("Forgot password?", white, txtH4, darkerGray);
 		forgotPassword.addActionListener(this);
@@ -417,6 +478,12 @@ public class GUI extends JFrame implements ActionListener {
 
 		passwordTxt.setBounds(50, 260, 400, 40);
 		loginScreen.add(passwordTxt);
+		
+		// /mahsa add sign up bottun
+		creatNewAccount.setBounds(50, 340, 130, 40);
+		loginScreen.add(creatNewAccount);
+				
+		// end of added code by Mahsa, merged by Jani
 
 		logIn.setBounds(150, 340, 250, 40);
 		loginScreen.add(logIn);
@@ -614,13 +681,17 @@ public class GUI extends JFrame implements ActionListener {
 				e.printStackTrace();
 			}
 			}
-		// System.out.println(username);
- 
-//			loginScreen.setVisible(false);
-//			tabPane.setEnabled(true);
-//			homePanel.setVisible(true);
-//			System.out.println(emailTxt.getText());
-// }
+	
+		// mahsa sign up bottun 2013.12.30
+
+		if (ae.getSource() == creatNewAccount) {
+			JFrame signUpFrame = new JFrame();
+			addSignaUp(signUpFrame);
+			signUpFrame.getContentPane().setBackground(darkerGray);
+			signUpFrame.setVisible(true);
+			homePanel.setVisible(false);
+			signUpFrame.setBounds(330, 80, 700, 600);
+		}
 
 		// from the filter screen
 		if (ae.getSource() == filterButton) {
