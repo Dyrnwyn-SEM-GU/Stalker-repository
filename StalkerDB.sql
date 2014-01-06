@@ -41,6 +41,28 @@ INSERT INTO `Car` VALUES ('Volvo','ABC123','95',0.70,'dyrnwyn@dyrnwyn.com'),('WV
 /*!40000 ALTER TABLE `Car` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+DROP TABLE IF EXISTS `CarTypes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CarTypes` (
+  `CarTypes` varchar(40) NOT NULL,
+  PRIMARY KEY (`CarTypes`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `CarTypes`
+--
+
+LOCK TABLES `CarTypes` WRITE;
+/*!40000 ALTER TABLE `CarTypes` DISABLE KEYS */;
+INSERT INTO `CarTypes` VALUES ('Petrol'),('Diesel'),('Electric'),('Ethanol'),('Gas'),('Hybrid - Benzine/Electric'),('Hybrid - Diesel/Electric'),('Other');
+/*!40000 ALTER TABLE `CarTypes` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
 --
 -- Table structure for table `ExtraCostTypes`
 --
