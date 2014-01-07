@@ -244,12 +244,12 @@ public class GUI extends JFrame implements ActionListener {
 		createPanel.setLayout(null);
 		
 		createLog.setBounds(50, 40, 600, 40);
-		fromLabel.setBounds(50, 80, 100, 40);
-		from.setBounds(50, 120, 100, 40);
-		toLabel.setBounds(210, 80, 100, 40);
-		to.setBounds(210, 120, 100, 40);
-		dateLabel1.setBounds(380, 120, 300, 40);
-		date1.setBounds(600, 120, 40, 40);
+		fromLabel.setBounds(50, 80, 160, 40);
+		from.setBounds(50, 120, 160, 40);
+		toLabel.setBounds(230, 80, 160, 40);
+		to.setBounds(230, 120, 160, 40);
+		dateLabel1.setBounds(400, 120, 40, 40);
+		date1.setBounds(590, 120, 40, 40);
 		carLabel.setBounds(50, 160, 260, 40);
 		car.setBounds(50, 200, 260, 40);
 		reasonOfTrip.setBounds(380, 160, 260, 40);
@@ -631,20 +631,21 @@ public class GUI extends JFrame implements ActionListener {
 			try {
 			DatabaseConnector dc = new DatabaseConnector();
 			
-			String f = from.getSelectedItem().toString();
-			String t = to.getSelectedItem().toString();
-			String ks = startKmTxt.getText();
-			String ke = endKmTxt.getText();
-			String reason = reasonTripTxt.getText();
-			String name = "000";
-			String c = car.getSelectedItem().toString();
-			String d = dateLabel1.getText();
-			
-			if(f == "" || t == "" || ks == "" || ke == "" || reason == "" || username == "" || name == "" || c == "" || d == "" ){
-				new JOptionPane("missing value");
-			}else{
+				String f = from.getSelectedItem().toString();
+				String t = to.getSelectedItem().toString();
+				String ks = startKmTxt.getText();
+				String ke = endKmTxt.getText();
+				String reason = reasonTripTxt.getText();
+				String name = "000";
+				String c = car.getSelectedItem().toString();
+				String d = dateLabel1.getText();
+
+				if (f == "" || t == "" || ks == "" || ke == "" || reason == ""
+						|| username == "" || name == "" || c == "" || d == "") {
+					new JOptionPane("missing value");
+				} else {
 				dc.insertTripData(ks, ke, f, t, reason, username, name, c, d);
-			}
+				}
 			} catch (SQLException e) {
 				System.out.println(e);
 			}
@@ -655,10 +656,8 @@ public class GUI extends JFrame implements ActionListener {
 			JFileChooser chooser = new JFileChooser();
 			chooser.setSelectedFile(new File("export.csv"));
 			chooser.showSaveDialog(null);
-			// chooser.setFileSelectionMode(JFileChooser.SAVE_DIALOG);
-			
 			String pathAndName = chooser.getSelectedFile().getAbsolutePath();
-			// String filename = chooser.getSelectedFile().getName();
+			
 			
 
 			try {
@@ -726,6 +725,8 @@ public class GUI extends JFrame implements ActionListener {
 			 * This code added by Auré to update the report page after new data
 			 * has been added without having to restart the program.
 			 * 
+			 * Modified 2014-01-06 to only display current logged in users data.
+			 * 
 			 * Merged by Jani
 			 */
 			//------------------------------------------------------------------
@@ -734,8 +735,9 @@ public class GUI extends JFrame implements ActionListener {
 					DatabaseConnector dc = new DatabaseConnector();
 				// the model is generated with the reportTable method
 				// String username = user.getSelectedItem().toString();
-				System.out.println(username);
 
+				String d1 = dateLabel2.getText();
+				String d2 = dateLabel3.getText();
 				model = dc.reportTable(model, username);
 				
 				
@@ -744,8 +746,7 @@ public class GUI extends JFrame implements ActionListener {
 				// String reason = purpose.getSelectedItem().toString();
 				String name = "000";
 				// String c = car.getSelectedItem().toString();
-					String d1 = dateLabel2.getText();
-					String d2 = dateLabel3.getText();
+
 
 					model.fireTableDataChanged();
 				} catch (SQLException e) {
@@ -759,9 +760,28 @@ public class GUI extends JFrame implements ActionListener {
 
 		// from the grid view screen
 		if (ae.getSource() == searchButton) {
+
+			// Modified by Jani 2014-01-06 to only display data for the logged
+			// in user.
+			DatabaseConnector dc;
+			try {
+				dc = new DatabaseConnector();
+				String d1 = dateLabel2.getText();
+				String d2 = dateLabel3.getText();
+				System.out.println(dateLabel2.getText());
+				System.out.println(dateLabel3.getText());
+
+				model = dc.reportTable(model, username);
 			grid.setVisible(true);
 			filterPane.setVisible(false);
+			} catch (SQLException e) {
+				// e.printStackTrace();
+				System.out.println(e);
+			}
 		}
+
+		// --------- end of modification by Jani -------------
+
 		if (ae.getSource() == editButton) {
 			reportTable.setEnabled(true);
 		}
