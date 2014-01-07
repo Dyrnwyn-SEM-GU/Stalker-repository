@@ -248,17 +248,17 @@ public class GUI extends JFrame implements ActionListener {
 		from.setBounds(50, 120, 160, 40);
 		toLabel.setBounds(230, 80, 160, 40);
 		to.setBounds(230, 120, 160, 40);
-		dateLabel1.setBounds(400, 120, 40, 40);
+		dateLabel1.setBounds(400, 160, 300, 40);
 		date1.setBounds(590, 120, 40, 40);
-		carLabel.setBounds(50, 160, 260, 40);
-		car.setBounds(50, 200, 260, 40);
-		reasonOfTrip.setBounds(380, 160, 260, 40);
-		reasonTripTxt.setBounds(380, 200, 260, 40);
-		startKm.setBounds(50, 280, 260, 40);
-		endKm.setBounds(380, 280, 260, 40);
-		startKmTxt.setBounds(50, 320, 260, 40);
-		endKmTxt.setBounds(380, 320, 260, 40);
-		submit.setBounds(280, 420, 120, 40);
+		carLabel.setBounds(50, 190, 260, 40);
+		car.setBounds(50, 230, 260, 40);
+		reasonOfTrip.setBounds(380, 190, 260, 40);
+		reasonTripTxt.setBounds(380, 230, 260, 40);
+		startKm.setBounds(50, 310, 260, 40);
+		endKm.setBounds(380, 310, 260, 40);
+		startKmTxt.setBounds(50, 350, 260, 40);
+		endKmTxt.setBounds(380, 350, 260, 40);
+		submit.setBounds(280, 450, 120, 40);
 
 		createPanel.add(createLog);
 		createPanel.add(fromLabel);
@@ -662,8 +662,7 @@ public class GUI extends JFrame implements ActionListener {
 
 			try {
 				DatabaseConnector dc = new DatabaseConnector();
-				dc.exportCSV(pathAndName);
-				// , filename);
+				dc.exportCSV(pathAndName, username);
 			} catch (SQLException | IOException e) {
 				e.printStackTrace();
 			}

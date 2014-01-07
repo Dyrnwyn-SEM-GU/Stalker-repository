@@ -463,11 +463,12 @@ public class DatabaseConnector {
 	 * Methods to export data from the database
 	 * by GABRIELE */
 	
-	public String buildCSV(String table) throws SQLException {
+	public String buildCSV(String table, String username) throws SQLException {
 
 		ArrayList<String> row = new ArrayList();
 
-		rs = stmt.executeQuery("SELECT * from " + table + ";");
+		rs = stmt.executeQuery("SELECT * from " + table + " WHERE Username = '"
+				+ username + "';");
 		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 		int columnsNumber = rsmd.getColumnCount();
 		
@@ -486,7 +487,7 @@ public class DatabaseConnector {
 	 * This method is used by the export to CSV
 	 */
 
-	public void exportCSV(String filepathAndName)
+	public void exportCSV(String filepathAndName, String username)
 	//, String filename)
 			throws SQLException, IOException {
 		
@@ -494,7 +495,7 @@ public class DatabaseConnector {
 new File(
 				filepathAndName)));
 				//+ filename)));
-		bw.write(buildCSV("TripData"));
+		bw.write(buildCSV("TripData", username));
 		bw.close();
 	}
 
