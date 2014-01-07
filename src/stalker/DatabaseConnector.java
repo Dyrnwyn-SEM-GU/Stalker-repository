@@ -3,19 +3,27 @@ package stalker;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.ResultSetMetaData;
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 
 public class DatabaseConnector {
 
 	Connection con = null;
 	Statement stmt = null;
 	ResultSet rs = null;
+
+	File selectedFile;
 
 	public DatabaseConnector() throws SQLException {
 
@@ -37,7 +45,7 @@ public class DatabaseConnector {
 		}else{
 			System.out.println("result set is empty");
 		}
-		con.close();
+		// con.close();
 		return result;
 	}
 	
@@ -433,28 +441,34 @@ public class DatabaseConnector {
 		
 	}
 	
-	/* Methods to insert Pictures and files to the database
-	 * by DANIELLE, redesigned by AURELIEN	 */
+	/*
+	 * Methods to choose and insert Pictures or files to the database by
+	 * DANIELLE, redesigned by AURELIEN
+	 * 
+	 * Updated by Danielle 2014/01/06
+	 */
 	
-	public static File uploadPic(){
+	public void uploadPic() {
 	    JFileChooser fileChooser = new JFileChooser();
 	    // can only select files
 	    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY); 
 	    fileChooser.showOpenDialog(null);
-	    File selectedFile = fileChooser.getSelectedFile();
-	    return selectedFile;
+		selectedFile = fileChooser.getSelectedFile();
+		// return selectedFile;
 	}
 	
-	public void insertImage(File file) throws SQLException, IOException {
-		String INSERT_PICTURE = "INSERT INTO ExtraCosts(File) VALUES (?)";
+	public void insertImage() throws SQLException, IOException {
+
+		String insertFile = "INSERT INTO ExtraCosts(File) VALUES (?)";
 		con.setAutoCommit(false);
 		try {
-			FileInputStream fileInputStream = new FileInputStream(file);
-			PreparedStatement ps = con.prepareStatement(INSERT_PICTURE);
-			ps.setBinaryStream(1, fileInputStream, (int) file.length());
-			ps.executeUpdate();
+			FileInputStream fileInputStream = new FileInputStream(selectedFile);
+			PreparedStatement pstmt = con.prepareStatement(insertFile);
+			pstmt.setBinaryStream(1, fileInputStream,
+					(int) selectedFile.length());
+			pstmt.executeUpdate();
 			con.commit();
-			ps.close();
+			pstmt.close();
 			fileInputStream.close();
 		} catch (FileNotFoundException e) {
 			// if no file is found
@@ -463,6 +477,45 @@ public class DatabaseConnector {
 		con.close();
 	}
 	
+	/*
+	 * by Danielle Method to show the picture uploaded,
+	 * 
+	 * Updated 2014/01/06
+	 */
+
+	public void showPicture() throws IOException {
+
+		final BufferedImage bufferedImage = ImageIO.read(selectedFile);
+
+		JLabel label = new JLabel() {
+
+			protected void paintComponent(Graphics g) {
+
+				Graphics graph = g.create();
+				graph.drawImage(bufferedImage, 0, 0, getWidth(), getHeight(),
+						null);
+				graph.dispose();
+
+			}
+
+			public Dimension getPreferredSize() {
+
+				return new Dimension(bufferedImage.getWidth(),
+						bufferedImage.getHeight());
+
+			}
+
+		};
+
+		JFrame frame = new JFrame("Your selected picture: ");
+		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.add(label);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+
+	}
+
 	/*
 	 * Methods to export data from the database
 	 * by GABRIELE */
@@ -492,13 +545,11 @@ public class DatabaseConnector {
 	 */
 
 	public void exportCSV(String filepathAndName, String username)
-	//, String filename)
 			throws SQLException, IOException {
 		
 		BufferedWriter bw = new BufferedWriter(new FileWriter(
 new File(
 				filepathAndName)));
-				//+ filename)));
 		bw.write(buildCSV("TripData", username));
 		bw.close();
 	}
@@ -507,6 +558,7 @@ new File(
 
 	public void insertPassword(String password, String username)
 			throws SQLException {
+
 		stmt.executeUpdate("UPDATE User SET Password = '" + password
 				+ "' WHERE Username = '" + username + "';");
 

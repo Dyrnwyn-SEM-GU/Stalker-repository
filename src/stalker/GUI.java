@@ -47,28 +47,17 @@ public class GUI extends JFrame implements ActionListener {
 	DButton exportButton, editButton, saveChangesButton, submit, logIn,
 			filterButton, searchButton, forgotPassword, signUp,
 			creatNewAccount, typeOfCar, SaveCar, cancelCar, submitPassword,
-			changePassword;
+			changePassword, addExtraCost, submitExtraCost, uploadFile;
 
-	DTextField textKm;
+	DTextField textKm, passwordTxt, startKmTxt, endKmTxt, reasonTripTxt,
+			firstName, yourEmail, reEnterPassword, Password, carBrandTxt,
+			carTypeTxt, ConsumptionTxt, registeryNumber, passwordField1,
+			passwordField2, newPasswordField, fieldTypeCost, fieldCost,
+			fieldDate;
 	static DTextField emailTxt;
-	DTextField passwordTxt;
-	DTextField startKmTxt;
-	DTextField endKmTxt;
-	DTextField reasonTripTxt;
-	DTextField firstName;
-	DTextField yourEmail;
-	DTextField reEnterPassword;
-	DTextField Password;
-	DTextField carBrandTxt;
-	DTextField carTypeTxt;
-	DTextField ConsumptionTxt;
-	DTextField registeryNumber;
-	DTextField passwordField1;
-	DTextField passwordField2;
-	DTextField newPasswordField;
 
 	DPanel home, create, report, grid, loginScreen, homePanel, filterPane,
-			tablePanel, signUpPanel;
+			tablePanel, signUpPanel, extraCostPanel;
 
 	DComboBox from, to, car, fromCity, toCity, extraCosts, purpose, user, car2;
 
@@ -169,7 +158,7 @@ public class GUI extends JFrame implements ActionListener {
 
 	// add new codes for sign up by mahsa 2013.12.29*
 
-	void addSignaUp(JFrame frame) {
+	void addSignUp(JFrame frame) {
 		DLabel createLogSignUp = new DLabel("Create your new account", white,
 				txtH1);
 		
@@ -215,6 +204,64 @@ public class GUI extends JFrame implements ActionListener {
 		frame.setBounds(350, 108, 670, 570);
 	}
 	
+	/**
+	 * Writen by Danielle,
+	 * 
+	 * Method to display new screen for extra costs
+	 */
+
+	void frameExtraCosts(JFrame frame) {
+
+		DLabel dLabel = new DLabel("Add new Extra  Cost", white, txtH1);
+
+		DLabel labelType = new DLabel("Type of Cost:", white, txtH3);
+		DLabel labelCost = new DLabel("Total of the Cost:", white, txtH3);
+		DLabel labelDate = new DLabel("Date:", white, txtH3);
+
+		fieldTypeCost = new DTextField(20, darkerGray, txtH3);
+		fieldCost = new DTextField(20, darkerGray, txtH3);
+		fieldDate = new DTextField(20, darkerGray, txtH3);
+
+		uploadFile = new DButton("Upload", white, txtH2, darkGray);
+		uploadFile.addActionListener(this);
+		submitExtraCost = new DButton("Submit Extra Cost", white, txtH2,
+				darkerGray);
+		submitExtraCost.addActionListener(this);
+
+		extraCostPanel = new DPanel(darkGray);
+
+		extraCostPanel.setBounds(100, 0, 680, 600);
+		extraCostPanel.setLayout(null);
+
+		dLabel.setBounds(10, 15, 400, 40);
+		labelType.setBounds(10, 60, 150, 40);
+		labelCost.setBounds(10, 160, 160, 40);
+		labelDate.setBounds(10, 260, 50, 40);
+
+		fieldTypeCost.setBounds(10, 100, 300, 40);
+		fieldCost.setBounds(10, 200, 300, 40);
+		fieldDate.setBounds(10, 300, 300, 40);
+
+		uploadFile.setBounds(380, 100, 150, 40);
+		submitExtraCost.setBounds(150, 420, 250, 40);
+
+		extraCostPanel.add(dLabel);
+		extraCostPanel.add(labelType);
+		extraCostPanel.add(uploadFile);
+		extraCostPanel.add(fieldTypeCost);
+		extraCostPanel.add(labelCost);
+		extraCostPanel.add(fieldCost);
+		extraCostPanel.add(labelDate);
+		extraCostPanel.add(fieldDate);
+		extraCostPanel.add(submitExtraCost);
+
+		frame.add(extraCostPanel);
+		frame.setLayout(null);
+		frame.setVisible(true);
+		frame.setBounds(350, 108, 670, 570);
+
+	}
+
 	/* this methods generates the CREATE window by MAHSA
 	 * Added text labels and databaseconnection to fetch 
 	 * information for For, To and Car dropdowns AURE, Jani
@@ -250,6 +297,17 @@ public class GUI extends JFrame implements ActionListener {
 		submit = new DButton("Submit", white, txtH2, darkerGray);
 		submit.addActionListener(this);
 
+		// added by Danielle
+		/*
+		 * addExtraCost = new DButton("Add Extra Costs", white, txtH2,
+		 * darkGray); addExtraCost.addActionListener(this);
+		 */
+
+		submit = new DButton("Submit", white, txtH2, darkerGray);
+		submit.addActionListener(this);
+
+		// End addition by Danielle, Merged by Jani
+
 		DPanel createPanel = new DPanel(darkGray);
 
 		createPanel.setBounds(100, 0, 680, 600);
@@ -272,6 +330,12 @@ public class GUI extends JFrame implements ActionListener {
 		endKmTxt.setBounds(380, 350, 260, 40);
 		submit.setBounds(280, 450, 120, 40);
 
+		// extraCost button added by Danielle
+		addExtraCost = new DButton("Add extra costs", white, txtH2, darkerGray);
+		addExtraCost.addActionListener(this);
+		addExtraCost.setBounds(220, 400, 230, 40);
+		// End addition by Danielle, Merged by Jani
+
 		createPanel.add(createLog);
 		createPanel.add(fromLabel);
 		createPanel.add(from);
@@ -288,6 +352,7 @@ public class GUI extends JFrame implements ActionListener {
 		createPanel.add(endKm);
 		createPanel.add(endKmTxt);
 		createPanel.add(submit);
+		createPanel.add(addExtraCost);
 
 		create.add(createPanel);
 	}
@@ -475,7 +540,7 @@ public class GUI extends JFrame implements ActionListener {
 		
 		// new code add by mahsa create account which i called it sign up button
 
-		creatNewAccount = new DButton("Sign Up", white, txtH2, darkGray);
+		creatNewAccount = new DButton("Sign up", white, txtH2, darkGray);
 		creatNewAccount.addActionListener(this);
 				
 		// End of new code by Mahsa, merged by Jani
@@ -510,10 +575,10 @@ public class GUI extends JFrame implements ActionListener {
 				
 		// end of added code by Mahsa, merged by Jani
 
-		logIn.setBounds(150, 340, 250, 40);
+		logIn.setBounds(190, 340, 150, 40);
 		loginScreen.add(logIn);
 
-		forgotPassword.setBounds(150, 300, 250, 40);
+		forgotPassword.setBounds(190, 300, 150, 40);
 		loginScreen.add(forgotPassword);
 		
 		home.add(loginScreen);
@@ -652,10 +717,11 @@ public class GUI extends JFrame implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ae) {
 		// from the create report window
+
 		if (ae.getSource() == submit) {
 			try {
-			DatabaseConnector dc = new DatabaseConnector();
-			
+				DatabaseConnector dc = new DatabaseConnector();
+
 				String f = from.getSelectedItem().toString();
 				String t = to.getSelectedItem().toString();
 				String ks = startKmTxt.getText();
@@ -676,37 +742,18 @@ public class GUI extends JFrame implements ActionListener {
 			}
 		}
 		
-		if (ae.getSource() == exportButton) {
-			
-			JFileChooser chooser = new JFileChooser();
-			chooser.setSelectedFile(new File("export.csv"));
-			chooser.showSaveDialog(null);
-			String pathAndName = chooser.getSelectedFile().getAbsolutePath();
-			
-			
-
-			try {
-				DatabaseConnector dc = new DatabaseConnector();
-				dc.exportCSV(pathAndName, username);
-			} catch (SQLException | IOException e) {
-				e.printStackTrace();
-			}
-		 
-		}
-
 		// from the login screen
 		if (ae.getSource() == forgotPassword) {
 			ForgotPassword mail = new ForgotPassword();
-			if(!emailTxt.getText().equals("")) {
-			try {
+			if (!emailTxt.getText().equals("")) {
+				try {
 					mail.sendPassword(emailTxt.getText());
 				} catch (Exception e) {
-				e.printStackTrace();
-			}
-			}
+					e.printStackTrace();
 				}
-		
-		
+			}
+		}
+
 		if (ae.getSource() == logIn) {
 			try {
 				DatabaseConnector dc = new DatabaseConnector();
@@ -726,19 +773,94 @@ public class GUI extends JFrame implements ActionListener {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			}
-	
+		}
+
 		// mahsa sign up button 2013.12.30
 
 		if (ae.getSource() == creatNewAccount) {
 			JFrame signUpFrame = new JFrame();
-			addSignaUp(signUpFrame);
+			addSignUp(signUpFrame);
 			signUpFrame.getContentPane().setBackground(darkerGray);
 			signUpFrame.setVisible(true);
 			homePanel.setVisible(false);
 			signUpFrame.setBounds(330, 80, 700, 600);
 		}
 
+		/*
+		 * by Danielle
+		 */
+
+		if (ae.getSource() == addExtraCost) {
+			JFrame extraCostFrame = new JFrame();
+			frameExtraCosts(extraCostFrame);
+			extraCostFrame.getContentPane().setBackground(darkerGray);
+			extraCostFrame.setVisible(true);
+			extraCostFrame.setBounds(330, 80, 700, 600);
+
+		}
+
+		/**
+		 * by Danielle
+		 */
+		if (ae.getSource() == uploadFile) {
+
+			try {
+
+				DatabaseConnector dc = new DatabaseConnector();
+				dc.uploadPic();
+				dc.insertImage();
+				dc.showPicture();
+
+			} catch (IOException | SQLException e) {
+
+				e.printStackTrace();
+			}
+
+		}
+
+		/*
+		 * by Danielle, Error when try insert the picture just after pressing
+		 * submit extra cost button.
+		 */
+		if (ae.getSource() == submitExtraCost) {
+
+			String typeOfCost = fieldTypeCost.getText();
+			String totalCost = fieldCost.getText();
+
+			try {
+				DatabaseConnector dc = new DatabaseConnector();
+				// dc.insertImage();
+
+				// to be fixed
+				// dc.insertExtraCost(typeOfCost, totalCost, file, date,
+				// idTripData);
+
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+
+		}
+
+		if (ae.getSource() == exportButton) {
+			
+			JFileChooser chooser = new JFileChooser();
+			chooser.setSelectedFile(new File("export.csv"));
+			chooser.showSaveDialog(null);
+			String pathAndName = chooser.getSelectedFile().getAbsolutePath();
+			
+			
+
+			try {
+				DatabaseConnector dc = new DatabaseConnector();
+				dc.exportCSV(pathAndName, username);
+			} catch (SQLException | IOException e) {
+				e.printStackTrace();
+			}
+		 
+		}
+
+		
 		// from the filter screen
 		if (ae.getSource() == filterButton) {
 			grid.setVisible(false);
@@ -834,6 +956,8 @@ public class GUI extends JFrame implements ActionListener {
 
 			} catch (SQLException e) {
 				e.printStackTrace();
+				System.out
+						.println("Something wrong in the submitPassword actionslistener");
 			}
 		}
 
