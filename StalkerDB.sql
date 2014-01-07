@@ -57,7 +57,7 @@ CREATE TABLE `CarTypes` (
 
 LOCK TABLES `CarTypes` WRITE;
 /*!40000 ALTER TABLE `CarTypes` DISABLE KEYS */;
-INSERT INTO `CarTypes` VALUES ('Petrol'),('Diesel'),('Electric'),('Ethanol'),('Gas'),('Hybrid - Benzine/Electric'),('Hybrid - Diesel/Electric'),('Other');
+INSERT INTO `CarTypes` VALUES ('Petrol'),('Diesel'),('Electric'),('Ethanol'),('Gas'),('Hybrid - Petrol/Electric'),('Hybrid - Diesel/Electric'),('Other');
 /*!40000 ALTER TABLE `CarTypes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

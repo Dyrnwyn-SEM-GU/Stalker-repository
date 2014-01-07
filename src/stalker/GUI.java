@@ -49,6 +49,12 @@ public class GUI extends JFrame implements ActionListener {
 			creatNewAccount, typeOfCar, SaveCar, cancelCar, submitPassword,
 			changePassword, addExtraCost, submitExtraCost, uploadFile;
 
+	JFrame extraCostFrame = new JFrame();
+
+	// new frames add by mahsa**
+	JFrame signUPFrame = new JFrame();
+	JFrame CarDetailFrame = new JFrame();
+
 	DTextField textKm, passwordTxt, startKmTxt, endKmTxt, reasonTripTxt,
 			firstName, yourEmail, reEnterPassword, Password, carBrandTxt,
 			carTypeTxt, ConsumptionTxt, registeryNumber, passwordField1,
@@ -71,6 +77,7 @@ public class GUI extends JFrame implements ActionListener {
 	
 	String username;
 	
+
 	// for testing only
 	JLabel testPanel = new JLabel();
 
@@ -149,17 +156,80 @@ public class GUI extends JFrame implements ActionListener {
 		tabPane.addTab("Report", report);
 		tabPane.addTab("Create", create);
 		tabPane.setEnabled(false);
-		
-//		added by mahsa *
-		homePanel.setVisible(false);
-		
 		add(tabPane);
 	}
 
-	// add new codes for sign up by mahsa 2013.12.29*
+	// add new cods by mahsa for car ditails 2014.1.5*
+	// add car detail method
+	void addCarDetail(JFrame CarDetailFrame) throws SQLException {
 
-	void addSignUp(JFrame frame) {
-		DLabel createLogSignUp = new DLabel("Create your new account", white,
+		carPanel = new DPanel(darkGray);
+		DatabaseConnector dc = new DatabaseConnector();
+
+		DLabel carBrandLable = new DLabel("Car Brand ", white, txtH3);
+		carBrand = new DTextField("Car Brand", 20, darkerGray, txtH3);
+
+		// I dont have database methods
+		DLabel carTypeLable = new DLabel("Car Type ", white, txtH3);
+		carType = new DComboBox(dc.getColumn("RegistryNumber", "Car"),
+				darkGray, txtH3, white);
+		//
+		DLabel consumption = new DLabel("Consumption", white, txtH3);
+		ConsumptionTxt = new DTextField("Consumption", 20, white, txtH3);
+
+		DLabel registeryNumberLabel = new DLabel("Registry Number", white,
+				txtH3);
+		registeryNumber = new DTextField("Registery Number", 20, darkerGray,
+				txtH3);
+
+		SaveCar = new DButton("Save Car ", white, txtH3, darkGray);
+		SaveCar.addActionListener(this);
+
+		cancelCar = new DButton("Cancle Car", white, txtH3, darkGray);
+		cancelCar.addActionListener(this);
+
+		carBrandLable.setBounds(20, 40, 150, 28);
+		carBrand.setBounds(200, 40, 250, 28);
+		carPanel.add(carBrandLable);
+		carPanel.add(carBrand);
+
+		carTypeLable.setBounds(20, 100, 150, 28);
+		carType.setBounds(200, 100, 250, 28);
+		carPanel.add(carTypeLable);
+		carPanel.add(carType);
+		consumption.setBounds(20, 160, 150, 28);
+		ConsumptionTxt.setBounds(200, 160, 250, 28);
+		carPanel.add(consumption);
+		carPanel.add(ConsumptionTxt);
+
+		registeryNumberLabel.setBounds(20, 220, 150, 28);
+		registeryNumber.setBounds(200, 220, 250, 28);
+		carPanel.add(registeryNumberLabel);
+		carPanel.add(registeryNumber);
+
+		SaveCar.setBounds(20, 320, 150, 35);
+		SaveCar.addActionListener(this);
+		carPanel.add(SaveCar);
+		cancelCar.setBounds(250, 320, 150, 35);
+		carPanel.add(cancelCar);
+		cancelCar.setFocusable(isFocusableWindow());
+		;
+		SaveCar.addActionListener(this);
+
+		carPanel.setBounds(100, 0, 680, 600);
+		carPanel.setLayout(null);
+
+		CarDetailFrame.add(carPanel);
+		CarDetailFrame.setLayout(null);
+		CarDetailFrame.setVisible(true);
+		CarDetailFrame.setBounds(350, 108, 670, 570);
+
+	}
+
+	// add new cods for sign up by mahsa 2013.12.29*
+
+	void addSignaUp(JFrame frame) {
+		DLabel createLogSignUp = new DLabel("Creat your new account", white,
 				txtH1);
 		
 		// end of new codes by Mahsa
@@ -791,7 +861,6 @@ public class GUI extends JFrame implements ActionListener {
 		 */
 
 		if (ae.getSource() == addExtraCost) {
-			JFrame extraCostFrame = new JFrame();
 			frameExtraCosts(extraCostFrame);
 			extraCostFrame.getContentPane().setBackground(darkerGray);
 			extraCostFrame.setVisible(true);
