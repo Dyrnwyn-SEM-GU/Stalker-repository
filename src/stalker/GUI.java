@@ -53,15 +53,22 @@ public class GUI extends JFrame implements ActionListener {
 	DLabel dateLabel3 = new DLabel("", white, txtH3);
 	
 	DButton exportButton, editButton, saveChangesButton, submit, logIn,
-	filterButton, searchButton, forgotPassword,
-	signUp,creatNewAccount,typeOfCar,SaveCar,cancelCar;
+			filterButton, searchButton, forgotPassword, signUp,
+			creatNewAccount, typeOfCar, SaveCar, cancelCar, submitPassword,
+			changePassword;
 
-	DTextField textKm, emailTxt, passwordTxt, startKmTxt, endKmTxt, reasonTripTxt,
-	firstName, yourEmail, reEnterPassword, Password,carBrandTxt,carTypeTxt,ConsumptionTxt,registeryNumber;
+	DTextField textKm, emailTxt, passwordTxt, startKmTxt, endKmTxt,
+			reasonTripTxt, firstName, yourEmail, reEnterPassword, Password,
+			carBrandTxt, carTypeTxt, ConsumptionTxt, registeryNumber,
+			passwordField1, passwordField2, newPasswordField;
 
 	DPanel home, create, report, grid, loginScreen, homePanel, filterPane,
 			tablePanel, signUpPanel;
+
 	DComboBox from, to, car, fromCity, toCity, extraCosts, purpose, user, car2;
+
+	JDialog changePasswordDialog;
+
 	JScrollPane jsp;
 
 	JTabbedPane tabPane;
@@ -544,6 +551,63 @@ public class GUI extends JFrame implements ActionListener {
 		homePanel.setLayout(null);
 		homePanel.setVisible(false);
 
+		/*
+		 * 2014-01-05------------------------------------------------------------
+		 * --------* pop up window to change password GUI AURELIEN
+		 */
+
+		DPanel changePasswordPanel = new DPanel(darkerGray);
+		changePasswordPanel.setBounds(0, 0, 680, 600);
+		changePasswordPanel.setLayout(null);
+		changePasswordPanel.setVisible(true);
+
+		DLabel passwordCheck1 = new DLabel("enter old password", white, txtH3);
+		passwordCheck1.setBounds(50, 50, 400, 20);
+		passwordField1 = new DTextField(40, darkGray, txtH3);
+		passwordField1.setBounds(50, 90, 400, 40);
+
+		DLabel passwordCheck2 = new DLabel("enter new password", white, txtH3);
+		passwordCheck2.setBounds(50, 160, 400, 20);
+		passwordField2 = new DTextField(40, darkGray, txtH3);
+		passwordField2.setBounds(50, 200, 400, 40);
+
+		DLabel newPassword = new DLabel("enter new password again", white,
+				txtH3);
+		newPassword.setBounds(50, 270, 400, 20);
+		newPasswordField = new DTextField(40, darkGray, txtH3);
+		newPasswordField.setBounds(50, 310, 400, 40);
+
+		submitPassword = new DButton("submit", white, txtH2, darkGray);
+		submitPassword.setBounds(150, 400, 200, 80);
+		submitPassword.addActionListener(this);
+
+		changePasswordDialog = new JDialog();
+		changePasswordDialog.setTitle("Change Password");
+		changePasswordDialog.setSize(500, 600);
+		changePasswordDialog.setLocationRelativeTo(null);
+		changePasswordDialog.setLayout(null);
+		changePasswordDialog.setBackground(darkerGray);
+
+		changePasswordPanel.add(passwordCheck1);
+		changePasswordPanel.add(passwordField1);
+		changePasswordPanel.add(passwordCheck2);
+		changePasswordPanel.add(passwordField2);
+		changePasswordPanel.add(newPassword);
+		changePasswordPanel.add(newPasswordField);
+		changePasswordPanel.add(submitPassword);
+
+		changePasswordDialog.add(changePasswordPanel);
+
+		/*
+		 * ----------------------------------------------------------------------
+		 * ---
+		 */
+
+		changePassword = new DButton("change Password", white, txtH2,
+				darkerGray);
+		changePassword.setBounds(150, 300, 250, 40);
+		changePassword.addActionListener(this);
+		homePanel.add(changePassword);
 		home.add(homePanel);
 	}
 
@@ -690,7 +754,7 @@ public class GUI extends JFrame implements ActionListener {
 				username = emailTxt.getText();
 				/*------------------------------------------------------------------*/
 				/*
-				 * code addition to update car dropdown depending on user By
+				 * code addition to update car dropdown depending on user by
 				 * Auré
 				 */
 				car.removeAllItems();
@@ -780,6 +844,43 @@ public class GUI extends JFrame implements ActionListener {
 		}
 
 		// --------- end of modification by Jani -------------
+
+		/*
+		 * 2014-01-05------------------------------------------------------------
+		 * --------* pop up window to change password ACTIONLISTENERS AURELIEN
+		 */
+
+		// from the home window
+		if (ae.getSource() == changePassword) {
+			changePasswordDialog.setVisible(true);
+		}
+		if (ae.getSource() == submitPassword) {
+			try {
+				DatabaseConnector dc = new DatabaseConnector();
+
+				String password = dc.querieCredentials("password", "username",
+						username);
+
+				if (passwordField1.getText().equals(password)) {
+					if (passwordField2.getText().equals(
+							newPasswordField.getText())) {
+						dc.insertPassword(newPasswordField.getText(), username);
+						changePasswordDialog.setVisible(false);
+					}
+
+				} else {
+
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		/*
+		 * ----------------------------------------------------------------------
+		 * --------
+		 */
 
 		if (ae.getSource() == editButton) {
 			reportTable.setEnabled(true);
