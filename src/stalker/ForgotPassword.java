@@ -5,6 +5,9 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 import java.util.Properties;
+
+// Code written by Gabriele with the help of Thor Salehi
+
 public class ForgotPassword {
     private static final String host = "smtp.gmail.com";
     private static final int port = 465;
@@ -20,15 +23,27 @@ public class ForgotPassword {
         properties.put("mail.smtps.auth", "true");
         properties.put("mail.smtps.quitwait", "false");
         Session session = Session.getDefaultInstance(properties);
-        session.setDebug(true);
+		session.setDebug(false);
         Transport transport = session.getTransport();
         MimeMessage message = new MimeMessage(session);
-        message.setSubject("Testing SMTP-SSL");
-        message.setContent("Hello, user, your e-mail address is " + GUI.emailTxt.getText() + 
-        		"and your current password is " + dc.querieElement("Password", "Username", GUI.emailTxt.getText()) + 
+
+		// Modified by Jani 2014-01-07
+		message.setSubject("Here is your password to the STALKER Travel logbook system");
+		message.setContent(
+				"Dear user, your e-mail address is "
+						+ GUI.emailTxt.getText()
+						+
+ " and your current password is "
+						+ dc.querieCredentials("Password", "Username",
+								GUI.emailTxt.getText()) +
         		".", "text/plain");
         message.addRecipient(Message.RecipientType.TO,
-             new InternetAddress("gabekasparas@gmail.com"));
+
+		// Modified by Jani 2014-01-07. replaced static e-mail address
+		// ("name.familyname@gmail.com" with the
+		// String username so that it works for all registered usernames.
+ new InternetAddress(
+				username));
         transport.connect
           (host, port, author, author_pass);
         transport.sendMessage(message,

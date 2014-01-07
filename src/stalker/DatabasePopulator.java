@@ -3,7 +3,6 @@ package stalker;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
-import au.com.bytecode.opencsv.CSVWriter;
 
 
 public class DatabasePopulator {

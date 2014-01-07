@@ -179,6 +179,10 @@ public class DatabaseConnector {
 //		return model;
 //	}
 
+	// Code written by Danielle
+	// Merged by Aure
+	// and modified 2014-01-06 by Jani (Added username based filtering)
+
 	public DefaultTableModel reportTable(DefaultTableModel model,
 			String username)
 			throws SQLException {
