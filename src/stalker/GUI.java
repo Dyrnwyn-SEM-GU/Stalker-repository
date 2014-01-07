@@ -47,25 +47,27 @@ public class GUI extends JFrame implements ActionListener {
 	DButton exportButton, editButton, saveChangesButton, submit, logIn,
 			filterButton, searchButton, forgotPassword, signUp,
 			creatNewAccount, typeOfCar, SaveCar, cancelCar, submitPassword,
-			changePassword, addExtraCost, submitExtraCost, uploadFile;
+			changePassword, addExtraCost, submitExtraCost, uploadFile,
+			editSignUp, editCarDetail;
 
 	JFrame extraCostFrame = new JFrame();
 
 	// new frames add by mahsa**
-	JFrame signUPFrame = new JFrame();
+	JFrame signUpFrame = new JFrame();
 	JFrame CarDetailFrame = new JFrame();
 
 	DTextField textKm, passwordTxt, startKmTxt, endKmTxt, reasonTripTxt,
 			firstName, yourEmail, reEnterPassword, Password, carBrandTxt,
 			carTypeTxt, ConsumptionTxt, registeryNumber, passwordField1,
 			passwordField2, newPasswordField, fieldTypeCost, fieldCost,
-			fieldDate;
+			fieldDate, carBrand;
 	static DTextField emailTxt;
 
 	DPanel home, create, report, grid, loginScreen, homePanel, filterPane,
-			tablePanel, signUpPanel, extraCostPanel;
+			tablePanel, signUpPanel, extraCostPanel, carPanel;
 
-	DComboBox from, to, car, fromCity, toCity, extraCosts, purpose, user, car2;
+	DComboBox from, to, car, fromCity, toCity, extraCosts, purpose, user, car2,
+			carType;
 
 	JDialog changePasswordDialog;
 
@@ -228,7 +230,7 @@ public class GUI extends JFrame implements ActionListener {
 
 	// add new cods for sign up by mahsa 2013.12.29*
 
-	void addSignaUp(JFrame frame) {
+	void addSignUp(JFrame frame) {
 		DLabel createLogSignUp = new DLabel("Creat your new account", white,
 				txtH1);
 		
@@ -639,7 +641,7 @@ public class GUI extends JFrame implements ActionListener {
 		passwordTxt.setBounds(50, 260, 400, 40);
 		loginScreen.add(passwordTxt);
 		
-		// /mahsa add sign up button
+		// mahsa add sign up button
 		creatNewAccount.setBounds(50, 340, 130, 40);
 		loginScreen.add(creatNewAccount);
 				
@@ -684,12 +686,39 @@ public class GUI extends JFrame implements ActionListener {
 	 * yet)
 	 */
 
+
+
 	void addHome() {
 
 		homePanel = new DPanel(darkGray);
 		homePanel.setBounds(100, 0, 680, 600);
 		homePanel.setLayout(null);
 		homePanel.setVisible(false);
+
+		// edit car details and information details
+		// add by Mahsa 2014-01-06
+
+		DLabel editSignUpLable = new DLabel(
+				"<html>Do you what to edit your registeration informtion? please click on the  below edit button</html>",
+				white, txtH4);
+		editSignUp = new DButton("Edit ", white, txtH3, darkerGray);
+
+		editSignUpLable.setBounds(45, -100, 600, 400);
+		editSignUp.setBounds(50, 150, 100, 31);
+		editSignUp.addActionListener(this);
+		homePanel.add(editSignUpLable);
+		homePanel.add(editSignUp);
+
+		DLabel editCarDetailLable = new DLabel(
+				"<html>Do you what to edit your car details informtion? please click on the  below edit button </html>",
+				white, txtH4);
+		editCarDetail = new DButton("Edit ", white, txtH3, darkerGray);
+
+		editCarDetailLable.setBounds(45, 100, 600, 400);
+		editCarDetail.setBounds(50, 350, 100, 31);
+		editCarDetail.addActionListener(this);
+		homePanel.add(editCarDetailLable);
+		homePanel.add(editCarDetail);
 
 		/*
 		 * 2014-01-05------------------------------------------------------------
@@ -845,15 +874,53 @@ public class GUI extends JFrame implements ActionListener {
 			}
 		}
 
-		// mahsa sign up button 2013.12.30
+		// mahsa sign up button to create a new account and registered
+		// 2013.12.30
 
 		if (ae.getSource() == creatNewAccount) {
-			JFrame signUpFrame = new JFrame();
+
 			addSignUp(signUpFrame);
-			signUpFrame.getContentPane().setBackground(darkerGray);
+			signUpFrame.getContentPane().setBackground(darkGray);
 			signUpFrame.setVisible(true);
-			homePanel.setVisible(false);
 			signUpFrame.setBounds(330, 80, 700, 600);
+		}
+
+		// mahsa sign up button for signing up mahsa
+
+		if (ae.getSource() == signUp) {
+
+			try {
+				addCarDetail(CarDetailFrame);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			CarDetailFrame.getContentPane().setBackground(darkGray);
+			CarDetailFrame.setBounds(330, 80, 700, 600);
+			signUpFrame.setVisible(false);
+			signUpFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			carPanel.setVisible(true);
+		}
+		// mahsa. actionListener for save car
+
+		if (ae.getSource() == SaveCar) {
+			CarDetailFrame.setVisible(false);
+
+			home.setVisible(true);
+		}
+
+		// action listener for cancel car mahsa**
+		if (ae.getSource() == cancelCar) {
+			CarDetailFrame.setVisible(false);
+			home.setVisible(true);
+		}
+		// actin listener for car detail edit by mahsa**
+		if (ae.getSource() == editSignUp)
+			signUpFrame.setVisible(true);
+		home.setVisible(false);
+		// actionListener by mahsa for user information details**
+		if (ae.getSource() == editCarDetail) {
+			CarDetailFrame.setVisible(true);
+			home.setVisible(false);
 		}
 
 		/*
