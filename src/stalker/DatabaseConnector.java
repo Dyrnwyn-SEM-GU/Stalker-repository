@@ -11,12 +11,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.ResultSetMetaData;
+
+import elements.DLabel;
 
 /* the connections to the Database happen here, by Aure */
 
@@ -52,11 +53,16 @@ public class DatabaseConnector {
 
 	/* by Danielle */
 	public DefaultTableModel reportTable(DefaultTableModel model,
-			String username) throws SQLException {
+			String username, String fromDate, String toDate) throws SQLException {
 
 		String SQL = "Select * from TripData WHERE Username ='" + username
-				+ "';";
+				+ "' AND Date BETWEEN '" + fromDate + "' AND '" + toDate + "';";
 
+		System.out.print("fromDate");
+		System.out.print(fromDate);
+		System.out.print("ToDate");
+		System.out.print(toDate);
+		
 		rs = stmt.executeQuery(SQL);
 		ResultSetMetaData rsm = (ResultSetMetaData) rs.getMetaData();
 		int nrCols = rsm.getColumnCount();
@@ -130,19 +136,20 @@ public class DatabaseConnector {
 				+ "','" + idTripData + "')");
 	}
 
-	public void insertNewUser(String username, String password)
-			throws SQLException {
-
-		stmt.executeUpdate("INSERT INTO User" + "(`Username`, `Password`)"
-				+ " VALUES " + "('" + username + "','" + password + "')");
+public void insertNewUser(String yourEmail, String Password, String firstName) throws SQLException {
+		
+		stmt.executeUpdate("INSERT INTO User"
+				+ "(`Username`, `Password`, `Name`)" + " VALUES " + "('"
+				+ yourEmail + "','" + Password + "','" + firstName + "')");
 	}
+	
+	
+	public void insertNewCar(String carBrand, String registryNumber, String carType, String consumption, String username) throws SQLException {
+		stmt.executeUpdate("INSERT INTO Car"
+				+ "(`Brand`, `RegistryNumber`, `Type`, `Consumption`, `Username`)" + " VALUES " 
+				+ "('" + carBrand + "','" + registryNumber + "','" + carType + "','" + consumption + "','" + username + "')");
 
-	public void insertNewCar(String registryNumber, String username)
-			throws SQLException {
-		stmt.executeUpdate("INSERT INTO Car" + "(`RegistryNumber`, `Username`)"
-				+ " VALUES " + "('" + registryNumber + "','" + username + "')");
 	}
-
 	/*
 	 * method to fetch the information for the dropdown menu, by AURE, modified
 	 * by Jani

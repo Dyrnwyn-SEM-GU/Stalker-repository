@@ -55,6 +55,7 @@ public class ReportScreen implements ActionListener {
 			}
 		});
 
+		
 		filterPane = new DPanel(GUI.darkGray);
 		filterPane.setLayout(null);
 		filterPane.setBounds(100, 0, 680, 600);
@@ -121,7 +122,11 @@ public class ReportScreen implements ActionListener {
 		reportTable.setFont(GUI.txtH4);
 		reportTable.setForeground(GUI.darkGray);
 
-		model = dc.reportTable(model, username);
+		String fromDate = dateLabel2.getText();
+		String toDate = dateLabel3.getText();
+		model = dc.reportTable(model, username, fromDate, toDate);
+		
+		
 		reportTable.setModel(model);
 		model.fireTableDataChanged();
 
@@ -156,9 +161,13 @@ public class ReportScreen implements ActionListener {
 			/* modified by Jani */
 			try {
 				DatabaseConnector dc = new DatabaseConnector();
-				System.out.println(dateLabel2.getText());
-				System.out.println(dateLabel3.getText());
-				model = dc.reportTable(model, username);
+			
+				String fromDate = dateLabel2.getText();
+				String toDate = dateLabel3.getText();
+				System.out.println(fromDate);
+				System.out.println(toDate);	
+				
+				model = dc.reportTable(model, username, fromDate, toDate);
 				grid.setVisible(true);
 				filterPane.setVisible(false);
 				model.fireTableDataChanged();
