@@ -55,9 +55,10 @@ public class DatabaseConnector {
 	}
 
 	/* by Danielle */
-	public DefaultTableModel reportTable(DefaultTableModel model) throws SQLException {
+	public DefaultTableModel reportTable(DefaultTableModel model, String fromDate, String toDate) throws SQLException {
 
-		String SQL = "Select `StartingKm`, `EndingKm`, `From`, `To`, `ReasonOfTrip`, `RegistryNumber`, `Date` from TripData WHERE Username ='" + GUI.username + "';";
+		String SQL = "Select `StartingKm`, `EndingKm`, `From`, `To`, `ReasonOfTrip`, `RegistryNumber`, `Date` FROM TripData WHERE Username = '" 
+		+ GUI.username + "' AND Date BETWEEN '" + fromDate + "' AND '" + toDate +"';";
 
 		rs = stmt.executeQuery(SQL);
 		ResultSetMetaData rsm = (ResultSetMetaData) rs.getMetaData();
@@ -220,11 +221,11 @@ public class DatabaseConnector {
 	}
 
 	/* methods to export data from the database, by GABRIELE */
-	public String buildCSV(String table) throws SQLException {
+	public String buildCSV(String table, String fromDate, String toDate) throws SQLException {
 
 		ArrayList<String> row = new ArrayList<String>();
 		rs = stmt.executeQuery("SELECT * from " + table + " WHERE Username = '"
-				+ GUI.username + "';");
+				+ GUI.username + "' AND Date BETWEEN '" + fromDate + "' AND '" + toDate +"';");
 		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 		int columnsNumber = rsmd.getColumnCount();
 
@@ -238,12 +239,12 @@ public class DatabaseConnector {
 		return stringify(row);
 	}
 	
-	public void exportCSV(String filepathAndName, String username)
+	public void exportCSV(String filepathAndName, String username, String fromDate, String toDate)
 			throws SQLException, IOException {
 
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(
 				filepathAndName)));
-		bw.write(buildCSV("TripData"));
+		bw.write(buildCSV("TripData", fromDate, toDate));
 		bw.close();
 	}
 	

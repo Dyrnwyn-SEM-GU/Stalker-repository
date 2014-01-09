@@ -127,7 +127,10 @@ public class ReportScreen implements ActionListener {
 		reportTable.setBounds(0, 0, 500, 500);
 		reportTable.setEnabled(false);
 		
-		ReportScreen.model = dc.reportTable(ReportScreen.model);
+		String fromDate = dateLabel1.getText();
+		String toDate = dateLabel2.getText();
+
+		ReportScreen.model = dc.reportTable(ReportScreen.model, fromDate, toDate);
 		ReportScreen.reportTable.setModel(ReportScreen.model);
 		ReportScreen.model.fireTableDataChanged();
 		reportTable.setModel(model);
@@ -148,9 +151,12 @@ public class ReportScreen implements ActionListener {
 			chooser.setSelectedFile(new File("export.csv"));
 			chooser.showSaveDialog(null);
 			String path = chooser.getSelectedFile().getAbsolutePath();
+			String fromDate = dateLabel1.getText();
+			String toDate = dateLabel2.getText();
+			
 			try {
 				DatabaseConnector dc = new DatabaseConnector();
-				dc.exportCSV(path, username);
+				dc.exportCSV(path, username, fromDate, toDate);
 			} catch (SQLException | IOException e) {
 				e.printStackTrace();
 			}
@@ -162,9 +168,11 @@ public class ReportScreen implements ActionListener {
 			/* modified by Jani */
 			try {
 				DatabaseConnector dc = new DatabaseConnector();
-				System.out.println(dateLabel1.getText());
-				System.out.println(dateLabel2.getText());
-				model = dc.reportTable(model);
+				String fromDate = dateLabel1.getText();
+				String toDate = dateLabel2.getText();
+				
+				
+				model = dc.reportTable(model, fromDate, toDate);
 				grid.setVisible(true);
 				filterPane.setVisible(false);
 				model.fireTableDataChanged();
