@@ -390,27 +390,27 @@ public class DatabaseConnector {
 	/*
 	 * Method created by Jani. 
 	 * Used to enter new user data
-	 * 
+	 * Modified 2014-01-09
 	 */
 	
-	public void insertNewUser(String username, String password) throws SQLException {
+	public void insertNewUser(String yourEmail, String Password, String firstName) throws SQLException {
 		
 		stmt.executeUpdate("INSERT INTO User"
-				+ "(`Username`, `Password`)" + " VALUES " + "('"
-				+ username + "','" + password + "')");
+				+ "(`Username`, `Password`, `Name`)" + " VALUES " + "('"
+				+ yourEmail + "','" + Password + "','" + firstName + "')");
 	}
 	
 	
 	/*
 	 * Method created by Jani. 
 	 * Used to enter new car registry number for specific  data
-	 * 
+	 * Modified 2014-01-09
 	 */
 	
-	public void insertNewCar(String registryNumber, String username) throws SQLException {
+	public void insertNewCar(String carBrand, String registryNumber, String carType, String consumption, String username) throws SQLException {
 		stmt.executeUpdate("INSERT INTO Car"
-				+ "(`RegistryNumber`, `Username`)" + " VALUES " 
-				+ "('" + registryNumber + "','" + username + "')");
+				+ "(`Brand`, `RegistryNumber`, `Type`, `Consumption`, `Username`)" + " VALUES " 
+				+ "('" + carBrand + "','" + registryNumber + "','" + carType + "','" + consumption + "','" + username + "')");
 	}
 //	public void insertNewCar(String brand, String registryNumber, String type, String consumption, String username) throws SQLException {
 //		stmt.executeUpdate("INSERT INTO Car"

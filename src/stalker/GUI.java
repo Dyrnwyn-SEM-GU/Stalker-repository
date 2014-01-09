@@ -46,7 +46,7 @@ public class GUI extends JFrame implements ActionListener {
 	
 	DButton exportButton, editButton, saveChangesButton, submit, logIn,
 			filterButton, searchButton, forgotPassword, signUp,
-			creatNewAccount, typeOfCar, SaveCar, cancelCar, submitPassword,
+			createNewAccount, typeOfCar, SaveCar, cancelCar, submitPassword,
 			changePassword, addExtraCost, submitExtraCost, uploadFile,
 			editSignUp, editCarDetail;
 
@@ -240,10 +240,10 @@ public class GUI extends JFrame implements ActionListener {
 		yourEmail = new DTextField("Your Email", 20, darkerGray, txtH3);
 		reEnterPassword = new DTextField("Re-Enter your Password", 20, darkerGray, txtH3);
 		Password = new DTextField("Password", 20, darkerGray, txtH3);
-		DLabel termsCondition=new DLabel("<html>By clicking Sign Up, you agree to our Terms and condition.Please read terms and condition page carefully by click on term and condition</html>"
+		DLabel termsCondition=new DLabel("<html>By clicking sign up, you agree to our Terms and condition.Please read terms and condition page carefully by click on term and condition</html>"
 				, white, txtH4);
 		DLabel TermsAndCondition=new DLabel("Terms and Condition",white,txtH4);
-		signUp = new DButton("sign Up", white, txtH2, darkerGray);
+		signUp = new DButton("Sign up", white, txtH2, darkerGray);
 		signUp.addActionListener(this);
 
 
@@ -612,8 +612,8 @@ public class GUI extends JFrame implements ActionListener {
 		
 		// new code add by mahsa create account which i called it sign up button
 
-		creatNewAccount = new DButton("Sign up", white, txtH2, darkGray);
-		creatNewAccount.addActionListener(this);
+		createNewAccount = new DButton("Sign up", white, txtH2, darkGray);
+		createNewAccount.addActionListener(this);
 				
 		// End of new code by Mahsa, merged by Jani
 
@@ -642,8 +642,8 @@ public class GUI extends JFrame implements ActionListener {
 		loginScreen.add(passwordTxt);
 		
 		// mahsa add sign up button
-		creatNewAccount.setBounds(50, 340, 130, 40);
-		loginScreen.add(creatNewAccount);
+		createNewAccount.setBounds(50, 340, 130, 40);
+		loginScreen.add(createNewAccount);
 				
 		// end of added code by Mahsa, merged by Jani
 
@@ -877,7 +877,7 @@ public class GUI extends JFrame implements ActionListener {
 		// mahsa sign up button to create a new account and registered
 		// 2013.12.30
 
-		if (ae.getSource() == creatNewAccount) {
+		if (ae.getSource() == createNewAccount) {
 
 			addSignUp(signUpFrame);
 			signUpFrame.getContentPane().setBackground(darkGray);
@@ -890,10 +890,25 @@ public class GUI extends JFrame implements ActionListener {
 		if (ae.getSource() == signUp) {
 
 			try {
-				addCarDetail(CarDetailFrame);
+				addCarDetail(CarDetailFrame);		
+		
+				DatabaseConnector dc = new DatabaseConnector();
+
+				String name = firstName.getText();
+				String email = yourEmail.getText();
+				String ps = Password.getText();
+			
+				
+				if (email == "" || ps == "") {
+					new JOptionPane("missing value");
+				} else {
+				dc.insertNewUser(name, email, ps);
+				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.out.println(e);
 			}
+
+				
 			CarDetailFrame.getContentPane().setBackground(darkGray);
 			CarDetailFrame.setBounds(330, 80, 700, 600);
 			signUpFrame.setVisible(false);
