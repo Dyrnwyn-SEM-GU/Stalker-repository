@@ -1,4 +1,4 @@
-package stalker;
+package gui;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jbundle.thin.base.screen.jcalendarbutton.JCalendarButton;
 
+import stalker.DatabaseConnector;
+
 import elements.DButton;
 import elements.DLabel;
 import elements.DPanel;
@@ -25,11 +27,11 @@ import elements.DPanel;
 public class ReportScreen implements ActionListener {
 
 	DPanel filterPane, grid, tablePanel;
-	DLabel dateLabel2, dateLabel3, lblToDate;
+	DLabel dateLabel1, dateLabel2, lblToDate;
 	DButton searchButton, exportButton, saveChangesButton, editButton,
 			filterButton;
-	JTable reportTable;
-	DefaultTableModel model;
+	static JTable reportTable;
+	static DefaultTableModel model;
 	String username;
 
 	ReportScreen() throws SQLException {
@@ -41,7 +43,7 @@ public class ReportScreen implements ActionListener {
 		date2.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
 			public void propertyChange(java.beans.PropertyChangeEvent evt) {
 				if (evt.getNewValue() instanceof Date)
-					dateLabel2.setText(GUI.dateFormat.format(((Date) (evt
+					dateLabel1.setText(GUI.dateFormat.format(((Date) (evt
 							.getNewValue()))));
 			}
 		});
@@ -50,12 +52,11 @@ public class ReportScreen implements ActionListener {
 		date3.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
 			public void propertyChange(java.beans.PropertyChangeEvent evt) {
 				if (evt.getNewValue() instanceof Date)
-					dateLabel3.setText(GUI.dateFormat.format(((Date) (evt
+					dateLabel2.setText(GUI.dateFormat.format(((Date) (evt
 							.getNewValue()))));
 			}
 		});
 
-		
 		filterPane = new DPanel(GUI.darkGray);
 		filterPane.setLayout(null);
 		filterPane.setBounds(100, 0, 680, 600);
@@ -70,16 +71,18 @@ public class ReportScreen implements ActionListener {
 		lblToDate = new DLabel("To date:", GUI.white, GUI.txtH3);
 		lblToDate.setBounds(369, 90, 94, 22);
 		filterPane.add(lblToDate);
+		dateLabel1 = new DLabel("", GUI.white, GUI.txtH3);
+		dateLabel1.setBounds(110, 130, 300, 40);
 		dateLabel2 = new DLabel("", GUI.white, GUI.txtH3);
-		dateLabel2.setBounds(380, 220, 300, 40);
-		dateLabel3 = new DLabel("", GUI.white, GUI.txtH3);
-		dateLabel3.setBounds(380, 220, 300, 40);
+		dateLabel2.setBounds(360, 130, 300, 40);
 
 		searchButton = new DButton("Search", GUI.white, GUI.txtH2,
 				GUI.darkerGray);
 		searchButton.addActionListener(this);
 		searchButton.setBounds(221, 370, 225, 28);
 		filterPane.add(searchButton);
+		filterPane.add(dateLabel1);
+		filterPane.add(dateLabel2);
 
 		GUI.report.add(filterPane);
 
@@ -121,17 +124,15 @@ public class ReportScreen implements ActionListener {
 		reportTable = new JTable();
 		reportTable.setFont(GUI.txtH4);
 		reportTable.setForeground(GUI.darkGray);
-
-		String fromDate = dateLabel2.getText();
-		String toDate = dateLabel3.getText();
-		model = dc.reportTable(model, username, fromDate, toDate);
-		
-		
-		reportTable.setModel(model);
-		model.fireTableDataChanged();
-
 		reportTable.setBounds(0, 0, 500, 500);
 		reportTable.setEnabled(false);
+		
+		ReportScreen.model = dc.reportTable(ReportScreen.model);
+		ReportScreen.reportTable.setModel(ReportScreen.model);
+		ReportScreen.model.fireTableDataChanged();
+		reportTable.setModel(model);
+		ReportScreen.model.fireTableDataChanged();
+		
 		tablePanel.setBounds(40, 75, 600, 400);
 		tablePanel.setLayout(new GridLayout(1, 1));
 		JScrollPane jsp = new JScrollPane(reportTable);
@@ -161,13 +162,9 @@ public class ReportScreen implements ActionListener {
 			/* modified by Jani */
 			try {
 				DatabaseConnector dc = new DatabaseConnector();
-			
-				String fromDate = dateLabel2.getText();
-				String toDate = dateLabel3.getText();
-				System.out.println(fromDate);
-				System.out.println(toDate);	
-				
-				model = dc.reportTable(model, username, fromDate, toDate);
+				System.out.println(dateLabel1.getText());
+				System.out.println(dateLabel2.getText());
+				model = dc.reportTable(model);
 				grid.setVisible(true);
 				filterPane.setVisible(false);
 				model.fireTableDataChanged();

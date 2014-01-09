@@ -1,5 +1,7 @@
 package stalker;
 
+import gui.LoginScreen;
+
 import javax.mail.*;
 import javax.mail.internet.*;
 

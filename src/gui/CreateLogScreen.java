@@ -1,4 +1,4 @@
-package stalker;
+package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +12,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.jbundle.thin.base.screen.jcalendarbutton.JCalendarButton;
+
+import stalker.DatabaseConnector;
 
 import elements.DButton;
 import elements.DComboBox;
@@ -36,8 +38,6 @@ public class CreateLogScreen implements ActionListener {
 	JCalendarButton calendarButton = new JCalendarButton();
 	DPanel createPanel, extraCostPanel;
 	JDialog extraCostDialog;
-
-	String username;
 
 	CreateLogScreen() throws SQLException {
 
@@ -119,7 +119,7 @@ public class CreateLogScreen implements ActionListener {
 
 		carLabel = new DLabel("Car:", GUI.white, GUI.txtH3);
 		carLabel.setBounds(50, 190, 260, 40);
-		car = new DComboBox(dc.querieCar("RegistryNumber", "Car", username),
+		car = new DComboBox(dc.querieCar("RegistryNumber", "Car", GUI.username),
 				GUI.darkGray, GUI.txtH3, GUI.white);
 		car.setBounds(50, 230, 260, 40);
 
@@ -143,7 +143,7 @@ public class CreateLogScreen implements ActionListener {
 		submitButton.setBounds(280, 450, 120, 40);
 		submitButton.addActionListener(this);
 		dateLabel = new DLabel("", GUI.white, GUI.txtH3);
-		dateLabel.setBounds(400, 160, 300, 40);
+		dateLabel.setBounds(450, 120, 300, 40);
 		calendarButton.setBounds(590, 120, 40, 40);
 
 		/* extraCost button by Danielle, merged by Jani */
@@ -187,15 +187,13 @@ public class CreateLogScreen implements ActionListener {
 				String ks = startKmTxt.getText();
 				String ke = endKmTxt.getText();
 				String reason = reasonTripTxt.getText();
-				String name = "000";
 				String c = car.getSelectedItem().toString();
 				String d = dateLabel.getText();
 
-				if (f == "" || t == "" || ks == "" || ke == "" || reason == ""
-						|| username == "" || name == "" || c == "" || d == "") {
+				if (f == "" || t == "" || ks == "" || ke == "" || reason == "" || c == "" || d == "") {
 					new JOptionPane("missing value");
 				} else {
-					dc.insertTripData(ks, ke, f, t, reason, username, name, c,
+					dc.insertTripData(ks, ke, f, t, reason, c,
 							d);
 				}
 			} catch (SQLException e) {

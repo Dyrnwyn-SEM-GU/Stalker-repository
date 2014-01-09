@@ -1,10 +1,13 @@
-package stalker;
+package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
+import stalker.DatabaseConnector;
 
 import elements.DButton;
 import elements.DComboBox;
@@ -19,24 +22,31 @@ public class HomeScreen implements ActionListener {
 	DLabel oldPasswordLabel,
 	newPasswordLabel1, newPasswordLabel2, carBrandLabel, carTypeLabel,
 	consumptionLabel, registeryNumberLabel;
-	static DPanel homePanel;
+	public static DPanel homePanel;
 	DPanel changePasswordPanel, carPanel;
-	DButton editCarDetailButton, submitPasswordButton,
+	DButton editCarDetailButton, submitPasswordButton,logOutButton,
 	changePasswordButton, saveCarButton, cancelCarButton;
 	DTextField newPasswordTxt1, newPasswordTxt2, oldPasswordTxt, carBrandTxt,
 	consumptionTxt, registeryNumberTxt, firstNameTxt, yourEmailTxt,
 	reEnterPasswordTxt, passwordTxt;
 	DComboBox carType;
-	JDialog changePasswordDialog, carDetailDialog;
+	JDialog changePasswordDialog;
+	static JDialog carDetailDialog;
 
 	HomeScreen() throws SQLException {
 
 		DatabaseConnector dc = new DatabaseConnector();
+		
+		/* log out button, by Aure */
+		logOutButton = new DButton("log out", GUI.white, GUI.txtH2,
+				GUI.darkerGray);
+		logOutButton.setBounds(215, 300, 250, 40);
+		logOutButton.addActionListener(this);
 
 		/* edit car details, by Mahsa */
-		editCarDetailButton = new DButton("edit car details", GUI.white, GUI.txtH2,
+		editCarDetailButton = new DButton("add car", GUI.white, GUI.txtH2,
 				GUI.darkerGray);
-		editCarDetailButton.setBounds(150, 100, 250, 40);
+		editCarDetailButton.setBounds(215, 100, 250, 40);
 		editCarDetailButton.addActionListener(this);
 
 		/* edit cars pop-up */
@@ -53,13 +63,13 @@ public class HomeScreen implements ActionListener {
 		carTypeLabel = new DLabel("Car Type ", GUI.white, GUI.txtH3);
 		carTypeLabel.setBounds(20, 100, 150, 28);
 		
-		carType = new DComboBox(dc.getColumn("RegistryNumber", "Car"),
+		carType = new DComboBox(dc.getColumn("CarTypes", "CarTypes"),
 				GUI.darkGray, GUI.txtH3, GUI.white);
 		carType.setBounds(200, 100, 250, 28);
 
 		consumptionLabel = new DLabel("Consumption", GUI.white, GUI.txtH3);
 		consumptionLabel.setBounds(20, 160, 150, 28);
-		consumptionTxt = new DTextField(20, GUI.white, GUI.txtH3);
+		consumptionTxt = new DTextField(20, GUI.darkerGray, GUI.txtH3);
 		consumptionTxt.setBounds(200, 160, 250, 28);
 
 		registeryNumberLabel = new DLabel("Registry Number", GUI.white,
@@ -90,7 +100,7 @@ public class HomeScreen implements ActionListener {
 		
 		carDetailDialog = new JDialog();
 		carDetailDialog.setBackground(GUI.darkerGray);
-		carDetailDialog.setTitle("Change Password");
+		carDetailDialog.setTitle("Change password");
 		carDetailDialog.setSize(500, 600);
 		carDetailDialog.setLocationRelativeTo(null);
 		carDetailDialog.setLayout(null);
@@ -128,7 +138,7 @@ public class HomeScreen implements ActionListener {
 
 		changePasswordDialog = new JDialog();
 		changePasswordDialog.setBackground(GUI.darkerGray);
-		changePasswordDialog.setTitle("Change Password");
+		changePasswordDialog.setTitle("Change password");
 		changePasswordDialog.setSize(500, 600);
 		changePasswordDialog.setLocationRelativeTo(null);
 		changePasswordDialog.setLayout(null);
@@ -143,9 +153,9 @@ public class HomeScreen implements ActionListener {
 
 		changePasswordDialog.add(changePasswordPanel);
 
-		changePasswordButton = new DButton("change Password", GUI.white,
+		changePasswordButton = new DButton("change password", GUI.white,
 				GUI.txtH2, GUI.darkerGray);
-		changePasswordButton.setBounds(150, 300, 250, 40);
+		changePasswordButton.setBounds(215, 160, 250, 40);
 		changePasswordButton.addActionListener(this);
 
 		homePanel = new DPanel(GUI.darkGray);
@@ -154,6 +164,7 @@ public class HomeScreen implements ActionListener {
 		homePanel.setLayout(null);
 		homePanel.add(editCarDetailButton);
 		homePanel.add(changePasswordButton);
+		homePanel.add(logOutButton);
 
 		GUI.home.add(homePanel);
 	}
@@ -165,7 +176,13 @@ public class HomeScreen implements ActionListener {
 			carDetailDialog.setVisible(true);
 		}
 		if (ae.getSource() == saveCarButton) {
-		/* code to upload the car to the database missing */
+			System.out.println(GUI.username);
+			try {
+				DatabaseConnector dc = new DatabaseConnector();	
+				dc.insertNewCar(carBrandTxt.getText(), registeryNumberTxt.getText(), carType.getSelectedItem().toString(), consumptionTxt.getText(), GUI.username);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			carDetailDialog.setVisible(false);
 		}
 		if (ae.getSource() == cancelCarButton) {
@@ -175,20 +192,33 @@ public class HomeScreen implements ActionListener {
 		if (ae.getSource() == changePasswordButton) {
 			changePasswordDialog.setVisible(true);
 		}
+		if (ae.getSource() == logOutButton) {
+			changePasswordDialog.setVisible(false);
+			carDetailDialog.setVisible(false);
+			GUI.tabPane.setEnabled(false);
+			GUI.username = null;
+			HomeScreen.homePanel.setVisible(false);
+			LoginScreen.loginScreenPanel.setVisible(true);
+			LoginScreen.passwordTxt.setText("");
+		}
 		if (ae.getSource() == submitPasswordButton) {
 			try {
 				DatabaseConnector dc = new DatabaseConnector();
 
 				String password = dc.queryCredentials("password", "username",
-						"**username**");
+						GUI.username);
 
 				if (oldPasswordTxt.getText().equals(password)) {
 					if (newPasswordTxt2.getText().equals(
 							newPasswordTxt1.getText())) {
 						dc.insertPassword(newPasswordTxt1.getText(),
-								"**username**");
+								GUI.username);
 						changePasswordDialog.setVisible(false);
+					}else{
+						JOptionPane.showMessageDialog(GUI.home, "The new Passwords don't match", "Error", JOptionPane.ERROR_MESSAGE);
 					}
+				}else{
+					JOptionPane.showMessageDialog(GUI.home, "The password you entered is wrong", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

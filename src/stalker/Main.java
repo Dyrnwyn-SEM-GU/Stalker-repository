@@ -1,5 +1,7 @@
 package stalker;
 
+import gui.GUI;
+
 import java.sql.*;
 import java.util.*;
 

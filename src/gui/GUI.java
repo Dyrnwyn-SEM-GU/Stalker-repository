@@ -1,4 +1,4 @@
-package stalker;
+package gui;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -21,17 +21,17 @@ public class GUI extends JFrame {
 	public static Font txtH3 = new Font("Arial", 0, 20);
 	public static Font txtH4 = new Font("Arial", 0, 14);
 
-	static DPanel home;
-	static DPanel create;
-	static DPanel report;
-	static JTabbedPane tabPane;
+	public static DPanel home;
+	public static DPanel create;
+	public static DPanel report;
+	public static JTabbedPane tabPane;
 	
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	DefaultTableModel model;
 	
-	static String username;
+	public static String username;
 
-	GUI() throws SQLException {
+	public GUI() throws SQLException {
 
 		home = new DPanel(gray);
 		home.setLayout(null);

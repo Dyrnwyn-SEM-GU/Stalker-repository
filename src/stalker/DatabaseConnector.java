@@ -1,5 +1,9 @@
 package stalker;
 
+import gui.GUI;
+import gui.HomeScreen;
+import gui.LoginScreen;
+
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -11,13 +15,12 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.ResultSetMetaData;
-
-import elements.DLabel;
 
 /* the connections to the Database happen here, by Aure */
 
@@ -29,7 +32,7 @@ public class DatabaseConnector {
 
 	File selectedFile;
 
-	DatabaseConnector() throws SQLException {
+	public DatabaseConnector() throws SQLException {
 		con = DriverManager.getConnection("jdbc:mysql://localhost/StalkerDB",
 				"Dyrnwyn", "Dyrnwyn!");
 		stmt = con.createStatement();
@@ -52,45 +55,36 @@ public class DatabaseConnector {
 	}
 
 	/* by Danielle */
-	public DefaultTableModel reportTable(DefaultTableModel model,
-			String username, String fromDate, String toDate) throws SQLException {
+	public DefaultTableModel reportTable(DefaultTableModel model) throws SQLException {
 
-		String SQL = "Select * from TripData WHERE Username ='" + username
-				+ "' AND Date BETWEEN '" + fromDate + "' AND '" + toDate + "';";
+		String SQL = "Select `StartingKm`, `EndingKm`, `From`, `To`, `ReasonOfTrip`, `RegistryNumber`, `Date` from TripData WHERE Username ='" + GUI.username + "';";
 
-		System.out.print("fromDate");
-		System.out.print(fromDate);
-		System.out.print("ToDate");
-		System.out.print(toDate);
-		
 		rs = stmt.executeQuery(SQL);
 		ResultSetMetaData rsm = (ResultSetMetaData) rs.getMetaData();
 		int nrCols = rsm.getColumnCount();
 		ArrayList<Object[]> t = new ArrayList<Object[]>();
 		while (rs.next()) {
-			Object[] temp = new Object[11];
-			temp[0] = rs.getString("idTripData");
-			temp[1] = rs.getString("StartingKm");
-			temp[2] = rs.getString("EndingKm");
-			temp[3] = rs.getString("From");
-			temp[4] = rs.getString("To");
-			temp[5] = rs.getString("ReasonOfTrip");
-			temp[6] = rs.getString("Username");
-			temp[7] = rs.getString("Name");
-			temp[8] = rs.getString("RegistryNumber");
-			temp[9] = rs.getString("Timestamp");
-			temp[10] = rs.getString("Date");
+			Object[] temp = new Object[7];
+//			temp[0] = rs.getString("idTripData");
+			temp[0] = rs.getString("StartingKm");
+			temp[1] = rs.getString("EndingKm");
+			temp[2] = rs.getString("From");
+			temp[3] = rs.getString("To");
+			temp[4] = rs.getString("ReasonOfTrip");
+//			temp[6] = rs.getString("Username");
+//			temp[7] = rs.getString("Name");
+			temp[5] = rs.getString("RegistryNumber");
+//			temp[9] = rs.getString("Timestamp");
+			temp[6] = rs.getString("Date");
 			t.add(temp);
 		}
 		Object[][] data = new Object[t.size()][nrCols];
 		for (int i = 0; i < t.size(); i++) {
-			for (int j = 0; j < 11; j++) {
+			for (int j = 0; j < 7; j++) {
 				data[i][j] = t.get(i)[j];
 			}
 		}
-		Object[] columnNames = { "idTripData", "StartingKm", "EndingKm",
-				"From", "To", "ReasonOfTrip", "Username", "Name",
-				"RegistryNumber", "Timestamp", "Date" };
+		Object[] columnNames = {"Start Km","End Km","From","To","Reason of trip","Registration number","Date"};
 
 		model.setDataVector(data, columnNames);
 		return model;
@@ -117,14 +111,19 @@ public class DatabaseConnector {
 	/* methods to insert user data in the database, by JANI */
 
 	public void insertTripData(String startKm, String endKm, String from,
-			String to, String tripReason, String username, String name,
+			String to, String tripReason,
 			String car, String date) throws SQLException {
 
+		String name = "";
+		
+		//rs = stmt.executeQuery("SELECT Name FROM User WHERE Username = " + GUI.username + ";");
+		//name = rs.getString(1);
+		System.out.println(name);
 		stmt.executeUpdate("INSERT INTO TripData"
 				+ "(`StartingKm`, `EndingKm`, `From`, `To`, `ReasonOfTrip`, `Username`, `Name`, `RegistryNumber`, `Date`)"
 				+ " VALUES " + "('" + startKm + "','" + endKm + "','" + from
-				+ "','" + to + "','" + tripReason + "','" + username + "','"
-				+ name + "','" + car + "','" + date + "')");
+				+ "','" + to + "','" + tripReason + "','" + GUI.username + "','"
+				+ "none" + "','" + car + "','" + date + "')");
 	}
 
 	public void insertExtraCost(String typeOfCost, String cost, String file,
@@ -136,20 +135,19 @@ public class DatabaseConnector {
 				+ "','" + idTripData + "')");
 	}
 
-public void insertNewUser(String yourEmail, String Password, String firstName) throws SQLException {
-		
-		stmt.executeUpdate("INSERT INTO User"
-				+ "(`Username`, `Password`, `Name`)" + " VALUES " + "('"
-				+ yourEmail + "','" + Password + "','" + firstName + "')");
+	public void insertNewUser(String username, String password, String name)
+			throws SQLException {
+
+		stmt.executeUpdate("INSERT INTO User" + "(`Username`, `Password`, `Name`)"
+				+ " VALUES " + "('" + username + "','" + password + "','" + name +"')");
 	}
-	
-	
+
 	public void insertNewCar(String carBrand, String registryNumber, String carType, String consumption, String username) throws SQLException {
 		stmt.executeUpdate("INSERT INTO Car"
 				+ "(`Brand`, `RegistryNumber`, `Type`, `Consumption`, `Username`)" + " VALUES " 
 				+ "('" + carBrand + "','" + registryNumber + "','" + carType + "','" + consumption + "','" + username + "')");
-
 	}
+
 	/*
 	 * method to fetch the information for the dropdown menu, by AURE, modified
 	 * by Jani
@@ -222,11 +220,11 @@ public void insertNewUser(String yourEmail, String Password, String firstName) t
 	}
 
 	/* methods to export data from the database, by GABRIELE */
-	public String buildCSV(String table, String username) throws SQLException {
+	public String buildCSV(String table) throws SQLException {
 
 		ArrayList<String> row = new ArrayList<String>();
 		rs = stmt.executeQuery("SELECT * from " + table + " WHERE Username = '"
-				+ username + "';");
+				+ GUI.username + "';");
 		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 		int columnsNumber = rsmd.getColumnCount();
 
@@ -245,7 +243,7 @@ public void insertNewUser(String yourEmail, String Password, String firstName) t
 
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(
 				filepathAndName)));
-		bw.write(buildCSV("TripData", username));
+		bw.write(buildCSV("TripData"));
 		bw.close();
 	}
 	
@@ -263,7 +261,7 @@ public void insertNewUser(String yourEmail, String Password, String firstName) t
 		if (username.equals("") || pass.equals("")) {
 		} else if (queryCredentials("Password", "Username", username).equals(
 				pass)) {
-			LoginScreen.loginScreen.setVisible(false);
+			LoginScreen.loginScreenPanel.setVisible(false);
 			GUI.tabPane.setEnabled(true);
 			HomeScreen.homePanel.setVisible(true);
 		} else {
@@ -272,7 +270,7 @@ public void insertNewUser(String yourEmail, String Password, String firstName) t
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+
 	/* transforms an ArrayList to a string, by Aure */
 	public String stringify(ArrayList<String> ar) {
 		String listString = "";

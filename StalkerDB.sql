@@ -37,7 +37,7 @@ CREATE TABLE `Car` (
 
 LOCK TABLES `Car` WRITE;
 /*!40000 ALTER TABLE `Car` DISABLE KEYS */;
-INSERT INTO `Car` VALUES ('Volvo','ABC123','95',0.70,'dyrnwyn@dyrnwyn.com'),('WV','CBA321','95',0.70,'jani.m.pasanen@gmail.com');
+INSERT INTO `Car` VALUES ('Volvo','ABC123','Petrol',0.70,'dyrnwyn@dyrnwyn.com'),('VW','CBA321','Petrol',0.70,'jani.m.pasanen@gmail.com'), ('VW','CBI321','Petrol',0.70,'morgan.ericsson@gu.se');
 /*!40000 ALTER TABLE `Car` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +197,9 @@ CREATE TABLE `TripData` (
 
 LOCK TABLES `TripData` WRITE;
 /*!40000 ALTER TABLE `TripData` DISABLE KEYS */;
-INSERT INTO `TripData` VALUES (1,100110,100560,'Gothenburg','Stockholm','Conference','dyrnwyn@dyrnwyn.com','000','ABC123','2013-11-23 17:25:31','2013-11-22'),(2,100589,100985,'Stockholm','Oslo','Exhibition','dyrnwyn@dyrnwyn.com','000','ABC123','2013-11-25 17:25:31','2013-11-24'),(3,101000,101101,'Oslo','Oslo','Conference','dyrnwyn@dyrnwyn.com','000','ABC123','2013-11-27 17:25:31','2013-11-26'),(4,101101,101455,'Oslo','Gothenburg','Meeting','dyrnwyn@dyrnwyn.com','000','ABC123','2013-11-27 17:25:31','2013-12-24'),(5,101455,101455,'Gothenburg','Gothenburg','Meeting','dyrnwyn@dyrnwyn.com','000','ABC123','2013-11-27 17:25:31','2013-11-24'),(6,101455,101455,'Gothenburg','Gothenburg','Meeting','dyrnwyn@dyrnwyn.com','000','ABC123','2013-12-27 17:25:31','2013-11-24'),(7,101455,101455,'Gothenburg','Gothenburg','Meeting','dyrnwyn@dyrnwyn.com','000','ABC123','2013-12-27 17:25:31','2013-11-24'),(8,101455,101455,'Gothenburg','Gothenburg','Conference','dyrnwyn@dyrnwyn.com','000','ABC123','2013-12-27 17:25:31','2013-11-24'),(9,101455,101455,'Gothenburg','Gothenburg','Conference','dyrnwyn@dyrnwyn.com','000','ABC123','2013-12-27 17:25:31','2013-11-24'),(10,101455,101455,'Gothenburg','Gothenburg','Conference','dyrnwyn@dyrnwyn.com','000','ABC123','2013-12-27 17:25:31','2013-11-24'),(11,101455,101455,'Gothenburg','Gothenburg','Meeting','dyrnwyn@dyrnwyn.com','000','ABC123','2013-12-27 17:25:31','2013-11-24'),(12,101455,102345,'Gothenburg','Paris','Sales meeting','dyrnwyn@dyrnwyn.com','000','ABC123','2013-12-27 17:43:00','2013-12-18');
+INSERT INTO `TripData` VALUES (1,100110,100560,'Gothenburg','Stockholm','Conference','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-11-23 17:25:31','2013-11-22'),(2,100589,100985,'Stockholm','Oslo','Exhibition','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-11-25 17:25:31','2013-11-24'),(3,101000,101101,'Oslo','Oslo','Conference','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-11-27 17:25:31','2013-11-26'),(4,101101,101455,'Oslo','Gothenburg','Meeting','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-11-27 17:25:31','2013-12-24'),(5,101455,101455,'Gothenburg','Gothenburg','Meeting','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-11-27 17:25:31','2013-11-24'),(6,101455,101455,'Gothenburg','Gothenburg','Meeting','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-12-27 17:25:31','2013-11-24'),(7,101455,101455,'Gothenburg','Gothenburg','Meeting','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-12-27 17:25:31','2013-11-24'),(8,101455,101455,'Gothenburg','Gothenburg','Conference','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-12-27 17:25:31','2013-11-24'),(9,101455,101455,'Gothenburg','Gothenburg','Conference','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-12-27 17:25:31','2013-11-24'),(10,101455,101455,'Gothenburg','Gothenburg','Conference','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-12-27 17:25:31','2013-11-24'),(11,101455,101455,'Gothenburg','Gothenburg','Meeting','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-12-27 17:25:31','2013-11-24'),(12,101455,102345,'Gothenburg','Paris','Sales meeting','dyrnwyn@dyrnwyn.com','Dyrnwyn','ABC123','2013-12-27 17:43:00','2013-12-18'),
+(13,100000,101000,'Gothenburg','Stockholm','Meeting','jani.m.pasanen@gmail.com', 'Jani Pasanen', 'CBA321', '2013-12-27 17:43:00','2013-12-18'),
+(14,100000,101000,'Gothenburg','Stockholm','Meeting','morgan.ericsson@gu.se', 'Morgan Ericsson', 'CBI321', '2013-12-27 17:43:00','2013-12-18');
 /*!40000 ALTER TABLE `TripData` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,7 +227,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES ('dyrnwyn@dyrnwyn.com',NULL,NULL,'dyrnwyn',NULL,NULL),('jani.m.pasanen@gmail.com','','','jani',NULL,NULL);
+INSERT INTO `User` VALUES ('dyrnwyn@dyrnwyn.com',NULL,NULL,'dyrnwyn','Dyrnwyn',NULL),('jani.m.pasanen@gmail.com','','','jani','Jani Pasanen',NULL),('morgan.ericsson@gu.se','','','morgan123','Morgan Ericsson',NULL);
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
