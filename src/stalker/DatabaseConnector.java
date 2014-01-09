@@ -10,12 +10,15 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.ResultSetMetaData;
+
+/* the connections to the Database happen here, by Aure */
 
 public class DatabaseConnector {
 
@@ -25,180 +28,32 @@ public class DatabaseConnector {
 
 	File selectedFile;
 
-	public DatabaseConnector() throws SQLException {
-
+	DatabaseConnector() throws SQLException {
 		con = DriverManager.getConnection("jdbc:mysql://localhost/StalkerDB",
 				"Dyrnwyn", "Dyrnwyn!");
-		// System.out.println("Database connected");
-
 		stmt = con.createStatement();
-
 	}
-	
-	public String querieCredentials(String row1, String row2, String value) throws SQLException{
-		
-		rs = stmt.executeQuery("SELECT " + row1 + " FROM User WHERE " + row2 + " = '" + value + "';");
+
+	/* by Gabriele */
+	public String queryCredentials(String row1, String row2, String value)
+			throws SQLException {
+
+		rs = stmt.executeQuery("SELECT " + row1 + " FROM User WHERE " + row2
+				+ " = '" + value + "';");
 		String result = "";
-		
+
 		if (rs.next()) {
-			 result = rs.getString(1);
-		}else{
+			result = rs.getString(1);
+		} else {
 			System.out.println("result set is empty");
 		}
-		// con.close();
 		return result;
 	}
-	
-	/* this method creates a table-model (as used by JTable) for a specific table 
-	 * at the moment only from the user table
-	 * by DANIELLE	|| supervisor helped streamline it, but it was working before as well */
-	
-//	public DefaultTableModel reportTable(DefaultTableModel model)
-//			throws SQLException {
-//
-//		String table = "";
-//		String column = "";
-//		String username = "";
-//		String date1 = "";
-//		String date2 = "";
-//		String and = "";
-//		String carRegistryNumber = "";
-//
-//		if (!username.equals("")) {
-//			username = "Username = " + "'" + username + "'";
-//		}
-//		if (!date1.equals("")) {
-//			date1 = "`Date` between " + "'" + date1 + "'";
-//		}
-//		if (!date2.equals("")) {
-//			date2 = " and " + "'" + date2 + "'";
-//		}
-//		if (!username.equals("") && (!date1.equals(""))) {
-//			and = " and ";
-//		}
-//
-//		String selectTable = "SELECT A.idtripdata, A.From, A.To,  A.EndingKm, A.ReasonOfTrip, A.Name, A.RegistryNumber, A.Date FROM TripData A";
-//
-//		String selectFromTable = "SELECT * from " + table + ";";
-//
-//		String selectColumn = "SELECT " + column + " FROM " + table + ";";
-//
-//		// accessing 2 tables: TripData and ExtraCosts and getting data from
-//		// necessary columns only
-//		// Getting the report from all trips and extra costs from users ( shown
-//		// even users without extra cost ) using the Foreign Key Username
-//		String selectTripsExtraCost = "SELECT A.Name, A.From, A.To, A.StartingKm, A.EndingKm, A.ReasonOfTrip, A.RegistryNumber, A.Date, B.TypeOfCost, B.Cost, B.File, B.Date FROM TripData A LEFT JOIN ExtraCosts B ON A.Username = B.Username";
-//
-//		// The total of all extra costs
-//		String selectTotalExtraCost = "SELECT SUM(Cost) AS Total_Costs_From_Users FROM ExtraCosts";
-//
-//		String selectCarConsumption = "select Brand, RegistryNumber, Model, Consumption FROM car WHERE RegistryNumber = "
-//				+ carRegistryNumber + ";";
-//
-//		String selectSpecific = "select * from tripdata where username = 'use an valid username in your database' and date between 'start date' and 'end date'";
-//
-//		// select an specific user between specific dates
-//		// problem : syntax error
-//		String selectUserBTWDates = "SELECT * from " + table + " WHERE "
-//				+ username + and + date1 + date2 + ";";
-//
-//		// getting input from user to merge
-//		Scanner input = new Scanner(System.in);
-//		String query = null;
-//		String tabl = null;
-//
-//		System.out.println("Choose a Query:");
-//		query = input.nextLine();
-//
-//		/*
-//		 * if choose select table, the stmt will return the selectFromTable
-//		 * query ... can be implemented with ActionListener
-//		 */
-//		if (query.equalsIgnoreCase("select table")) {
-//			System.out.println("Choose an table:");
-//			table = input.nextLine();
-//
-//			rs = stmt.executeQuery(selectFromTable);
-//
-//		}
-//
-//		if (query.equalsIgnoreCase("select trips extra costs")) {
-//
-//			rs = stmt.executeQuery(selectTripsExtraCost);
-//
-//		}
-//		if (query.equalsIgnoreCase("select specific")) {
-//			rs = stmt.executeQuery(selectSpecific);
-//
-//		}
-//
-//		// rs = stmt.executeQuery(selectTable);
-//		rsm = (ResultSetMetaData) rs.getMetaData();
-//
-//		// Getting number of rows
-//		int rowNumber;
-//		rs.last();
-//		rowNumber = rs.getRow();
-//		rs.beforeFirst();
-//
-//		// System.out.println(" NUMBER OF ROW:" + rowCount);
-//
-//		// Getting number of columns
-//		int nrCols = rsm.getColumnCount();
-//
-//		// Object to store data from database
-//		data = new Object[rowNumber][nrCols];
-//
-//		int i = 0;
-//
-//		while (rs.next()) {
-//
-//			// fill the Object data with data values
-//			for (int a = 0; a <= (nrCols - 1); a++) {
-//
-//				data[i][a] = rs.getString(a + 1);
-//
-//				// System.out.print("  " + data[i][a] + "\n");
-//
-//				System.out.println(data[i][a]);
-//
-//			}
-//
-//			i++;
-//
-//		}
-//
-//		con.close();
-//
-//		// here we get table column names and save in array
-//		columnName = new String[nrCols];
-//		// String column = null;
-//
-//		for (int c = 1; c <= nrCols; c++) {
-//			columnName[c - 1] = rsm.getColumnLabel(c);
-//
-//			// System.out.println("COLUMN NAMES:" + columnName);
-//
-//		}
-//
-//		// setting columns and its values
-//		model.setDataVector(data, columnName);
-//
-//		return model;
-//	}
 
-	// Code written by Danielle
-	// Merged by Aure
-	// and modified 2014-01-06 by Jani (Added username based filtering)
-
+	/* by Danielle */
 	public DefaultTableModel reportTable(DefaultTableModel model,
-			String username)
-			throws SQLException {
-		
-		/* could be combined with the specificQuerie method to generate a
-		 * specific SQL string  
-		 * 
-		 */
+			String username) throws SQLException {
+
 		String SQL = "Select * from TripData WHERE Username ='" + username
 				+ "';";
 
@@ -221,152 +76,39 @@ public class DatabaseConnector {
 			temp[10] = rs.getString("Date");
 			t.add(temp);
 		}
-		
 		Object[][] data = new Object[t.size()][nrCols];
 		for (int i = 0; i < t.size(); i++) {
 			for (int j = 0; j < 11; j++) {
 				data[i][j] = t.get(i)[j];
 			}
 		}
-
-		   Object[] columnNames = { "idTripData", "StartingKm", "EndingKm",
-                "From", "To", "ReasonOfTrip", "Username",
-                "Name", "RegistryNumber", "Timestamp", "Date" };
+		Object[] columnNames = { "idTripData", "StartingKm", "EndingKm",
+				"From", "To", "ReasonOfTrip", "Username", "Name",
+				"RegistryNumber", "Timestamp", "Date" };
 
 		model.setDataVector(data, columnNames);
-
 		return model;
 	}
 
-	
-	
 	/*
-	 * Methods to access data from the database
-	 * by JANI, AURELIEN */
-
-	
-	public void querieAll(String table) throws SQLException {
-
-		DefaultTableModel model = new DefaultTableModel();
-		JTable jt = new JTable(model);
-
-		ArrayList<String> row;
-
-		rs = stmt.executeQuery("SELECT * from " + table + ";");
-		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
-
-		int columnsNumber = rsmd.getColumnCount();
-
-		while (rs.next()) {
-			row = new ArrayList();
-			for (int i = 1; i <= columnsNumber; i++) {
-				String columnValue = rs.getString(i);
-				row.add(columnValue);
-			}
-			// System.out.print(Test.stringify(row));
-			// System.out.println("");
-		}
-		con.close();
-	}
-	/*
-	 * Used to populate car dropdown menus and
-	 * only display the cars registered for the
-	 * logged in user.
-	 * 
-	 * By Jani
+	 * populates the car drop-down menus, only display the cars registered for
+	 * the logged-in user, by Jani
 	 */
-	
-	public String[] querieCar(String column, String table, String username) throws SQLException {
-			ArrayList<String> al = new ArrayList();
-			rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " 
-			+ table + " WHERE Username = '" + username + "' ORDER BY " + column + " ASC;");
-			
-		//	"SELECT DISTINCT RegistryNumber FROM Car WHERE Username = '" + username + "' ORDER BY RegistryNumber ASC;");
-			
-			while(rs.next()){
-				al.add(rs.getString(1));
-			}
-			
-			String [] result = al.toArray(new String[al.size()]);
-			return result;
-		}
-		
-	
-	
-	
-	public void querieSpecific(String table, String username, String date1,
-			String date2) throws SQLException {
-		String and = "";
 
-		if (!username.equals("")) {
-			username = "Username = " + "'" + username + "'";
-		}
-		if (!date1.equals("")) {
-			date1 = "`Date` between " + "'" + date1 + "'";
-		}
-		if (!date2.equals("")) {
-			date2 = " and " + "'" + date2 + "'";
-		}
-		if (!username.equals("") && (!date1.equals(""))) {
-			and = " and ";
-		}
-
-		rs = stmt.executeQuery("SELECT * from " + table + " WHERE " + username
-				+ and + date1 + date2 + ";");
-
-		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
-		int columnsNumber = rsmd.getColumnCount();
-
+	public String[] querieCar(String column, String table, String username)
+			throws SQLException {
+		ArrayList<String> al = new ArrayList<String>();
+		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table
+				+ " WHERE Username = '" + username + "' ORDER BY " + column
+				+ " ASC;");
 		while (rs.next()) {
-			for (int i = 1; i <= columnsNumber; i++) {
-				String columnValue = rs.getString(i);
-				System.out.print(columnValue + " ");
-			}
-			System.out.println("");
+			al.add(rs.getString(1));
 		}
-		con.close();
-	}
-
-	public void querieColumn(String table, String column) throws SQLException {
-
-		if (Test.inputTest().equals("Locations")) {
-			table = "Locations";
-			if (Test.inputTest().equals("City")) {
-				column = "City";
-			} else if (Test.inputTest().equals("Street")) {
-				column = "Street";
-			}
-		}
-		if (Test.inputTest().equals("ExtraCostTypes")) {
-			table = "ExtraCostTypes";
-			column = "ExtraCostTypes";
-		}
-
-		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table + ";");
-
-		while (rs.next())
-			// System.out.println(rs.getString(1));
-
-		con.close();
-	}
-	
-	public String querieElement(String value1, String table, String value2, String is) throws SQLException{
-		
-		rs = stmt.executeQuery("SELECT " + value1 + " FROM " + table + " WHERE " + value2 + " = '" + is + "';");
-		String result = "";
-		
-		if (rs.next()) {
-			 result = rs.getString(1);
-		}else{
-			System.out.println("result set is empty");
-		}
-		con.close();
+		String[] result = al.toArray(new String[al.size()]);
 		return result;
 	}
 
-	/*
-	 * Methods to insert Userdata to the database
-	 * by JANI	 */
+	/* methods to insert user data in the database, by JANI */
 
 	public void insertTripData(String startKm, String endKm, String from,
 			String to, String tripReason, String username, String name,
@@ -378,7 +120,7 @@ public class DatabaseConnector {
 				+ "','" + to + "','" + tripReason + "','" + username + "','"
 				+ name + "','" + car + "','" + date + "')");
 	}
-	
+
 	public void insertExtraCost(String typeOfCost, String cost, String file,
 			String date, String idTripData) throws SQLException {
 
@@ -387,78 +129,51 @@ public class DatabaseConnector {
 				+ typeOfCost + "','" + cost + "','" + file + "','" + date
 				+ "','" + idTripData + "')");
 	}
-	/*
-	 * Method created by Jani. 
-	 * Used to enter new user data
-	 * Modified 2014-01-09
-	 */
-	
-	public void insertNewUser(String yourEmail, String Password, String firstName) throws SQLException {
-		
-		stmt.executeUpdate("INSERT INTO User"
-				+ "(`Username`, `Password`, `Name`)" + " VALUES " + "('"
-				+ yourEmail + "','" + Password + "','" + firstName + "')");
+
+	public void insertNewUser(String username, String password)
+			throws SQLException {
+
+		stmt.executeUpdate("INSERT INTO User" + "(`Username`, `Password`)"
+				+ " VALUES " + "('" + username + "','" + password + "')");
 	}
-	
-	
-	/*
-	 * Method created by Jani. 
-	 * Used to enter new car registry number for specific  data
-	 * Modified 2014-01-09
-	 */
-	
-	public void insertNewCar(String carBrand, String registryNumber, String carType, String consumption, String username) throws SQLException {
-		stmt.executeUpdate("INSERT INTO Car"
-				+ "(`Brand`, `RegistryNumber`, `Type`, `Consumption`, `Username`)" + " VALUES " 
-				+ "('" + carBrand + "','" + registryNumber + "','" + carType + "','" + consumption + "','" + username + "')");
+
+	public void insertNewCar(String registryNumber, String username)
+			throws SQLException {
+		stmt.executeUpdate("INSERT INTO Car" + "(`RegistryNumber`, `Username`)"
+				+ " VALUES " + "('" + registryNumber + "','" + username + "')");
 	}
-//	public void insertNewCar(String brand, String registryNumber, String type, String consumption, String username) throws SQLException {
-//		stmt.executeUpdate("INSERT INTO Car"
-//				+ "(`Brand`, `RegistryNumber`, `Type`, `Consumption`, `Username`)" + " VALUES " + "('"
-//				+ brand + "','" + registryNumber + "','" + type + "','" + consumption + "','" + username
-//				+ "')");
-//	}
-	
-	 /* Method to fetch the information for the dropdown menu
-	 * 	by AURELIEN */
-	
+
 	/*
-	 * Modified by Jani to sort the result in ascending order
+	 * method to fetch the information for the dropdown menu, by AURE, modified
+	 * by Jani
 	 */
-	
-	public String[] getColumn(String column, String table) throws SQLException{
-		ArrayList<String> al = new ArrayList();
-		
+
+	public String[] getColumn(String column, String table) throws SQLException {
+		ArrayList<String> al = new ArrayList<String>();
+
 		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table
 				+ " ORDER BY " + column + " ASC;");
-	
-		while(rs.next()){
+
+		while (rs.next()) {
 			al.add(rs.getString(1));
 		}
-		
-		String [] result = al.toArray(new String[al.size()]);
+		String[] result = al.toArray(new String[al.size()]);
 		return result;
-		
 	}
-	
-	/*
-	 * Methods to choose and insert Pictures or files to the database by
-	 * DANIELLE, redesigned by AURELIEN
-	 * 
-	 * Updated by Danielle 2014/01/06
-	 */
-	
-	public void uploadPic() {
-	    JFileChooser fileChooser = new JFileChooser();
-	    // can only select files
-	    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY); 
-	    fileChooser.showOpenDialog(null);
-		selectedFile = fileChooser.getSelectedFile();
-		// return selectedFile;
-	}
-	
-	public void insertImage() throws SQLException, IOException {
 
+	/*
+	 * choose and insert pictures or files to the database by
+	 * DANIELLE, redesigned by AURE
+	 */
+
+	public void uploadPic() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fileChooser.showOpenDialog(null);
+		selectedFile = fileChooser.getSelectedFile();
+	}
+
+	public void insertImage() throws SQLException, IOException {
 		String insertFile = "INSERT INTO ExtraCosts(File) VALUES (?)";
 		con.setAutoCommit(false);
 		try {
@@ -471,97 +186,96 @@ public class DatabaseConnector {
 			pstmt.close();
 			fileInputStream.close();
 		} catch (FileNotFoundException e) {
-			// if no file is found
 			System.out.print(e);
 		}
-		con.close();
 	}
-	
-	/*
-	 * by Danielle Method to show the picture uploaded,
-	 * 
-	 * Updated 2014/01/06
-	 */
 
+	 /* shows the uploaded picture, by Danielle */
 	public void showPicture() throws IOException {
-
 		final BufferedImage bufferedImage = ImageIO.read(selectedFile);
 
 		JLabel label = new JLabel() {
-
 			protected void paintComponent(Graphics g) {
-
 				Graphics graph = g.create();
 				graph.drawImage(bufferedImage, 0, 0, getWidth(), getHeight(),
 						null);
 				graph.dispose();
-
 			}
-
 			public Dimension getPreferredSize() {
-
 				return new Dimension(bufferedImage.getWidth(),
 						bufferedImage.getHeight());
-
 			}
-
 		};
-
+		
 		JFrame frame = new JFrame("Your selected picture: ");
-		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(label);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-
 	}
 
-	/*
-	 * Methods to export data from the database
-	 * by GABRIELE */
-	
+	/* methods to export data from the database, by GABRIELE */
 	public String buildCSV(String table, String username) throws SQLException {
 
-		ArrayList<String> row = new ArrayList();
-
+		ArrayList<String> row = new ArrayList<String>();
 		rs = stmt.executeQuery("SELECT * from " + table + " WHERE Username = '"
 				+ username + "';");
 		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 		int columnsNumber = rsmd.getColumnCount();
-		
+
 		while (rs.next()) {
 			for (int i = 1; i <= columnsNumber; i++) {
 				String columnValue = rs.getString(i);
-				row.add(columnValue);	
+				row.add(columnValue);
 			}
 			row.add("\n");
 		}
-		con.close();
-		return Test.stringify(row);
+		return stringify(row);
 	}
 	
-	/*
-	 * This method is used by the export to CSV
-	 */
-
 	public void exportCSV(String filepathAndName, String username)
 			throws SQLException, IOException {
-		
-		BufferedWriter bw = new BufferedWriter(new FileWriter(
-new File(
+
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(
 				filepathAndName)));
 		bw.write(buildCSV("TripData", username));
 		bw.close();
 	}
-
-	// Method for updating user password written by Sally and Jani
-
+	
+	/* update user password, by Sally and Jani */
 	public void insertPassword(String password, String username)
 			throws SQLException {
 
 		stmt.executeUpdate("UPDATE User SET Password = '" + password
 				+ "' WHERE Username = '" + username + "';");
+	}
+	
+	/* log in method, by Gabriele, helped by Thor, merged by Jani */
+	public void logInM(String username, String pass) throws SQLException {
 
+		if (username.equals("") || pass.equals("")) {
+		} else if (queryCredentials("Password", "Username", username).equals(
+				pass)) {
+			LoginScreen.loginScreen.setVisible(false);
+			GUI.tabPane.setEnabled(true);
+			HomeScreen.homePanel.setVisible(true);
+		} else {
+			JOptionPane.showMessageDialog(GUI.home,
+					"E-mail or password you inserted was incorrect.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	/* transforms an ArrayList to a string, by Aure */
+	public String stringify(ArrayList<String> ar) {
+		String listString = "";
+		for (String s : ar) {
+			if (s != "\n") {
+				listString += s + ", ";
+			} else {
+				listString += s;
+			}
+		}
+		return listString;
 	}
 }
-
