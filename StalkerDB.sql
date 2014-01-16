@@ -22,8 +22,8 @@ DROP TABLE IF EXISTS `Car`;
 CREATE TABLE `Car` (
   `Brand` varchar(32) DEFAULT NULL,
   `RegistryNumber` varchar(10) NOT NULL,
-  `Type` varchar(10) DEFAULT NULL,
-  `Consumption` decimal(3,2) DEFAULT NULL,
+  `Type` varchar(25) DEFAULT NULL,
+  `Consumption` decimal(4,2) DEFAULT NULL,
   `Username` varchar(30) NOT NULL,
   PRIMARY KEY (`RegistryNumber`,`Username`),
   KEY `fk_Car_User1_idx` (`Username`),
@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS `CarTypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `CarTypes` (
-  `CarTypes` varchar(40) NOT NULL,
+  `CarTypes` varchar(25) NOT NULL,
   PRIMARY KEY (`CarTypes`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -221,10 +221,10 @@ public class ReportScreen implements ActionListener {
 
 			for (int i = 0; i < rowChanged.length; i++) {
 				for (int j = 0; j < columnChanged.length; j++) {
-//					System.out.println(rowChanged[i]);
-//					System.out.println(columnChanged[j]);
-//					System.out.println(reportTable.getValueAt(rowChanged[i],
-//							columnChanged[j]));
+					System.out.println(rowChanged[i]);
+					System.out.println(columnChanged[j]);
+					System.out.println(reportTable.getValueAt(rowChanged[i],
+							columnChanged[j]));
 				}
 			}
 		}
