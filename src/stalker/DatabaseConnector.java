@@ -234,12 +234,12 @@ public class DatabaseConnector {
 	}
 	
 	/* update and save changes to TripData from report scren by Jani */
-	public void updateTripData(int rowChangedInt, int columnChangedInt, String tripId, String changedValue, String column)
-			throws SQLException {
-
-		stmt.executeUpdate("UPDATE TripData SET "+ column + = '" + password
-				+ "' WHERE Username = '" + username + "';");
-	}
+//	public void updateTripData(int rowChangedInt, int columnChangedInt, String tripId, String changedValue, String column)
+//			throws SQLException {
+//
+//		stmt.executeUpdate("UPDATE TripData SET "+ column + = '" + password
+//				+ "' WHERE Username = '" + username + "';");
+//	}
 	
 	/*
 	 * method to fetch the information for the dropdown menu, by AURE, modified
