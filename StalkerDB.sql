@@ -96,7 +96,7 @@ DROP TABLE IF EXISTS `ExtraCosts`;
 CREATE TABLE `ExtraCosts` (
   `idExtraCosts` int(11) NOT NULL AUTO_INCREMENT,
   `TypeOfCost` varchar(45) NOT NULL,
-  `Cost` decimal(5,2) NOT NULL,
+  `Cost` decimal(7,2) NOT NULL,
   `File` mediumblob,
   `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Date` date DEFAULT NULL,
