@@ -29,8 +29,8 @@ public class CreateLogScreen implements ActionListener {
 	DLabel createLogLabel, fromLabel, toLabel, startKmLabel, endKmLabel,
 	reasonOfTripLabel, dateLabel, carLabel, addExtraCostLabel,
 	typeOfCostLabel, totalCostLabel, costDateLabel;
-	DComboBox to, from;
-	static DComboBox car;
+	DComboBox toDropDown, fromDropDown;
+	static DComboBox carDropDown;
 	DTextField reasonTripTxt, startKmTxt, endKmTxt, typeCostTxt, costTxt,
 	dateTxt;
 	DButton extraCostButton, submitButton, uploadFileButton,
@@ -43,35 +43,31 @@ public class CreateLogScreen implements ActionListener {
 
 		DatabaseConnector dc = new DatabaseConnector();
 
-		/* extra cost pop-up by Danielle */
+		/* extra cost pop-up by Danielle redesigned by Aure */
 		extraCostPanel = new DPanel(GUI.darkGray);
-		extraCostPanel.setBounds(0, 0, 680, 600);
+		extraCostPanel.setBounds(0, 0, 400, 500);
 		extraCostPanel.setLayout(null);
 
 		addExtraCostLabel = new DLabel("Add extra costs", GUI.white,
 				GUI.txtH1);
-		addExtraCostLabel.setBounds(10, 15, 400, 40);
-		typeOfCostLabel = new DLabel("Type of Cost:", GUI.white, GUI.txtH3);
-		typeOfCostLabel.setBounds(10, 60, 150, 40);
-		totalCostLabel = new DLabel("Total of the Cost:", GUI.white, GUI.txtH3);
-		totalCostLabel.setBounds(10, 160, 160, 40);
-		costDateLabel = new DLabel("Date:", GUI.white, GUI.txtH3);
-		costDateLabel.setBounds(10, 260, 50, 40);
+		addExtraCostLabel.setBounds(50, 40, 400, 40);
+		typeOfCostLabel = new DLabel("Type of cost:", GUI.white, GUI.txtH3);
+		typeOfCostLabel.setBounds(50, 95, 500, 40);
+		totalCostLabel = new DLabel("Total of the cost:", GUI.white, GUI.txtH3);
+		totalCostLabel.setBounds(50, 195, 500, 40);
 
 		typeCostTxt = new DTextField(20, GUI.darkerGray, GUI.txtH3);
-		typeCostTxt.setBounds(10, 100, 300, 40);
+		typeCostTxt.setBounds(50, 130, 300, 40);
 		costTxt = new DTextField(20, GUI.darkerGray, GUI.txtH3);
-		costTxt.setBounds(10, 200, 300, 40);
-		dateTxt = new DTextField(20, GUI.darkerGray, GUI.txtH3);
-		dateTxt.setBounds(10, 300, 300, 40);
+		costTxt.setBounds(50, 230, 300, 40);
 
-		uploadFileButton = new DButton("Upload Picture", GUI.white, GUI.txtH2,
-				GUI.darkGray);
-		uploadFileButton.setBounds(380, 100, 150, 40);
+		uploadFileButton = new DButton("Upload receipt", GUI.white, GUI.txtH2,
+				GUI.darkerGray);
+		uploadFileButton.setBounds(50, 300, 300, 40);
 		uploadFileButton.addActionListener(this);
-		submitExtraCostButton = new DButton("Submit Extra Cost", GUI.white,
+		submitExtraCostButton = new DButton("Submit extra costs", GUI.white,
 				GUI.txtH2, GUI.darkerGray);
-		submitExtraCostButton.setBounds(150, 420, 250, 40);
+		submitExtraCostButton.setBounds(50, 350, 300, 40);
 		submitExtraCostButton.addActionListener(this);
 
 		extraCostPanel.add(addExtraCostLabel);
@@ -80,14 +76,14 @@ public class CreateLogScreen implements ActionListener {
 		extraCostPanel.add(typeCostTxt);
 		extraCostPanel.add(totalCostLabel);
 		extraCostPanel.add(costTxt);
-		extraCostPanel.add(costDateLabel);
-		extraCostPanel.add(dateTxt);
 		extraCostPanel.add(submitExtraCostButton);
 
 		extraCostDialog = new JDialog();
-		extraCostDialog.setBounds(350, 108, 670, 570);
+		extraCostDialog.setTitle("Add extra costs");
+		extraCostDialog.setBounds(800, 400, 400, 500);
 		extraCostDialog.setLayout(null);
 		extraCostDialog.setVisible(false);
+		extraCostDialog.setResizable(false);
 		extraCostDialog.add(extraCostPanel);
 
 		/* create log window */
@@ -107,21 +103,21 @@ public class CreateLogScreen implements ActionListener {
 
 		fromLabel = new DLabel("From:", GUI.white, GUI.txtH3);
 		fromLabel.setBounds(50, 80, 160, 40);
-		from = new DComboBox(dc.getColumn("City", "Locations"), GUI.darkGray,
+		fromDropDown = new DComboBox(dc.getColumn("City", "Locations"), GUI.darkGray,
 				GUI.txtH3, GUI.white);
-		from.setBounds(50, 120, 160, 40);
+		fromDropDown.setBounds(50, 120, 160, 40);
 
 		toLabel = new DLabel("To:", GUI.white, GUI.txtH3);
 		toLabel.setBounds(230, 80, 160, 40);
-		to = new DComboBox(dc.getColumn("City", "Locations"), GUI.darkGray,
+		toDropDown = new DComboBox(dc.getColumn("City", "Locations"), GUI.darkGray,
 				GUI.txtH3, GUI.white);
-		to.setBounds(230, 120, 160, 40);
+		toDropDown.setBounds(230, 120, 160, 40);
 
 		carLabel = new DLabel("Car:", GUI.white, GUI.txtH3);
 		carLabel.setBounds(50, 190, 260, 40);
-		car = new DComboBox(dc.querieCar("RegistryNumber", "Car", GUI.username),
+		carDropDown = new DComboBox(dc.queryCar("RegistryNumber", "Car", GUI.username),
 				GUI.darkGray, GUI.txtH3, GUI.white);
-		car.setBounds(50, 230, 260, 40);
+		carDropDown.setBounds(50, 230, 260, 40);
 
 		reasonOfTripLabel = new DLabel("Reason of trip:", GUI.white, GUI.txtH3);
 		reasonOfTripLabel.setBounds(380, 190, 260, 40);
@@ -140,7 +136,7 @@ public class CreateLogScreen implements ActionListener {
 
 		submitButton = new DButton("Submit", GUI.white, GUI.txtH2,
 				GUI.darkerGray);
-		submitButton.setBounds(280, 450, 120, 40);
+		submitButton.setBounds(220, 490, 250, 40);
 		submitButton.addActionListener(this);
 		dateLabel = new DLabel("", GUI.white, GUI.txtH3);
 		dateLabel.setBounds(450, 120, 300, 40);
@@ -149,7 +145,7 @@ public class CreateLogScreen implements ActionListener {
 		/* extraCost button by Danielle, merged by Jani */
 		extraCostButton = new DButton("Add extra costs", GUI.white, GUI.txtH2,
 				GUI.darkerGray);
-		extraCostButton.setBounds(220, 400, 230, 40);
+		extraCostButton.setBounds(220, 420, 250, 40);
 		extraCostButton.addActionListener(this);
 		/*---------------------------------------------*/
 
@@ -158,13 +154,13 @@ public class CreateLogScreen implements ActionListener {
 		createPanel.setLayout(null);
 		createPanel.add(createLogLabel);
 		createPanel.add(fromLabel);
-		createPanel.add(from);
+		createPanel.add(fromDropDown);
 		createPanel.add(toLabel);
-		createPanel.add(to);
+		createPanel.add(toDropDown);
 		createPanel.add(dateLabel);
 		createPanel.add(calendarButton);
 		createPanel.add(carLabel);
-		createPanel.add(car);
+		createPanel.add(carDropDown);
 		createPanel.add(reasonOfTripLabel);
 		createPanel.add(reasonTripTxt);
 		createPanel.add(startKmLabel);
@@ -182,19 +178,28 @@ public class CreateLogScreen implements ActionListener {
 		if (ae.getSource() == submitButton) {
 			try {
 				DatabaseConnector dc = new DatabaseConnector();
-				String f = from.getSelectedItem().toString();
-				String t = to.getSelectedItem().toString();
-				String ks = startKmTxt.getText();
-				String ke = endKmTxt.getText();
+				String from = fromDropDown.getSelectedItem().toString();
+				String to = toDropDown.getSelectedItem().toString();
+				String startKm = startKmTxt.getText();
+				String endKm = endKmTxt.getText();
 				String reason = reasonTripTxt.getText();
-				String c = car.getSelectedItem().toString();
-				String d = dateLabel.getText();
+				String car = carDropDown.getSelectedItem().toString();
+				String date = dateLabel.getText();
 
-				if (f == "" || t == "" || ks == "" || ke == "" || reason == "" || c == "" || d == "") {
-					new JOptionPane("missing value");
-				} else {
-					dc.insertTripData(ks, ke, f, t, reason, c,
-							d);
+				if (from == "" || to == "" || startKm == "" || endKm == "" || reason == "" || car == "" || date == "") {
+					JOptionPane.showMessageDialog(GUI.home, "Missing values", "Error", JOptionPane.ERROR_MESSAGE);
+				}else if(Integer.parseInt(startKm) > Integer.parseInt(endKm)){
+					JOptionPane.showMessageDialog(GUI.home, "The end Km value must be larger then the start Km value", "Error", JOptionPane.ERROR_MESSAGE);
+				}else {
+					dc.insertTripData(startKm, endKm, from, to, reason, car, date);
+					JOptionPane.showMessageDialog(GUI.home, "Travel log has been submitted", "Success!", JOptionPane.INFORMATION_MESSAGE);
+					dateLabel.setText("");
+					reasonTripTxt.setText("");
+					endKmTxt.setText("");
+					startKmTxt.setText("");
+					dateLabel.setText("");
+					GUI.model = dc.reportTable(GUI.model);
+					GUI.model.fireTableDataChanged();
 				}
 			} catch (SQLException e) {
 				System.out.println(e);

@@ -23,7 +23,7 @@ CREATE TABLE `Car` (
   `Brand` varchar(32) DEFAULT NULL,
   `RegistryNumber` varchar(10) NOT NULL,
   `Type` varchar(10) DEFAULT NULL,
-  `Consumption` decimal(2,2) DEFAULT NULL,
+  `Consumption` decimal(3,2) DEFAULT NULL,
   `Username` varchar(30) NOT NULL,
   PRIMARY KEY (`RegistryNumber`,`Username`),
   KEY `fk_Car_User1_idx` (`Username`),

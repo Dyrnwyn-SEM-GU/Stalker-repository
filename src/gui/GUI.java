@@ -27,7 +27,7 @@ public class GUI extends JFrame {
 	public static JTabbedPane tabPane;
 	
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	DefaultTableModel model;
+	public static DefaultTableModel model;
 	
 	public static String username;
 
@@ -59,6 +59,7 @@ public class GUI extends JFrame {
 		setSize(900, 650);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		setVisible(true);
 	}
 
