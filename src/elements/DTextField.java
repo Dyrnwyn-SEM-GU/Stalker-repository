@@ -10,7 +10,6 @@ public class DTextField extends JTextField {
 		setForeground(txtCol);
 		setFont(txt);
 	}
-	
 	public DTextField(int size, Color txtCol, Font txt) {
 		super(size);
 		setForeground(txtCol);

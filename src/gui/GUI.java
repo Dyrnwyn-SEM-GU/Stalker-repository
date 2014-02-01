@@ -1,7 +1,12 @@
 package gui;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
@@ -10,8 +15,8 @@ import elements.*;
 /* the User interface is set together here, by Aure */
 
 public class GUI extends JFrame {
-	
-	 /* Fonts and the Colors used throughout the project are defined here */
+
+	/* Fonts and the Colors used throughout the project are defined here */
 	public static Color white = new Color(255, 255, 255);
 	public static Color gray = new Color(78, 78, 78);
 	public static Color darkGray = new Color(49, 49, 49);
@@ -25,23 +30,24 @@ public class GUI extends JFrame {
 	public static DPanel create;
 	public static DPanel report;
 	public static JTabbedPane tabPane;
-	
-	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat(
+			"yyyy-MM-dd");
 	public static DefaultTableModel model;
-	
+
 	public static String username;
 
 	public GUI() throws SQLException {
 
 		home = new DPanel(gray);
 		home.setLayout(null);
-		
+
 		report = new DPanel(gray);
 		report.setLayout(null);
-		
+
 		create = new DPanel(gray);
 		create.setLayout(null);
-		
+
 		new LoginScreen();
 		new HomeScreen();
 		new CreateLogScreen();
@@ -54,7 +60,7 @@ public class GUI extends JFrame {
 		tabPane.addTab("Create", create);
 		tabPane.setEnabled(false);
 		add(tabPane);
-		
+
 		setTitle("STALKER");
 		setSize(900, 650);
 		setLocationRelativeTo(null);
@@ -63,14 +69,14 @@ public class GUI extends JFrame {
 		setVisible(true);
 	}
 
-//	/*
-//	 * this methods creates the picture by DANIELLE, redesigned by AURELIEN
-//	 */
-//
-//	public ImageIcon pic(File file) throws IOException {
-//		BufferedImage bufferedImage = ImageIO.read(file);
-//		ImageIcon imageIcon = new ImageIcon(bufferedImage);
-//		return imageIcon;
-//	}
+	/*
+	 * this methods display an uploaded picture by DANIELLE, redesigned by
+	 * AURELIEN
+	 */
+	public static ImageIcon pic(File file) throws IOException {
+		BufferedImage bufferedImage = ImageIO.read(file);
+		ImageIcon imageIcon = new ImageIcon(bufferedImage);
+		return imageIcon;
+	}
 
 }

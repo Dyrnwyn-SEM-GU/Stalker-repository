@@ -8,19 +8,11 @@ import gui.ReportScreen;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
-import java.awt.Dimension;
-import java.awt.Graphics;
+
 import java.awt.image.BufferedImage;
-
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import javax.swing.JFileChooser;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 import com.mysql.jdbc.ResultSetMetaData;
 
 /* the connections to the Database happen here, by Aure */
@@ -28,42 +20,13 @@ import com.mysql.jdbc.ResultSetMetaData;
 public class DatabaseConnector {
 
 	Connection con = null;
-	public Statement stmt = null;
+	Statement stmt = null;
 	ResultSet rs = null;
-
-	File selectedFile;
 
 	public DatabaseConnector() throws SQLException {
 		con = DriverManager.getConnection("jdbc:mysql://localhost/StalkerDB",
 				"Dyrnwyn", "Dyrnwyn!");
 		stmt = con.createStatement();
-		
-		/* Database connection to enable secure remote database connection and  *
-		 * forcing usage of SSL certificate, by Jani 							*/
-		
-// TO BE MERGED IN NEXT VERSION
-//		try {
-//		String url = "jdbc:mysql://dyrnwyn.dyndns.org/StalkerDB" +		
-//				"?verifyServerCertificate=false"+ 
-//				"&useSSL=true"+ 
-//				"&requireSSL=true";
-//		String user = "Dyrnwyn";
-//		String password = "Dyrnwyn!";
-//		
-//		Class dbDriver = Class.forName("com.mysql.jdbc.Driver");
-//			con = DriverManager.getConnection(url, user, password);
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		} finally {
-//			if (con != null) {
-//				try {
-//					con.close();
-//				} catch (Exception e) {
-//				}
-//			}
-//		}	
-//		stmt = con.createStatement();
-	
 	}
 
 	/* by Danielle */
@@ -101,12 +64,16 @@ public class DatabaseConnector {
 		return model;
 	}
 
-	/* by Jani */
+	/* by Danielle, modified by Jani */
 	public DefaultTableModel reportTable(DefaultTableModel model,
 			String fromDate, String toDate) throws SQLException {
 
 		String SQL = "Select `StartingKm`, `EndingKm`, `From`, `To`, `ReasonOfTrip`, `RegistryNumber`, `Date` from TripData WHERE Username ='"
-				+ GUI.username + "' AND Date BETWEEN '" + fromDate + "' AND '" + toDate + "';";
+				+ GUI.username
+				+ "' AND Date BETWEEN '"
+				+ fromDate
+				+ "' AND '"
+				+ toDate + "';";
 
 		rs = stmt.executeQuery(SQL);
 		ResultSetMetaData rsm = (ResultSetMetaData) rs.getMetaData();
@@ -135,7 +102,7 @@ public class DatabaseConnector {
 		model.setDataVector(data, columnNames);
 		return model;
 	}
-	
+
 	/* by Gabriele */
 	public String queryCredentials(String row1, String row2, String value)
 			throws SQLException {
@@ -143,15 +110,12 @@ public class DatabaseConnector {
 		rs = stmt.executeQuery("SELECT " + row1 + " FROM User WHERE " + row2
 				+ " = '" + value + "';");
 		String result = "";
-
 		if (rs.next()) {
 			result = rs.getString(1);
-		} else {
-			System.out.println("result set is empty");
 		}
 		return result;
 	}
-	
+
 	/* query image by Danielle */
 	public BufferedImage queryImage(String value) throws SQLException {
 
@@ -188,7 +152,7 @@ public class DatabaseConnector {
 	}
 
 	/* methods to insert user data in the database, by JANI */
-	
+
 	public void insertTripData(String startKm, String endKm, String from,
 			String to, String tripReason, String car, String date)
 			throws SQLException {
@@ -204,9 +168,9 @@ public class DatabaseConnector {
 	public void insertExtraCost(String typeOfCost, String cost, String file,
 			String date, String idTripData) throws SQLException {
 		stmt.executeUpdate("INSERT INTO ExtraCosts"
-				+ "(`TypeOfCost`, `Cost`, `File`, `Date`)" + " VALUES " + "('"
-				+ typeOfCost + "','" + cost + "','" + file + "','" + date
-				+ "','" + idTripData + "')");
+				+ "(`TypeOfCost`, `Cost`, `File`, `Date`, `idTripData`)"
+				+ " VALUES " + "('" + typeOfCost + "','" + cost + "','" + file
+				+ "','" + date + "','" + idTripData + "')");
 	}
 
 	public void insertNewUser(String username, String password, String name)
@@ -228,19 +192,10 @@ public class DatabaseConnector {
 	/* update user password, by Sally and Jani */
 	public void insertPassword(String password, String username)
 			throws SQLException {
-
 		stmt.executeUpdate("UPDATE User SET Password = '" + password
 				+ "' WHERE Username = '" + username + "';");
 	}
-	
-	/* update and save changes to TripData from report scren by Jani */
-//	public void updateTripData(int rowChangedInt, int columnChangedInt, String tripId, String changedValue, String column)
-//			throws SQLException {
-//
-//		stmt.executeUpdate("UPDATE TripData SET "+ column + = '" + password
-//				+ "' WHERE Username = '" + username + "';");
-//	}
-	
+
 	/*
 	 * method to fetch the information for the dropdown menu, by AURE, modified
 	 * by Jani
@@ -248,10 +203,8 @@ public class DatabaseConnector {
 
 	public String[] getColumn(String column, String table) throws SQLException {
 		ArrayList<String> al = new ArrayList<String>();
-
 		rs = stmt.executeQuery("SELECT DISTINCT " + column + " FROM " + table
 				+ " ORDER BY " + column + " ASC;");
-
 		while (rs.next()) {
 			al.add(rs.getString(1));
 		}
@@ -259,64 +212,14 @@ public class DatabaseConnector {
 		return result;
 	}
 
-	/* choose and insert pictures or files to the database by DANIELLE,
-	 * redesigned by AURE */
-
-	public void uploadPic() {
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		fileChooser.showOpenDialog(null);
-		selectedFile = fileChooser.getSelectedFile();
-	}
-
-	public void insertImage() throws SQLException, IOException {
-		String insertFile = "INSERT INTO ExtraCosts(File) VALUES (?)";
-		con.setAutoCommit(false);
-		try {
-			FileInputStream fileInputStream = new FileInputStream(selectedFile);
-			PreparedStatement pstmt = con.prepareStatement(insertFile);
-			pstmt.setBinaryStream(1, fileInputStream,
-					(int) selectedFile.length());
-			pstmt.executeUpdate();
-			con.commit();
-			pstmt.close();
-			fileInputStream.close();
-		} catch (FileNotFoundException e) {
-			System.out.print(e);
-		}
-	}
-
-	/* shows the uploaded picture, by Danielle */
-	public void showPicture() throws IOException {
-		final BufferedImage bufferedImage = ImageIO.read(selectedFile);
-
-		JLabel label = new JLabel() {
-			protected void paintComponent(Graphics g) {
-				Graphics graph = g.create();
-				graph.drawImage(bufferedImage, 0, 0, getWidth(), getHeight(),
-						null);
-				graph.dispose();
-			}
-
-			public Dimension getPreferredSize() {
-				return new Dimension(bufferedImage.getWidth(),
-						bufferedImage.getHeight());
-			}
-		};
-
-		JFrame frame = new JFrame("Your selected picture: ");
-		frame.add(label);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-	}
-
 	/* methods to export data from the database, by GABRIELE */
-	public String buildCSV(String table, String fromDate, String toDate) throws SQLException {
+	public String buildCSV(String table, String fromDate, String toDate)
+			throws SQLException {
 
 		ArrayList<String> row = new ArrayList<String>();
 		rs = stmt.executeQuery("SELECT * from " + table + " WHERE Username = '"
-				+ GUI.username + "' AND Date BETWEEN '" + fromDate + "' AND '" + toDate + "';");
+				+ GUI.username + "' AND Date BETWEEN '" + fromDate + "' AND '"
+				+ toDate + "';");
 		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 		int columnsNumber = rsmd.getColumnCount();
 
@@ -327,9 +230,9 @@ public class DatabaseConnector {
 			}
 			row.add("\n");
 		}
-		return stringify(row);
+		return Main.stringify(row);
 	}
-	
+
 	public String buildCSV(String table) throws SQLException {
 
 		ArrayList<String> row = new ArrayList<String>();
@@ -345,7 +248,7 @@ public class DatabaseConnector {
 			}
 			row.add("\n");
 		}
-		return stringify(row);
+		return Main.stringify(row);
 	}
 
 	public void exportCSV(String filepathAndName, String username)
@@ -353,10 +256,12 @@ public class DatabaseConnector {
 
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(
 				filepathAndName)));
-		if(ReportScreen.dateLabel1.getText().equals("") || ReportScreen.dateLabel2.getText().equals("")){
+		if (ReportScreen.dateLabel1.getText().equals("")
+				|| ReportScreen.dateLabel2.getText().equals("")) {
 			bw.write(buildCSV("TripData"));
-		}else{
-			bw.write(buildCSV("TripData", ReportScreen.dateLabel1.getText(),ReportScreen.dateLabel2.getText()));
+		} else {
+			bw.write(buildCSV("TripData", ReportScreen.dateLabel1.getText(),
+					ReportScreen.dateLabel2.getText()));
 		}
 		bw.close();
 	}
@@ -365,8 +270,8 @@ public class DatabaseConnector {
 	public void logInM(String username, String pass) throws SQLException {
 
 		if (username.equals("") || pass.equals("")) {
-			JOptionPane.showMessageDialog(GUI.home, "Missing Values",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(GUI.home, "Missing Values", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		} else if (queryCredentials("Password", "Username", username).equals(
 				pass)) {
 			LoginScreen.loginScreenPanel.setVisible(false);
@@ -379,16 +284,18 @@ public class DatabaseConnector {
 		}
 	}
 
-	/* transforms an ArrayList to a string, by Aure */
-	public String stringify(ArrayList<String> ar) {
-		String listString = "";
-		for (String s : ar) {
-			if (s != "\n") {
-				listString += s + ", ";
-			} else {
-				listString += s;
-			}
+	/*
+	 * get the latest idTripData, necessary to enter multiple extra costs, Sally
+	 * and Aure
+	 */
+	public String idTripdata() throws SQLException {
+		String idTripdata = "";
+		rs = stmt.executeQuery("SELECT MAX(idTripData) FROM TripData");
+		if (rs.next()) {
+			idTripdata = rs.getString(1);
+		} else {
+			System.out.println("result set is empty");
 		}
-		return listString;
+		return idTripdata;
 	}
 }

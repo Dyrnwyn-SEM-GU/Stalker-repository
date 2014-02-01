@@ -1,10 +1,14 @@
 package gui;
 
+import java.awt.Cursor;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URI;
 import java.sql.SQLException;
 
 import javax.swing.JDialog;
@@ -14,6 +18,7 @@ import javax.swing.plaf.basic.BasicBorders;
 
 import stalker.DatabaseConnector;
 import stalker.ForgotPassword;
+import stalker.Main;
 
 import elements.DButton;
 import elements.DLabel;
@@ -26,8 +31,8 @@ import elements.DTextField;
 public class LoginScreen implements ActionListener, KeyListener {
 
 	DLabel loginLabel, emailLabel, passwordLabel, termsConditionLabel,
-	firstNameLabel, submitEmailLabel,
-	submitPasswordLabel, reSubmitPasswordLabel, enterEmailLabel;
+	firstNameLabel, submitEmailLabel, submitPasswordLabel,
+	reSubmitPasswordLabel, enterEmailLabel;
 	public static DTextField emailTxt;
 	DTextField firstNameTxt, submitEmailTxt;
 	public static DTextField forgotPasswordTxt;
@@ -64,9 +69,9 @@ public class LoginScreen implements ActionListener, KeyListener {
 				GUI.darkerGray);
 		loginButton.setBounds(190, 340, 150, 40);
 		loginButton.addActionListener(this);
-	
-		forgotPasswordButton = new DButton("<html>Forgot<br>password</html>", GUI.white,
-				GUI.txtH4, GUI.darkerGray);
+
+		forgotPasswordButton = new DButton("<html>Forgot<br>password</html>",
+				GUI.white, GUI.txtH4, GUI.darkerGray);
 		forgotPasswordButton.setBounds(350, 340, 150, 40);
 		forgotPasswordButton.addActionListener(this);
 
@@ -111,6 +116,24 @@ public class LoginScreen implements ActionListener, KeyListener {
 		termsConditionLabel = new DLabel(
 				"<html>By clicking sign up, you agree to our<br><a href = ''> terms and condition.</a></html>",
 				GUI.white, GUI.txtH4);
+		termsConditionLabel.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent me) {
+				termsConditionLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			public void mouseExited(MouseEvent me) {
+				termsConditionLabel.setCursor(Cursor.getDefaultCursor());
+			}
+
+			public void mouseClicked(MouseEvent me) {
+				try {
+					Main.open(new URI(
+							"https://dyrnwyn.dyndns.org/stalker/termsandconditions/"));
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+			}
+		});
 		termsConditionLabel.setBounds(50, 380, 500, 40);
 		signUpButton = new DButton("Sign up", GUI.white, GUI.txtH2,
 				GUI.darkerGray);
@@ -163,38 +186,45 @@ public class LoginScreen implements ActionListener, KeyListener {
 		forgotPasswordDialog.setVisible(false);
 		forgotPasswordDialog.setResizable(false);
 		forgotPasswordDialog.add(forgotPasswordPanel);
-
 	}
 
 	public void actionPerformed(ActionEvent ae) {
 
 		if (ae.getSource() == forgotPasswordButton) {
 			forgotPasswordDialog.setVisible(true);
+			Main.pancakes++;
 		}
 		if (ae.getSource() == forgotEmailButton) {
 			ForgotPassword mail = new ForgotPassword();
 			String email = forgotPasswordTxt.getText();
-			try {	
+			try {
 				DatabaseConnector dc = new DatabaseConnector();
 				if ((email != null) && (email.length() > 0)) {
-					if (dc.queryCredentials("Username", "Username", email).equals("")){
-						JOptionPane.showMessageDialog(GUI.home, "You have no account yet", "Error", JOptionPane.ERROR_MESSAGE);
-					}else{
+					if (dc.queryCredentials("Username", "Username", email)
+							.equals("")) {
+						JOptionPane.showMessageDialog(GUI.home,
+								"You have no account yet", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					} else {
 						try {
 							mail.sendPassword(email);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						JOptionPane.showMessageDialog(GUI.home, "An email has been sent to your email adress", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(GUI.home,
+								"An email has been sent to your email adress",
+								"Error", JOptionPane.ERROR_MESSAGE);
 						forgotPasswordDialog.setVisible(false);
 					}
-				}
-				else {
-					JOptionPane.showMessageDialog(GUI.home, "You have not added an email", "Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(GUI.home,
+							"You have not added an email", "Error",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (HeadlessException | SQLException e) {
 				e.printStackTrace();
-			}	
+			}
+			Main.pancakes++;
 		}
 		if (ae.getSource() == loginButton) {
 			try {
@@ -210,9 +240,11 @@ public class LoginScreen implements ActionListener, KeyListener {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			Main.pancakes++;
 		}
 		if (ae.getSource() == createNewAccountButton) {
 			signUpDialog.setVisible(true);
+			Main.pancakes++;
 		}
 		if (ae.getSource() == signUpButton) {
 			try {
@@ -224,14 +256,18 @@ public class LoginScreen implements ActionListener, KeyListener {
 							"Error", JOptionPane.ERROR_MESSAGE);
 				} else if (submitPasswordTxt.getText().equals(
 						reSubmitPasswordTxt.getText())) {
-					if(dc.queryCredentials("Username", "Username", submitEmailTxt.getText()).equals("")){
+					if (dc.queryCredentials("Username", "Username",
+							submitEmailTxt.getText()).equals("")) {
 						dc.insertNewUser(submitEmailTxt.getText(),
-								submitPasswordTxt.getText(), firstNameTxt.getText());
+								submitPasswordTxt.getText(),
+								firstNameTxt.getText());
 						HomeScreen.carDetailDialog.setVisible(true);
 						signUpDialog.setVisible(false);
 						GUI.username = submitEmailTxt.getText();
-					}else{
-						JOptionPane.showMessageDialog(GUI.home, "This email adress already exists", "Error", JOptionPane.ERROR_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(GUI.home,
+								"This email adress already exists", "Error",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
 					JOptionPane.showMessageDialog(GUI.home,
@@ -240,16 +276,16 @@ public class LoginScreen implements ActionListener, KeyListener {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(GUI.home,
+						"Problem connecting with the database", "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
+			Main.pancakes++;
 		}
 	}
-
-	@Override
-	public void keyPressed(KeyEvent arg0) {	
-	}
-	@Override
+	public void keyPressed(KeyEvent arg0) {}
 	public void keyReleased(KeyEvent ke) {
-		if (ke.getKeyCode() == KeyEvent.VK_ENTER){
+		if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
 			try {
 				DatabaseConnector dc = new DatabaseConnector();
 				dc.logInM(emailTxt.getText(), passwordTxt.getText());
@@ -263,9 +299,8 @@ public class LoginScreen implements ActionListener, KeyListener {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			Main.pancakes++;
 		}
 	}
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-	}
+	public void keyTyped(KeyEvent arg0) {}
 }

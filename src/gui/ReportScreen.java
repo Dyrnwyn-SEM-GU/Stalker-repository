@@ -1,24 +1,16 @@
 package gui;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.imageio.ImageIO;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -33,7 +25,7 @@ import elements.DLabel;
 import elements.DPanel;
 
 /* Generates the Screen to view reports, by MINA		 *
- * added calendars and ActionListeners, redesign by AURE */
+ * added calendars and ActionListeners and redesigned by AURE */
 
 public class ReportScreen implements ActionListener {
 
@@ -42,7 +34,7 @@ public class ReportScreen implements ActionListener {
 	public static DLabel dateLabel2;
 	DLabel toDateLabel, fromDateLabel, viewLogLabel;
 	DButton searchButton, exportButton, saveChangesButton, editButton,
-			filterButton, clearButton;
+	filterButton, clearButton;
 	static JTable reportTable;
 
 	ReportScreen() throws SQLException {
@@ -71,9 +63,8 @@ public class ReportScreen implements ActionListener {
 		filterPanel = new DPanel(GUI.darkGray);
 		filterPanel.setLayout(null);
 		filterPanel.setBounds(100, 0, 680, 600);
-	
-		viewLogLabel = new DLabel("Search logs", GUI.white,
-				GUI.txtH1);
+
+		viewLogLabel = new DLabel("Search logs", GUI.white, GUI.txtH1);
 		viewLogLabel.setBounds(50, 40, 600, 40);
 
 		fromDateLabel = new DLabel("From date:", GUI.white, GUI.txtH3);
@@ -91,8 +82,7 @@ public class ReportScreen implements ActionListener {
 		dateLabel2 = new DLabel("", GUI.white, GUI.txtH3);
 		dateLabel2.setBounds(410, 180, 300, 40);
 
-		clearButton = new DButton("Clear", GUI.white, GUI.txtH2,
-				GUI.darkerGray);
+		clearButton = new DButton("Clear", GUI.white, GUI.txtH2, GUI.darkerGray);
 		clearButton.addActionListener(this);
 		clearButton.setBounds(221, 300, 225, 40);
 		searchButton = new DButton("Search", GUI.white, GUI.txtH2,
@@ -147,13 +137,13 @@ public class ReportScreen implements ActionListener {
 		reportTable.setForeground(GUI.darkGray);
 		reportTable.setBounds(0, 0, 500, 500);
 		reportTable.setEnabled(false);
-		
+
 		GUI.model = dc.reportTable(GUI.model);
 		ReportScreen.reportTable.setModel(GUI.model);
 		GUI.model.fireTableDataChanged();
 		reportTable.setModel(GUI.model);
 		GUI.model.fireTableDataChanged();
-		
+
 		tablePanel.setBounds(40, 75, 600, 400);
 		tablePanel.setLayout(new GridLayout(1, 1));
 		JScrollPane jsp = new JScrollPane(reportTable);
@@ -187,18 +177,20 @@ public class ReportScreen implements ActionListener {
 			/* modified by Jani */
 			try {
 				DatabaseConnector dc = new DatabaseConnector();
-				
+
 				String fromDate = dateLabel1.getText().toString();
 				String toDate = dateLabel2.getText().toString();
-				
-				if(fromDate.equals("") || toDate.equals("")){
+
+				if (fromDate.equals("") || toDate.equals("")) {
 					GUI.model = dc.reportTable(GUI.model);
 					GUI.model.fireTableDataChanged();
 					gridPanel.setVisible(true);
 					filterPanel.setVisible(false);
-				}else if (toDate.compareTo(fromDate) <= 0) {
-					JOptionPane.showMessageDialog(GUI.home, "Start date is before end date!", "Error", JOptionPane.ERROR_MESSAGE);
-				}else{
+				} else if (toDate.compareTo(fromDate) <= 0) {
+					JOptionPane.showMessageDialog(GUI.home,
+							"Start date is before end date!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
 					GUI.model = dc.reportTable(GUI.model, fromDate, toDate);
 					GUI.model.fireTableDataChanged();
 					gridPanel.setVisible(true);
@@ -212,21 +204,9 @@ public class ReportScreen implements ActionListener {
 			gridPanel.setVisible(false);
 			filterPanel.setVisible(true);
 		}
-
 		if (ae.getSource() == saveChangesButton) {
-			int[] rowChanged = reportTable.getSelectedRows();
-			int[] columnChanged = reportTable.getSelectedColumns();
-			
+			/* not working in the current version */
 			reportTable.setEnabled(false);
-
-			for (int i = 0; i < rowChanged.length; i++) {
-				for (int j = 0; j < columnChanged.length; j++) {
-					System.out.println(rowChanged[i]);
-					System.out.println(columnChanged[j]);
-					System.out.println(reportTable.getValueAt(rowChanged[i],
-							columnChanged[j]));
-				}
-			}
 		}
 	}
 }

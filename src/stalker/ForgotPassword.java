@@ -11,7 +11,7 @@ import java.util.Properties;
  * by Gabriele with the help of Thor Salehi 	  */
 
 public class ForgotPassword {
-	
+
 	private static final String host = "smtp.gmail.com";
 	private static final int port = 465;
 	private static final String author = "dyrnwynSEM@gmail.com";
@@ -32,14 +32,19 @@ public class ForgotPassword {
 
 		// Modified by Jani 2014-01-07
 		message.setSubject("Here is your password to the STALKER Travel logbook system");
-		message.setContent("Dear user,\n \n your e-mail address is "
-											+ LoginScreen.forgotPasswordTxt.getText()
-											+ " and your current password is "
-											+ dc.queryCredentials("Password", "Username",
-											LoginScreen.forgotPasswordTxt.getText()) + "." + "\n\n Sincerely, the STALKER project by Dyrnwyn2013", "text/plain");
-		message.addRecipient(Message.RecipientType.TO, new InternetAddress(username));
+		message.setContent(
+				"Dear user,\n \n your e-mail address is "
+						+ LoginScreen.forgotPasswordTxt.getText()
+						+ " and your current password is "
+						+ dc.queryCredentials("Password", "Username",
+								LoginScreen.forgotPasswordTxt.getText()) + "."
+								+ "\n\n Sincerely, the STALKER project by Dyrnwyn2013",
+				"text/plain");
+		message.addRecipient(Message.RecipientType.TO, new InternetAddress(
+				username));
 		transport.connect(host, port, author, author_pass);
-		transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
+		transport.sendMessage(message,
+				message.getRecipients(Message.RecipientType.TO));
 		transport.close();
 	}
 }
