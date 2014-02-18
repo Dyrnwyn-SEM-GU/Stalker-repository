@@ -43,21 +43,20 @@ by Mahsa, Jani, Sally, Gabriele, Danielle, Mina, Aurélien
 
 how to run it:
 
-	- download STALKER
-	- run the stalker.jar
-	- to login to the system use the username dyrnwyn@dyrnwyn.com 
-	  and the password dyrnwyn.
-	CAREFULL! THE CONNECTION TO THE DATABASE IS NOT ENCRYPTED
-
-	(not required!)
-	if you want to install the database on your computer
 	- install mysql
 	- in the command line type in mysql and log in as root
 	- type in "source" and the filepath of the StalkerDB.sql file
-	- in the DatabaseConnector.java file in the src folder change
-	the connection to "jdbc:mysql://localhost/StalkerDB" (at line 28)
+	- in the DatabaseConnector.java file in the src folder make sure
+	the connection is to "jdbc:mysql://localhost/StalkerDB" (at line 28)
 
 	you now have a local Stalker database!
+	
+	- download STALKER
+	- run the sourcefiles or export as a jar file and run it (java -jar stalker.jar)
+	- to login to the system use the username dyrnwyn@dyrnwyn.com 
+	  and the password dyrnwyn too test the functions with sample data
+	  or create your own account from within the software.
+
 --------------------------------------------------------------------
 2013-12-17
 recent changes:
